@@ -906,7 +906,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Slime_34: 1187092927
+      Slime_4: 1340671630
       Slime_20: 1123478243
       Slime_8: -1440423423
       Slime_0: -739256772
@@ -940,8 +940,8 @@ TextureImporter:
       Slime_33: 887344518
       Slime_35: 378139895
       Slime_23: 554169312
-      Slime_4: 1340671630
       Slime_15: -273259912
+      Slime_34: 1187092927
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

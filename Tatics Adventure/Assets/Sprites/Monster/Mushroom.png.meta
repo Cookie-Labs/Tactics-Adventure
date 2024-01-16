@@ -885,7 +885,6 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Mushroom_30: 1225403963
       Mushroom_34: 1396065064
       Mushroom_11: 1052393955
       Mushroom_33: -1352739577
@@ -906,10 +905,11 @@ TextureImporter:
       Mushroom_19: -288808529
       Mushroom_10: 2029062856
       Mushroom_25: -1841364482
+      Mushroom_30: 1225403963
       Mushroom_2: 786400342
       Mushroom_13: 492746760
-      Mushroom_14: 600202063
       Mushroom_16: 699680088
+      Mushroom_14: 600202063
       Mushroom_5: -230092206
       Mushroom_20: 1597420792
       Mushroom_12: 748594075
