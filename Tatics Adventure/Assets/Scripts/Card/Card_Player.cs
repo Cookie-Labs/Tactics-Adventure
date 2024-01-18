@@ -11,5 +11,11 @@ public class Card_Player : Card
 
     public override void OnGettingFromPool()
     {
+        base.OnGettingFromPool();
+    }
+
+    public override void SetCard()
+    {
+        spawnManager.SpawnPlayer(gameManager.playerType, childTrans[0]);
     }
 }

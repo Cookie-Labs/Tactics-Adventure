@@ -11,5 +11,10 @@ public class Card_Monster : Card
 
     public override void OnGettingFromPool()
     {
+        base.OnGettingFromPool();
+    }
+
+    public override void SetCard()
+    {
     }
 }

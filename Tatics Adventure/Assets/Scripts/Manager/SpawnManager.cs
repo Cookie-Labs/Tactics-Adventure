@@ -11,10 +11,10 @@ public class SpawnManager : Singleton<SpawnManager>
 
     private void Start()
     {
-        SetMap();
+        SpawnStage();
     }
 
-    private void SetMap()
+    private void SpawnStage()
     {
         // 종류별 소환될 카드 개수 (총 9개)
         // Coin -> Item -> Monster -> Player -> Trap [Enum]
@@ -69,5 +69,21 @@ public class SpawnManager : Singleton<SpawnManager>
         card.transform.SetParent(null);
 
         cardList.Remove(card);
+    }
+
+    public Player SpawnPlayer(PlayerType type, Transform parent)
+    {
+        Player player = PoolManager.Instance.GetFromPool<Player>("Player_" + type); // 플레이어 소환
+
+        // 위치 설정
+        player.transform.SetParent(parent);
+        player.transform.localPosition = Vector3.zero;
+
+        return player;
+    }
+
+    public void DeSpawnPlayer(Player player)
+    {
+        PoolManager.Instance.TakeToPool<Player>(player.name, player);
     }
 }
