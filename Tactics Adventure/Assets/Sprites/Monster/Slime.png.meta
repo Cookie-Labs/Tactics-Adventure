@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 40
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -906,7 +906,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Slime_4: 1340671630
+      Slime_34: 1187092927
       Slime_20: 1123478243
       Slime_8: -1440423423
       Slime_0: -739256772
@@ -940,8 +940,8 @@ TextureImporter:
       Slime_33: 887344518
       Slime_35: 378139895
       Slime_23: 554169312
+      Slime_4: 1340671630
       Slime_15: -273259912
-      Slime_34: 1187092927
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -86,4 +86,30 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         PoolManager.Instance.TakeToPool<Player>(player.name, player);
     }
+
+    public Monster SpawnMonster(MonsterType type, Transform parent)
+    {
+        Monster monster = PoolManager.Instance.GetFromPool<Monster>("Monster_" + type); // 플레이어 소환
+
+        // 위치 설정
+        monster.transform.SetParent(parent);
+        monster.transform.localPosition = Vector3.zero;
+
+        return monster;
+    }
+
+    // 후에 스테이지마다 나오는 몬스터 제한
+    public Monster SpawnRanMonster(Transform parent)
+    {
+        int ranMon = Random.Range(0, System.Enum.GetValues(typeof(MonsterType)).Length);
+
+        Monster monster = SpawnMonster((MonsterType)ranMon, parent);
+
+        return monster;
+    }
+
+    public void DeSpawnPlayer(Monster monster)
+    {
+        PoolManager.Instance.TakeToPool<Player>(monster.name, monster);
+    }
 }

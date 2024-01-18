@@ -16,5 +16,6 @@ public class Card_Monster : Card
 
     public override void SetCard()
     {
+        spawnManager.SpawnRanMonster(childTrans[0]);
     }
 }

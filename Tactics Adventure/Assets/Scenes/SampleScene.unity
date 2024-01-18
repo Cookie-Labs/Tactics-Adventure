@@ -759,6 +759,51 @@ MonoBehaviour:
     _count: 1
     _container: {fileID: 0}
     _nonLazy: 0
+  - _name: Monster_Goblin
+    _component: {fileID: 1761240830265900708, guid: 6b12449774de84f4b883dc3f9f5be985, type: 3}
+    _count: 6
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Monster_Slime
+    _component: {fileID: 2813538764711983985, guid: db15ba7f03d5e4544b542517ba0bfa6c, type: 3}
+    _count: 6
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Monster_Mushroom
+    _component: {fileID: -8398612731746908250, guid: 0b47ebf531b571e499d37ebd76e1626f, type: 3}
+    _count: 6
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Monster_Skeleton
+    _component: {fileID: 1395055869615747510, guid: 817ddceec6e0b7d4db0935428f503b4b, type: 3}
+    _count: 6
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Monster_Ghost
+    _component: {fileID: 6587651172601229438, guid: de0f2a7bb4f673f4fadc3e6906a54216, type: 3}
+    _count: 6
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Monster_FireSoul
+    _component: {fileID: -7250405800211688337, guid: 4ae7727da95c3c348b5b9c563069684c, type: 3}
+    _count: 6
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Monster_IceSoul
+    _component: {fileID: 1737643082917006109, guid: 29ad0d859f468ae459ca5cb014992fdf, type: 3}
+    _count: 6
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Monster_PoisonSoul
+    _component: {fileID: 6276084776534043717, guid: 121c9863dab4fff499344a7214e59d44, type: 3}
+    _count: 6
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Monster_Monkey
+    _component: {fileID: -771078099193126543, guid: 2b27e4ffdf88e8b43b291b81e5190b8d, type: 3}
+    _count: 6
+    _container: {fileID: 0}
+    _nonLazy: 0
 --- !u!4 &843055633
 Transform:
   m_ObjectHideFlags: 0
