@@ -850,6 +850,41 @@ MonoBehaviour:
     _count: 8
     _container: {fileID: 0}
     _nonLazy: 0
+  - _name: Consumable_Portion
+    _component: {fileID: 8747585720885932956, guid: 314ec4c9e6cde0942a5ab6145fa46063, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Trap_Spike1
+    _component: {fileID: 1920256047963106388, guid: d36c957e8a4bbe5479d6cd9998ced29e, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Trap_Spike2
+    _component: {fileID: -6156872440864953493, guid: fd1deadb772f8844e8e2c856d60a7566, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Trap_Spike3
+    _component: {fileID: -4567922461240073537, guid: f9d768c3c3bded440a49059b3f80c13b, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Trap_Spike4
+    _component: {fileID: 7124013221548051265, guid: 5ff814d4b6af64b499d912fe4cd33f9d, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Trap_Flame
+    _component: {fileID: 7145681014806876715, guid: e156dbf4f3fca564b8041e864006cd97, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Trap_Suriken
+    _component: {fileID: -7219221382559301300, guid: c08b51fbca9baf24f82f7cf256ae5440, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
 --- !u!4 &843055633
 Transform:
   m_ObjectHideFlags: 0
@@ -1075,6 +1110,19 @@ MonoBehaviour:
     - {fileID: 710104236, guid: c5d9053f57cd82c4f847ea12fcacd25e, type: 3}
     - {fileID: -1351719293, guid: c5d9053f57cd82c4f847ea12fcacd25e, type: 3}
     - {fileID: 1687553347, guid: c5d9053f57cd82c4f847ea12fcacd25e, type: 3}
+  portionSprites:
+  - portionType: 0
+    sprites:
+    - {fileID: 1541223489, guid: 1a7b521bb968e7543946a9350b7c0388, type: 3}
+    - {fileID: -253380252, guid: 1a7b521bb968e7543946a9350b7c0388, type: 3}
+  - portionType: 1
+    sprites:
+    - {fileID: 574950313, guid: 1a7b521bb968e7543946a9350b7c0388, type: 3}
+    - {fileID: -89286474, guid: 1a7b521bb968e7543946a9350b7c0388, type: 3}
+  - portionType: 2
+    sprites:
+    - {fileID: -2034439814, guid: 1a7b521bb968e7543946a9350b7c0388, type: 3}
+    - {fileID: 1717986560, guid: 1a7b521bb968e7543946a9350b7c0388, type: 3}
 --- !u!4 &2109916564
 Transform:
   m_ObjectHideFlags: 0

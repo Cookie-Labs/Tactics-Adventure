@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Card_Trap : Card
+public class Trap_Spike3 : Trap
 {
-    private Trap trap;
-
     public override void OnCreatedInPool()
     {
         base.OnCreatedInPool();
@@ -14,15 +12,5 @@ public class Card_Trap : Card
     public override void OnGettingFromPool()
     {
         base.OnGettingFromPool();
-    }
-
-    public override void SetCard()
-    {
-        trap = spawnManager.SpawnRanTrap(childTrans[0]);
-    }
-
-    public override void DestroyCard()
-    {
-        spawnManager.DeSpawnTrap(trap);
     }
 }

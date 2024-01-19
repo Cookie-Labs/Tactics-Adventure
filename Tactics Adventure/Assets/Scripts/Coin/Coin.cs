@@ -36,7 +36,6 @@ public class Coin : MonoBehaviour, IPoolObject
             return;
         }
 
-        Debug.Log(type);
         anim.SetInteger("Change", typeID); // 해당 돈 애니메이션 실행
     }
 }

@@ -159,4 +159,50 @@ public class SpawnManager : Singleton<SpawnManager>
 
         PoolManager.Instance.TakeToPool<Chest>(chest.name, chest);
     }
+
+    public Portion SpawnPortion(PortionType type, int amount, Transform parent)
+    {
+        Portion portion = PoolManager.Instance.GetFromPool<Portion>("Consumable_Portion"); // 포션 소환
+
+        // 위치 설정
+        portion.transform.SetParent(parent);
+        portion.transform.localPosition = Vector3.zero;
+
+        // 포션 설정
+        portion.SetPortion(type, amount);
+
+        return portion;
+    }
+
+    public void DeSpawnConsumable(Consumable consumable)
+    {
+        consumable.transform.SetParent(null);
+
+        PoolManager.Instance.TakeToPool<Consumable>(consumable.name, consumable);
+    }
+
+    public Trap SpawnTrap(TrapName trapName, Transform parent)
+    {
+        Trap trap = PoolManager.Instance.GetFromPool<Trap>("Trap_" + trapName); // 트랩 생성
+
+        // 위치 설정
+        trap.transform.SetParent(parent);
+        trap.transform.localPosition = Vector3.zero;
+
+        return trap;
+    }
+
+    public Trap SpawnRanTrap(Transform parent)
+    {
+        int ranTrap = Random.Range(0, System.Enum.GetValues(typeof(TrapName)).Length);
+
+        return SpawnTrap((TrapName)ranTrap, parent);
+    }
+
+    public void DeSpawnTrap(Trap trap)
+    {
+        trap.transform.SetParent(null);
+
+        PoolManager.Instance.TakeToPool<Trap>(trap.name, trap);
+    }
 }
