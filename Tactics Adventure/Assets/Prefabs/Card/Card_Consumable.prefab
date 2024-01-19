@@ -94,9 +94,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1358829348323309313}
   - component: {fileID: 6678196638206198126}
-  - component: {fileID: 5459554925250741299}
+  - component: {fileID: 3948426381286729323}
   m_Layer: 0
-  m_Name: Card_Item
+  m_Name: Card_Consumable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -170,7 +170,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5459554925250741299
+--- !u!114 &3948426381286729323
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -179,10 +179,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6744423911473075864}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e6d547e1db80245b9523a843ba2d77, type: 3}
+  m_Script: {fileID: 11500000, guid: 7232dfc2ac0418742afadbbdfb0f185e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
+  type: 3
   backGround: {fileID: 5447201776939556834}
   childTrans:
   - {fileID: 1804464678819042170}

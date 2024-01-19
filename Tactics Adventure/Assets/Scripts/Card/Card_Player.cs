@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Card_Player : Card
 {
+    private Player player;
+
     public override void OnCreatedInPool()
     {
         base.OnCreatedInPool();
@@ -16,6 +18,11 @@ public class Card_Player : Card
 
     public override void SetCard()
     {
-        spawnManager.SpawnPlayer(gameManager.playerType, childTrans[0]);
+        player = spawnManager.SpawnPlayer(gameManager.playerType, childTrans[0]);
+    }
+
+    public override void DestroyCard()
+    {
+        spawnManager.DeSpawnPlayer(player);
     }
 }

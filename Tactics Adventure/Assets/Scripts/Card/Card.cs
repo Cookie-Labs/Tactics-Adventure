@@ -37,6 +37,8 @@ public abstract class Card : MonoBehaviour, IPoolObject
     }
 
     public abstract void SetCard();
+
+    public abstract void DestroyCard();
 }
 
-public enum CardType { Coin = 0, Item, Monster, Player, Trap }
+public enum CardType { Player, Chest, Coin, Consumable, Monster, Relics, Trap, Weapon }

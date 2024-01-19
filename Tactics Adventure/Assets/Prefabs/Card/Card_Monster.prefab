@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd5c4b64ef16c04c8b22d29149ce881, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 4
   backGround: {fileID: 7339835752193649705}
   childTrans:
   - {fileID: 1087000157982205528}

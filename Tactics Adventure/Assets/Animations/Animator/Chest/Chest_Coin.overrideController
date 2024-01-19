@@ -1,0 +1,13 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Chest_Coin
+  m_Controller: {fileID: 9100000, guid: bf0e9a7a39229a34ba0871a2b921cd25, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 595f778f8bf12bf4dac34052a03c5c95, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 3a483e56b30d34c459912a349a3ad207, type: 2}

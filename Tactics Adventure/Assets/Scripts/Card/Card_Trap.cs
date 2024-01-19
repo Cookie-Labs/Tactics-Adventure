@@ -17,4 +17,9 @@ public class Card_Trap : Card
     public override void SetCard()
     {
     }
+
+    public override void DestroyCard()
+    {
+        
+    }
 }

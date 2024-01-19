@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Card_Item : Card
+public class Chest_Consumable : Chest
 {
     public override void OnCreatedInPool()
     {
@@ -14,7 +14,8 @@ public class Card_Item : Card
         base.OnGettingFromPool();
     }
 
-    public override void SetCard()
+    public override void Open()
     {
+        base.Open();
     }
 }

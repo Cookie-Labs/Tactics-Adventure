@@ -195,6 +195,7 @@ MonoBehaviour:
   playerType: 0
   stage: 0
   level: 0
+  coinUnit: 0a0000003200000064000000
 --- !u!4 &101397055
 Transform:
   m_ObjectHideFlags: 0
@@ -714,14 +715,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pools:
+  - _name: Card_Player
+    _component: {fileID: 5292877899929125958, guid: eed55ea26c108234ba81e30497148b40, type: 3}
+    _count: 1
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Card_Chest
+    _component: {fileID: 3283767740886009694, guid: b052aeef91e8be04fa5509f0bbbb70a3, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
   - _name: Card_Coin
     _component: {fileID: 5985369412899990757, guid: 51bbb7b1f05a2e9428e4ca378daab449, type: 3}
     _count: 8
     _container: {fileID: 0}
     _nonLazy: 0
-  - _name: Card_Item
-    _component: {fileID: 5459554925250741299, guid: fbbed2384a75ed849b63d8cca858e2c6, type: 3}
-    _count: 8
+  - _name: Card_Consumable
+    _component: {fileID: 3948426381286729323, guid: 7bea0f12870ad9540b2f1afd1ff6f3fa, type: 3}
+    _count: 0
     _container: {fileID: 0}
     _nonLazy: 0
   - _name: Card_Monster
@@ -729,13 +740,18 @@ MonoBehaviour:
     _count: 8
     _container: {fileID: 0}
     _nonLazy: 0
-  - _name: Card_Player
-    _component: {fileID: 5292877899929125958, guid: eed55ea26c108234ba81e30497148b40, type: 3}
-    _count: 1
+  - _name: Card_Relics
+    _component: {fileID: 4206930161995199294, guid: a908724bcd3e4ac469d311d6e6c312f4, type: 3}
+    _count: 8
     _container: {fileID: 0}
     _nonLazy: 0
   - _name: Card_Trap
     _component: {fileID: -7647165947700930421, guid: 09a9aa52344d5874392539411b6f04e2, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Card_Weapon
+    _component: {fileID: 5459554925250741299, guid: fbbed2384a75ed849b63d8cca858e2c6, type: 3}
     _count: 8
     _container: {fileID: 0}
     _nonLazy: 0
@@ -802,6 +818,36 @@ MonoBehaviour:
   - _name: Monster_Monkey
     _component: {fileID: -771078099193126543, guid: 2b27e4ffdf88e8b43b291b81e5190b8d, type: 3}
     _count: 6
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Coin
+    _component: {fileID: 6847178773689837045, guid: d00d00cce0720ed44819e0dacaec72b7, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Chest_Coin
+    _component: {fileID: 7958987030228534175, guid: 3cf5178839a6378488f8d638d1e424e0, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Chest_Consumable
+    _component: {fileID: -7169685987926132283, guid: 289152093aa820b468999dc6a75ad7eb, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Chest_Monster
+    _component: {fileID: -8422741240017605408, guid: 129a0a9c7bf1b0b4698fd6d626fe26b7, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Chest_Relics
+    _component: {fileID: -855750229868328574, guid: 5f1c39c49a494e24a83ecd8bfbdd775b, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: Chest_Weapon
+    _component: {fileID: 3754914392373824869, guid: 23bf44c67060eab46a911a437969ddd3, type: 3}
+    _count: 8
     _container: {fileID: 0}
     _nonLazy: 0
 --- !u!4 &843055633
@@ -897,7 +943,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c41c1c7ccd9d9d24ca15f507eb817f85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxCard: 0800000006000000060000000100000005000000
+  maxCard: 0100000006000000080000000500000007000000030000000600000005000000
   cardPos:
   - {fileID: 816977067}
   - {fileID: 2059613365}

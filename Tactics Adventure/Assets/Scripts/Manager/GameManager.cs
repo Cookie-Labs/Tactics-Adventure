@@ -11,6 +11,7 @@ public class GameManager : Singleton<GameManager>
     [Title("변수 (저장X)")]
     public Stage stage;
     public Level level;
+    public int[] coinUnit;
 }
 
 public enum Stage { Grass = 0, Cave, Swarm, Forest }
