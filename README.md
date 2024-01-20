@@ -1,3 +1,3 @@
 # Tatics Adventure
 
-![Alpha0 5](https://github.com/HongDaHyun/Tactics-Adventure/assets/101586627/fc122b9c-6f47-4be4-8218-6e1aa481a02c)
+![Alpha0 6](https://github.com/HongDaHyun/Tactics-Adventure/assets/101586627/43e31f40-907d-4d45-a8eb-d81a3dabadbc)
