@@ -205,4 +205,25 @@ public class SpawnManager : Singleton<SpawnManager>
 
         PoolManager.Instance.TakeToPool<Trap>(trap.name, trap);
     }
+
+    public Weapon SpawnWeapon(WeaponType type, Tier tier, Transform parent)
+    {
+        Weapon weapon = PoolManager.Instance.GetFromPool<Weapon>("Weapon"); // 무기 생성
+
+        // 위치 설정
+        weapon.transform.SetParent(parent);
+        weapon.transform.localPosition = Vector3.zero;
+
+        // 변수 설정
+        weapon.SetWeapon(type, tier);
+
+        return weapon;
+    }
+
+    public void DeSpawnWeapon(Weapon weapon)
+    {
+        weapon.transform.SetParent(null);
+
+        PoolManager.Instance.TakeToPool<Weapon>(weapon.name, weapon);
+    }
 }

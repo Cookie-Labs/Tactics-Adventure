@@ -12,6 +12,9 @@ public class SpriteData : Singleton<SpriteData>
     [Title("포션 스프라이트")]
     public PortionSprite[] portionSprites;
 
+    [Title("무기 스프라이트")]
+    public WeaponSprite[] weaponSprites;
+
     // 랜덤 스테이지 이미지 스프라이트 추출
     public Sprite ExportRanStage()
     {
@@ -24,7 +27,12 @@ public class SpriteData : Singleton<SpriteData>
 
     public Sprite ExportPortionSprite(PortionType portionType, Capacity cap)
     {
-        return portionSprites[(int)portionType].Export(cap);
+        return Array.Find(portionSprites, sprite => sprite.portionType == portionType).Export(cap);
+    }
+
+    public Sprite ExportRanWeaponSprite(WeaponType weaponType, Tier tier)
+    {
+        return Array.Find(weaponSprites, sprite => sprite.weaponType == weaponType).RanExport(tier);
     }
 }
 
@@ -66,4 +74,37 @@ public class PortionSprite
 
         return sprites[capID];
     }
+}
+
+[Serializable]
+public class WeaponSprite
+{
+    public WeaponType weaponType;
+    public WeaponSpriteStruct[] sprites;
+
+    public Sprite Export(Tier tier, int i)
+    {
+        return Export(tier).sprites[i];
+    }
+
+    public Sprite RanExport(Tier tier)
+    {
+        WeaponSpriteStruct spriteStruct = Export(tier);
+
+        int ranID = UnityEngine.Random.Range(0, spriteStruct.sprites.Length);
+
+        return spriteStruct.sprites[ranID];
+    }
+
+    private WeaponSpriteStruct Export(Tier tier)
+    {
+        return Array.Find(sprites, sprite => sprite.tier == tier);
+    }
+}
+
+[Serializable]
+public struct WeaponSpriteStruct
+{
+    public Tier tier;
+    public Sprite[] sprites;
 }
