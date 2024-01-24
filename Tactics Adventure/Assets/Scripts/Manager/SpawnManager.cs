@@ -226,4 +226,25 @@ public class SpawnManager : Singleton<SpawnManager>
 
         PoolManager.Instance.TakeToPool<Weapon>(weapon.name, weapon);
     }
+
+    public Relic SpawnRelic(int index, Transform parent)
+    {
+        Relic relic = PoolManager.Instance.GetFromPool<Relic>("Relic"); // 무기 생성
+
+        // 위치 설정
+        relic.transform.SetParent(parent);
+        relic.transform.localPosition = Vector3.zero;
+
+        // 변수 설정
+        relic.SetRelic(index);
+
+        return relic;
+    }
+
+    public void DeSpawnRelic(Relic relic)
+    {
+        relic.transform.SetParent(null);
+
+        PoolManager.Instance.TakeToPool<Relic>(relic.name, relic);
+    }
 }

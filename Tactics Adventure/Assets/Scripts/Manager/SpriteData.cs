@@ -15,6 +15,9 @@ public class SpriteData : Singleton<SpriteData>
     [Title("무기 스프라이트")]
     public WeaponSprite[] weaponSprites;
 
+    [Title("유물 스프라이트", subtitle: "순서대로")]
+    public Sprite[] relicSprites;
+
     // 랜덤 스테이지 이미지 스프라이트 추출
     public Sprite ExportRanStage()
     {
@@ -33,6 +36,11 @@ public class SpriteData : Singleton<SpriteData>
     public Sprite ExportRanWeaponSprite(WeaponType weaponType, Tier tier)
     {
         return Array.Find(weaponSprites, sprite => sprite.weaponType == weaponType).RanExport(tier);
+    }
+
+    public Sprite ExportRelicSprite(int index)
+    {
+        return relicSprites[index];
     }
 }
 
