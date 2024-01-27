@@ -18,7 +18,10 @@ public class Card_Relics : Card
 
     public override void SetCard()
     {
-        relic = spawnManager.SpawnRelic(0, childTrans[0]);
+        relic = spawnManager.SpawnRelic(0, objTrans);
+
+        SetCardName(relic.data.name);
+        SetUI(relic.data.explanation);
     }
 
     public override void DestroyCard()

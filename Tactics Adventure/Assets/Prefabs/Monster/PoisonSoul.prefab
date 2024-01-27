@@ -118,4 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 747d1135b3c3ba74484fed9ef9abc91c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 7
+  data:
+    name: "\uB3C5 \uC815\uB839"
+    type: 7
+    hp: 11

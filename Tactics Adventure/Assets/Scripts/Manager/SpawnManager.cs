@@ -181,7 +181,7 @@ public class SpawnManager : Singleton<SpawnManager>
         PoolManager.Instance.TakeToPool<Consumable>(consumable.name, consumable);
     }
 
-    public Trap SpawnTrap(TrapName trapName, Transform parent)
+    public Trap SpawnTrap(TrapType trapName, Transform parent)
     {
         Trap trap = PoolManager.Instance.GetFromPool<Trap>("Trap_" + trapName); // 트랩 생성
 
@@ -189,14 +189,18 @@ public class SpawnManager : Singleton<SpawnManager>
         trap.transform.SetParent(parent);
         trap.transform.localPosition = Vector3.zero;
 
+        // 변수 설정
+        if (trap.data.isWait)
+            trap.RanWait();
+
         return trap;
     }
 
     public Trap SpawnRanTrap(Transform parent)
     {
-        int ranTrap = Random.Range(0, System.Enum.GetValues(typeof(TrapName)).Length);
+        int ranTrap = Random.Range(0, System.Enum.GetValues(typeof(TrapType)).Length);
 
-        return SpawnTrap((TrapName)ranTrap, parent);
+        return SpawnTrap((TrapType)ranTrap, parent);
     }
 
     public void DeSpawnTrap(Trap trap)
@@ -215,7 +219,7 @@ public class SpawnManager : Singleton<SpawnManager>
         weapon.transform.localPosition = Vector3.zero;
 
         // 변수 설정
-        weapon.SetWeapon(type, tier);
+        weapon.SetWeapon(CSVManager.Instance.csvList.FindWeapon(type, tier));
 
         return weapon;
     }

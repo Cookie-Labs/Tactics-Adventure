@@ -118,4 +118,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16cedbc7103055f4381fdbdf912a4a55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
+  data:
+    name: "\uAD81\uC218"
+    type: 1
+    hp: 7
+    mp: 10
+    defend: 0

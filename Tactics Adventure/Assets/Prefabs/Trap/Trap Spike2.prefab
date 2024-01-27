@@ -118,4 +118,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 377152ddd3933fa488b0f3ad9f3a316d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trapName: 1
+  data:
+    name: "\uC77C\uC790 \uAC00\uC2DC\uD568\uC815"
+    type: 1

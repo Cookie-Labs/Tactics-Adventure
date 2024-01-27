@@ -5,7 +5,7 @@ using Redcode.Pools;
 
 public abstract class Player : MonoBehaviour, IPoolObject
 {
-    public PlayerType type;
+    public PlayerData data;
 
     private Animator anim;
 

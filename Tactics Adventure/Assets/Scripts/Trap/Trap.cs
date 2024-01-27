@@ -5,7 +5,7 @@ using Redcode.Pools;
 
 public abstract class Trap : MonoBehaviour, IPoolObject
 {
-    public TrapName trapName;
+    public TrapData data;
 
     protected Animator anim;
 
@@ -19,6 +19,11 @@ public abstract class Trap : MonoBehaviour, IPoolObject
     public virtual void OnGettingFromPool()
     {
     }
+
+    public void RanWait()
+    {
+        data.wait = Random.Range(2, 5); // 난이도 설정
+    }
 }
 
-public enum TrapName { Spike1, Spike2, Spike3, Spike4, Flame, Suriken}
+public enum TrapType { Spike1, Spike2, Spike3, Spike4, Flame, Suriken}

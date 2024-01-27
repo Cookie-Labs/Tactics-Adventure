@@ -118,4 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddf9765f7d5384d4291aed14869f46ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 8
+  data:
+    name: "\uBABD\uD0A4"
+    type: 8
+    hp: 13

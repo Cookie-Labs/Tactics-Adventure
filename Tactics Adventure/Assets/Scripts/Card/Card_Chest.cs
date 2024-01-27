@@ -18,7 +18,12 @@ public class Card_Chest : Card
 
     public override void SetCard()
     {
-        chest = spawnManager.SpawnChest(ChestType.Coin, childTrans[0]); // 후에 지정 스폰
+        chest = spawnManager.SpawnChest(ChestType.Coin, objTrans); // 후에 지정 스폰
+
+        // UI설정
+        SetCardName(chest.data.name); // 이름
+        string[] explains = csvManager.csvList.chestExpainTxt; // 상자 내용 텍스트 불러오기
+        SetUI(explains[Random.Range(0, explains.Length)]); // 내용
     }
 
     public override void DestroyCard()

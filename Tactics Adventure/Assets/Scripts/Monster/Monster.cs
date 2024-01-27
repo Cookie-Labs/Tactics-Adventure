@@ -5,7 +5,7 @@ using Redcode.Pools;
 
 public abstract class Monster : MonoBehaviour, IPoolObject
 {
-    public MonsterType type;
+    public MonsterData data;
 
     private Animator anim;
 

@@ -5,7 +5,7 @@ using Redcode.Pools;
 
 public class Relic : MonoBehaviour, IPoolObject
 {
-    public RelicData relicData;
+    public RelicData data;
 
     // 내부 컴포넌트
     private SpriteRenderer spriteRenderer;
@@ -28,7 +28,7 @@ public class Relic : MonoBehaviour, IPoolObject
 
     public void SetRelic(int index)
     {
-        relicData = CSVManager.Instance.csvList.FindRelic(index);
+        data = CSVManager.Instance.csvList.FindRelic(index);
 
         spriteRenderer.sprite =  spriteData.ExportRelicSprite(index);
     }

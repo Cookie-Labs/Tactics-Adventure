@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Card_Coin : Card
 {
+    // 변수
+    public int amount;
+
+    // 자식 컴포넌트
     private Coin coin;
 
     public override void OnCreatedInPool()
@@ -18,7 +22,14 @@ public class Card_Coin : Card
 
     public override void SetCard()
     {
-        coin = spawnManager.SpawnCoin(100, childTrans[0]); // 후에 수치 넣어서 바꾸기
+        // 변수 설정
+        amount = 100;
+
+        // 코인 생성
+        coin = spawnManager.SpawnCoin(amount, objTrans); // 후에 수치 넣어서 바꾸기
+
+        SetCardName("코인");
+        SetUI($"<sprite=3>{amount}");
     }
 
     public override void DestroyCard()

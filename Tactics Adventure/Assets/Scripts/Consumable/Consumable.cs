@@ -5,6 +5,7 @@ using Redcode.Pools;
 
 public abstract class Consumable : MonoBehaviour, IPoolObject
 {
+    public string consumableName;
     public ConsumableType type;
 
     // 내부 컴포넌트

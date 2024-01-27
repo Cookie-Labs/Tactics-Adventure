@@ -118,4 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87e9f6c0a756c674c8e63818ea34152b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trapName: 4
+  data:
+    name: "\uD654\uC5FC\uD568\uC815"
+    type: 4
+    isWait: 1
+    wait: 0

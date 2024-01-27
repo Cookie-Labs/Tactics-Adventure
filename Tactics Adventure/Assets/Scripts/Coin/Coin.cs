@@ -28,7 +28,7 @@ public class Coin : MonoBehaviour, IPoolObject
         int typeID = (int)type; // 돈 타입 int형으로 변환
 
         // 돈 단위를 넘어가는 경우
-        if(money > gameManager.coinUnit[typeID])
+        if(money > gameManager.coinUnit[typeID] && typeID > System.Enum.GetValues(typeof(CoinType)).Length)
         {
             type++; // 단위 증가
             UpdateAnim(money); // 함수 재실행

@@ -12,8 +12,8 @@ public class SpriteData : Singleton<SpriteData>
     [Title("포션 스프라이트")]
     public PortionSprite[] portionSprites;
 
-    [Title("무기 스프라이트")]
-    public WeaponSprite[] weaponSprites;
+    [Title("무기 스프라이트", subtitle: "순서대로(롱소드 - 숏소드 - 완드 - 마법서)")]
+    public Sprite[] weaponSprites;
 
     [Title("유물 스프라이트", subtitle: "순서대로")]
     public Sprite[] relicSprites;
@@ -33,14 +33,14 @@ public class SpriteData : Singleton<SpriteData>
         return Array.Find(portionSprites, sprite => sprite.portionType == portionType).Export(cap);
     }
 
-    public Sprite ExportRanWeaponSprite(WeaponType weaponType, Tier tier)
-    {
-        return Array.Find(weaponSprites, sprite => sprite.weaponType == weaponType).RanExport(tier);
-    }
-
     public Sprite ExportRelicSprite(int index)
     {
         return relicSprites[index];
+    }
+
+    public Sprite ExportWeaponSprite(int index)
+    {
+        return weaponSprites[index];
     }
 }
 
@@ -82,37 +82,4 @@ public class PortionSprite
 
         return sprites[capID];
     }
-}
-
-[Serializable]
-public class WeaponSprite
-{
-    public WeaponType weaponType;
-    public WeaponSpriteStruct[] sprites;
-
-    public Sprite Export(Tier tier, int i)
-    {
-        return Export(tier).sprites[i];
-    }
-
-    public Sprite RanExport(Tier tier)
-    {
-        WeaponSpriteStruct spriteStruct = Export(tier);
-
-        int ranID = UnityEngine.Random.Range(0, spriteStruct.sprites.Length);
-
-        return spriteStruct.sprites[ranID];
-    }
-
-    private WeaponSpriteStruct Export(Tier tier)
-    {
-        return Array.Find(sprites, sprite => sprite.tier == tier);
-    }
-}
-
-[Serializable]
-public struct WeaponSpriteStruct
-{
-    public Tier tier;
-    public Sprite[] sprites;
 }
