@@ -36,4 +36,8 @@ public class Card_Monster : Card
     {
         spawnManager.DeSpawnMonster(monster);
     }
+
+    public override void DoCard()
+    {
+    }
 }

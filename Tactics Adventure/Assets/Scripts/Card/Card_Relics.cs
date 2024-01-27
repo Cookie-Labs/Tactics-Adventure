@@ -28,4 +28,8 @@ public class Card_Relics : Card
     {
         spawnManager.DeSpawnRelic(relic);
     }
+
+    public override void DoCard()
+    {
+    }
 }

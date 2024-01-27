@@ -39,6 +39,10 @@ public class Card_Trap : Card
         spawnManager.DeSpawnTrap(trap);
     }
 
+    public override void DoCard()
+    {
+    }
+
     public string SetUIText()
     {
         string s = ""; // 빈 문자열 준비

@@ -34,6 +34,10 @@ public class Card_Weapon : Card
         spawnManager.DeSpawnWeapon(weapon);
     }
 
+    public override void DoCard()
+    {
+    }
+
     private void SetDmg()
     {
         int dmgPer = gameManager.weaponPerDmg;

@@ -35,6 +35,34 @@ public class Card_Consumable : Card
         spawnManager.DeSpawnConsumable(consumable);
     }
 
+    public override void DoCard()
+    {
+        // 현재 포션 밖에 없음(확장성 고려)
+        if(consumable.type == ConsumableType.Portion)
+        {
+            Portion portion = consumable.GetComponent<Portion>(); // 포션 컴포넌트 가져오기
+            Card_Player playerCard = spawnManager.playerCard;
+
+            // 포션 타입 별 분류
+            switch(portion.portionType)
+            {
+                case PortionType.HP: // 체력포션
+                    playerCard.HealHP(amount); // 체력회복
+                    break;
+                case PortionType.MP: // 마나포션
+                    playerCard.HealMP(amount); // 마나회복
+                    break;
+                case PortionType.Poison: // 독포션
+                    playerCard.Damaged(amount);
+                    playerCard.poisonCount = 4; // 독 효과는 모두 4턴 지속
+                    break;
+            }
+        }
+
+        spawnManager.playerCard.Move(pos); // 플레이어 카드 이동
+        spawnManager.DeSpawnCard(this); // 카드 삭제
+    }
+
     public string SetUIText()
     {
         string s = ""; // 빈 문자열 생성

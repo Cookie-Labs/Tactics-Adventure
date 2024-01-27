@@ -439,9 +439,10 @@ GameObject:
   - component: {fileID: 1358829348323309313}
   - component: {fileID: 6678196638206198126}
   - component: {fileID: 8547698456434840868}
+  - component: {fileID: 5806429298969801035}
   m_Layer: 0
   m_Name: Card_Monster
-  m_TagString: Untagged
+  m_TagString: Card
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -528,9 +529,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd5c4b64ef16c04c8b22d29149ce881, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pos: 0
   type: 4
+  avaliableTouch: 0
   backGround: {fileID: 7339835752193649705}
   objTrans: {fileID: 1087000157982205528}
   cardName: {fileID: 5057482777368151945}
   uiText: {fileID: 3300618373824403456}
   hp: 0
+--- !u!61 &5806429298969801035
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6744423911473075864}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.02}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.4, y: 2.8}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.7, y: 2.3}
+  m_EdgeRadius: 0

@@ -30,4 +30,10 @@ public class Card_Chest : Card
     {
         spawnManager.DeSpawnChest(chest);
     }
+
+    public override void DoCard()
+    {
+        spawnManager.SpawnCard((CardType)System.Enum.Parse(typeof(CardType), chest.data.type.ToString()), pos);
+        spawnManager.DeSpawnCard(this);
+    }
 }

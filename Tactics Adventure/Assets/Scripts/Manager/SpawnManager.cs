@@ -8,6 +8,7 @@ public class SpawnManager : Singleton<SpawnManager>
     public int[] maxCard;
     public Transform[] cardPos;
     public List<Card> cardList;
+    [HideInInspector] public Card_Player playerCard;
 
     private void Start()
     {
@@ -28,7 +29,7 @@ public class SpawnManager : Singleton<SpawnManager>
             // 플레이어 소환
             if (i == 0)
             {
-                SpawnCard((CardType)i, cardPos[4]);
+                SpawnCard((CardType)i, 4);
                 continue;
             }
 
@@ -42,20 +43,26 @@ public class SpawnManager : Singleton<SpawnManager>
                 while (drawnNumbers.Contains(ranNum));
 
                 drawnNumbers.Add(ranNum);
-                SpawnCard((CardType)i, cardPos[ranNum]); // 소환
+                SpawnCard((CardType)i, ranNum); // 소환
             }
         }
+
+        playerCard = cardList[0].GetComponent<Card_Player>(); // 플레이어 카드 대입
+        playerCard.SetTouch(); // 플레이어 카드의 주변 카드 터치 활성화
     }
 
-    public Card SpawnCard(CardType type, Transform parent)
+    public Card SpawnCard(CardType type, int pos)
     {
         Card card = PoolManager.Instance.GetFromPool<Card>("Card_" + type); // 카드 소환
 
         maxCard[(int)type]--; // 해당 카드 최대 수량--
 
         // 위치 설정
-        card.transform.SetParent(parent);
+        card.transform.SetParent(cardPos[pos]);
         card.transform.localPosition = Vector3.zero;
+
+        // 변수 설정
+        card.pos = pos;
 
         // 카드 리스트에 추가
         cardList.Add(card);
@@ -75,6 +82,31 @@ public class SpawnManager : Singleton<SpawnManager>
         cardList.Remove(card);
     }
 
+    public Card FindCard(Vector3 pos)
+    {
+        // 순차 검색
+        foreach (Card card in cardList)
+            if (card.transform.position == pos)
+                return card;
+        return null;
+    }
+
+    public Card[] FindCards(Vector3[] poses)
+    {
+        List<Card> cards = new List<Card>();
+
+        foreach (Card card in cardList)
+        {
+            int length = poses.Length;
+            for(int i = 0; i < length; i++)
+            {
+                if (card.transform.position == poses[i])
+                    cards.Add(card);
+            }
+        }
+        return cards.ToArray();
+    }
+
     public Player SpawnPlayer(PlayerType type, Transform parent)
     {
         Player player = PoolManager.Instance.GetFromPool<Player>("Player_" + type); // 플레이어 소환
@@ -90,7 +122,7 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         player.transform.SetParent(null);
 
-        PoolManager.Instance.TakeToPool<Player>(player.name, player);
+        PoolManager.Instance.TakeToPool<Player>("Player_" + player.name, player);
     }
 
     public Monster SpawnMonster(MonsterType type, Transform parent)
@@ -118,7 +150,7 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         monster.transform.SetParent(null);
 
-        PoolManager.Instance.TakeToPool<Monster>(monster.name, monster);
+        PoolManager.Instance.TakeToPool<Monster>("Monster_" + monster.name, monster);
     }
 
     public Coin SpawnCoin(int a, Transform parent)
@@ -139,7 +171,7 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         coin.transform.SetParent(null);
 
-        PoolManager.Instance.TakeToPool<Coin>(coin.name, coin);
+        PoolManager.Instance.TakeToPool<Coin>("Coin", coin);
     }
 
     public Chest SpawnChest(ChestType type, Transform parent)
@@ -178,7 +210,7 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         consumable.transform.SetParent(null);
 
-        PoolManager.Instance.TakeToPool<Consumable>(consumable.name, consumable);
+        PoolManager.Instance.TakeToPool<Consumable>("Consumable_Portion", consumable);
     }
 
     public Trap SpawnTrap(TrapType trapName, Transform parent)
@@ -228,7 +260,7 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         weapon.transform.SetParent(null);
 
-        PoolManager.Instance.TakeToPool<Weapon>(weapon.name, weapon);
+        PoolManager.Instance.TakeToPool<Weapon>("Weapon", weapon);
     }
 
     public Relic SpawnRelic(int index, Transform parent)
@@ -249,6 +281,6 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         relic.transform.SetParent(null);
 
-        PoolManager.Instance.TakeToPool<Relic>(relic.name, relic);
+        PoolManager.Instance.TakeToPool<Relic>("Relic", relic);
     }
 }

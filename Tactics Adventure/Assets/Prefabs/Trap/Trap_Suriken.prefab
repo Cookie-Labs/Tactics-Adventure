@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 7881207893132423023}
   - component: {fileID: 6073996379372703289}
   - component: {fileID: 2246691653751757946}
-  - component: {fileID: 7124013221548051265}
+  - component: {fileID: -7219221382559301300}
   m_Layer: 0
-  m_Name: Trap Spike4
+  m_Name: Trap_Suriken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: -1841757757, guid: 3c3835825807e444b93c66f0222d4738, type: 3}
+  m_Sprite: {fileID: -208436271, guid: 09d86335f99701343a301086306d89d9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -106,7 +106,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7124013221548051265
+--- !u!114 &-7219221382559301300
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,9 +115,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3773151898732757853}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b586edf42929ed4ca71cd61aad1e9fc, type: 3}
+  m_Script: {fileID: 11500000, guid: 6dd8c0704a54d0448b541e3bb7401615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    name: "\uC2ED\uC790 \uAC00\uC2DC\uD568\uC815"
-    type: 3
+    name: "\uC6D0\uD615 \uAC00\uC2DC\uD568\uC815"
+    type: 5
+    isWait: 1
+    wait: 0

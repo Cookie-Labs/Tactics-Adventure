@@ -36,4 +36,12 @@ public class Card_Coin : Card
     {
         spawnManager.DeSpawnCoin(coin);
     }
+
+    public override void DoCard()
+    {
+        gameManager.EarnMoney(amount); // 돈 벌기
+
+        spawnManager.playerCard.Move(pos); // 플레이어 카드 이동
+        spawnManager.DeSpawnCard(this); // 카드 삭제
+    }
 }
