@@ -32,4 +32,9 @@ public class Card_Relics : Card
     public override void DoCard()
     {
     }
+
+    public override void Damaged(int _amount)
+    {
+        return;
+    }
 }

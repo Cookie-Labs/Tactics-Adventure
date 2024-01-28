@@ -447,7 +447,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pos: 0
   type: 6
-  avaliableTouch: 0
+  availableTouch: 0
+  isTurn: 0
   backGround: {fileID: 2093001708333914070}
   objTrans: {fileID: 4445297779988832557}
   cardName: {fileID: 5008472402142743251}

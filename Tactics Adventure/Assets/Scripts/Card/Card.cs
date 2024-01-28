@@ -12,6 +12,7 @@ public abstract class Card : MonoBehaviour, IPoolObject
     public int pos;
     public CardType type;
     public bool availableTouch;
+    public bool isTurn; // 턴제 확인
 
     [Title("자식 컴포넌트")]
     public SpriteRenderer backGround;
@@ -50,6 +51,7 @@ public abstract class Card : MonoBehaviour, IPoolObject
         if (!availableTouch || gameManager.isMoving)
             return;
         DoCard();
+        spawnManager.DoTurnCards();
         spawnManager.playerCard.SetTouch();
     }
 
@@ -59,6 +61,11 @@ public abstract class Card : MonoBehaviour, IPoolObject
 
     public abstract void DoCard();
 
+    public virtual void DoTurnCard()
+    {
+
+    }
+
     public virtual void Move(int pos)
     {
         Transform target = spawnManager.cardPos[pos];
@@ -67,6 +74,14 @@ public abstract class Card : MonoBehaviour, IPoolObject
             transform.SetParent(target);
             transform.localPosition = Vector3.zero;
         });
+    }
+
+    public abstract void Damaged(int _amount);
+
+    public void SetTurnCard()
+    {
+        spawnManager.turnCardList.Add(this);
+        isTurn = true;
     }
 
     // UI

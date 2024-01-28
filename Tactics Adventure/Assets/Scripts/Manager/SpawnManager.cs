@@ -9,6 +9,7 @@ public class SpawnManager : Singleton<SpawnManager>
     public Transform[] cardPos;
     public List<Card> cardList;
     [HideInInspector] public Card_Player playerCard;
+    [HideInInspector] public List<Card> turnCardList; // 매턴 작동하는 카드 리스트
 
     private void Start()
     {
@@ -66,6 +67,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
         // 카드 리스트에 추가
         cardList.Add(card);
+
         return card;
     }
 
@@ -80,6 +82,11 @@ public class SpawnManager : Singleton<SpawnManager>
         card.transform.SetParent(null);
 
         cardList.Remove(card);
+        if (card.isTurn)
+        {
+            turnCardList.Remove(card);
+            card.isTurn = false;
+        }
     }
 
     public Card FindCard(Vector3 pos)
@@ -105,6 +112,12 @@ public class SpawnManager : Singleton<SpawnManager>
             }
         }
         return cards.ToArray();
+    }
+
+    public void DoTurnCards()
+    {
+        foreach (Card card in turnCardList)
+            card.DoTurnCard();
     }
 
     public Player SpawnPlayer(PlayerType type, Transform parent)
@@ -222,8 +235,7 @@ public class SpawnManager : Singleton<SpawnManager>
         trap.transform.localPosition = Vector3.zero;
 
         // 변수 설정
-        if (trap.data.isWait)
-            trap.RanWait();
+        trap.SetTrap();
 
         return trap;
     }

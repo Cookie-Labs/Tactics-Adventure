@@ -39,5 +39,25 @@ public class Card_Monster : Card
 
     public override void DoCard()
     {
+        spawnManager.playerCard.Atk(this);
+    }
+
+    public override void Damaged(int _amount)
+    {
+        hp -= _amount;
+
+        if (hp <= 0)
+            Die();
+
+        SetUI($"<sprite=1>{hp}");
+    }
+
+    private void Die()
+    {
+        // 변수 설정
+        hp = 0;
+
+        spawnManager.playerCard.Move(pos); // 플레이어 이동
+        spawnManager.DeSpawnCard(this); // 카드 삭제
     }
 }

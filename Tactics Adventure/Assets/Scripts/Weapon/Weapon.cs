@@ -7,7 +7,6 @@ public class Weapon : MonoBehaviour, IPoolObject
 {
     // 변수
     public WeaponData data;
-    public int dmg;
 
     // 내부 컴포넌트
     private SpriteRenderer spriteRenderer;

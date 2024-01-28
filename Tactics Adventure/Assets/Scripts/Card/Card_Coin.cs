@@ -44,4 +44,17 @@ public class Card_Coin : Card
         spawnManager.playerCard.Move(pos); // 플레이어 카드 이동
         spawnManager.DeSpawnCard(this); // 카드 삭제
     }
+
+    public override void Damaged(int _amount)
+    {
+        amount -= _amount;
+
+        if (amount <= 0)
+        {
+            amount = 0;
+            spawnManager.DeSpawnCard(this);
+        }
+
+        SetUI($"<sprite=3>{amount}");
+    }
 }

@@ -25,18 +25,17 @@ public class Coin : MonoBehaviour, IPoolObject
 
     public void UpdateAnim(int money)
     {
-        int typeID = (int)type; // 돈 타입 int형으로 변환
+        int[] coinUnit = gameManager.coinUnit; // 돈 단위 받아오기
 
-        // 돈 단위를 넘어가는 경우
-        if(money > gameManager.coinUnit[typeID] && typeID > System.Enum.GetValues(typeof(CoinType)).Length)
+        for(int i = 0; i < coinUnit.Length; i++)
         {
-            type++; // 단위 증가
-            UpdateAnim(money); // 함수 재실행
-
-            return;
+            if (money > coinUnit[i])
+                type++;
+            else
+                break;
         }
 
-        anim.SetInteger("Change", typeID); // 해당 돈 애니메이션 실행
+        anim.SetInteger("Change", (int)type); // 해당 돈 애니메이션 실행
     }
 }
 

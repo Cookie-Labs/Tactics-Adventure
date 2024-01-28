@@ -36,4 +36,9 @@ public class Card_Chest : Card
         spawnManager.SpawnCard((CardType)System.Enum.Parse(typeof(CardType), chest.data.type.ToString()), pos);
         spawnManager.DeSpawnCard(this);
     }
+
+    public override void Damaged(int _amount)
+    {
+        return;
+    }
 }

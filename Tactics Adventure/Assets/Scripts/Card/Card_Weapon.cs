@@ -7,7 +7,7 @@ public class Card_Weapon : Card
     public int dmg;
 
     // 자식 컴포넌트
-    private Weapon weapon;
+    [HideInInspector] public Weapon weapon;
 
     public override void OnCreatedInPool()
     {
@@ -36,6 +36,15 @@ public class Card_Weapon : Card
 
     public override void DoCard()
     {
+        spawnManager.playerCard.EquipWeapon(this);
+
+        spawnManager.playerCard.Move(pos);
+        spawnManager.DeSpawnCard(this);
+    }
+
+    public override void Damaged(int _amount)
+    {
+        return;
     }
 
     private void SetDmg()

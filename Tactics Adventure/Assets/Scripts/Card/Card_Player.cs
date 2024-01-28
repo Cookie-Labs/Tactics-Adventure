@@ -8,6 +8,7 @@ public class Card_Player : Card
 {
     // 변수
     public int hp, mp, defend, dmg;
+    public Weapon weapon;
     public int poisonCount;
 
     // 자식 컴포넌트
@@ -36,7 +37,6 @@ public class Card_Player : Card
 
         // 카드 UI 설정
         SetCardName(player.data.name);
-        Damaged(5);
         SetUI($"<sprite=0>{dmg}  <sprite=1>{hp}");
     }
 
@@ -94,15 +94,50 @@ public class Card_Player : Card
         SetUI($"<sprite=0>{dmg}  <sprite=1>{hp}");
     }
 
-    public void Damaged(int amount)
+    public override void Damaged(int _amount)
     {
-        hp -= amount;
+        hp -= _amount;
         
         if(hp <= 0)
         {
             // Die
             hp = 0;
         }
+
+        SetUI($"<sprite=0>{dmg}  <sprite=1>{hp}");
+    }
+
+    public void Atk(Card_Monster monster)
+    {
+        int defaultDmg = 0;
+        // Dmg가 0이하라면 체력 공격
+        if (dmg <= 0)
+        {
+            defaultDmg = Mathf.Min(hp, monster.hp);
+
+            monster.Damaged(defaultDmg);
+            Damaged(defaultDmg);
+        }
+
+        // Dmg가 1이상이면 무기 공격
+        else
+        {
+            defaultDmg = Mathf.Min(dmg, monster.hp);
+
+            monster.Damaged(defaultDmg);
+            dmg -= defaultDmg;
+
+        }
+        SetUI($"<sprite=0>{dmg}  <sprite=1>{hp}");
+    }
+
+    public void EquipWeapon(Card_Weapon weaponCard)
+    {
+        // 무기 장착
+        weapon = weaponCard.weapon;
+
+        // 변수 설정
+        dmg = weaponCard.dmg;
 
         SetUI($"<sprite=0>{dmg}  <sprite=1>{hp}");
     }

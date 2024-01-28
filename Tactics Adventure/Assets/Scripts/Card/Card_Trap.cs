@@ -41,6 +41,25 @@ public class Card_Trap : Card
 
     public override void DoCard()
     {
+
+    }
+
+    public override void DoTurnCard()
+    {
+        trap.DORotate();
+    }
+
+    public override void Damaged(int _amount)
+    {
+        dmg -= _amount;
+
+        if(dmg <= 0)
+        {
+            dmg = 0;
+            spawnManager.DeSpawnCard(this);
+        }
+
+        SetUIText();
     }
 
     public string SetUIText()

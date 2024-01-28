@@ -63,6 +63,19 @@ public class Card_Consumable : Card
         spawnManager.DeSpawnCard(this); // 카드 삭제
     }
 
+    public override void Damaged(int _amount)
+    {
+        amount -= _amount;
+
+        if (amount <= 0)
+        {
+            amount = 0;
+            spawnManager.DeSpawnCard(this);
+        }
+
+        SetUIText();
+    }
+
     public string SetUIText()
     {
         string s = ""; // 빈 문자열 생성
