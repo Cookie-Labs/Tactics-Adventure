@@ -49,9 +49,10 @@ public class SpawnManager : Singleton<SpawnManager>
         }
 
         playerCard = cardList[0].GetComponent<Card_Player>(); // 플레이어 카드 대입
-        playerCard.SetTouch(); // 플레이어 카드의 주변 카드 터치 활성화
+        TouchManager.Instance.SetTouch(playerCard, cardList); // 플레이어 카드의 주변 카드 터치 활성화
     }
 
+    #region 카드
     public Card SpawnCard(CardType type, int pos)
     {
         Card card = PoolManager.Instance.GetFromPool<Card>("Card_" + type); // 카드 소환
@@ -93,7 +94,7 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         // 순차 검색
         foreach (Card card in cardList)
-            if (card.transform.position == pos)
+            if (card.transform.parent.position == pos)
                 return card;
         return null;
     }
@@ -102,15 +103,14 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         List<Card> cards = new List<Card>();
 
-        foreach (Card card in cardList)
+        foreach (Vector3 pos in poses)
         {
-            int length = poses.Length;
-            for(int i = 0; i < length; i++)
-            {
-                if (card.transform.position == poses[i])
-                    cards.Add(card);
-            }
+            Card card = FindCard(pos);
+
+            if (card != null)
+                cards.Add(FindCard(pos));
         }
+
         return cards.ToArray();
     }
 
@@ -119,6 +119,19 @@ public class SpawnManager : Singleton<SpawnManager>
         foreach (Card card in turnCardList)
             card.DoTurnCard();
     }
+
+    public void PlayerCardMove(Card targetCard)
+    {
+        playerCard.Move(targetCard.pos);
+        DeSpawnCard(targetCard);
+    }
+
+    public void ChangeCard(Card oriCard, CardType targetType)
+    {
+        SpawnCard(targetType, oriCard.pos);
+        DeSpawnCard(oriCard);
+    }
+    #endregion
 
     public Player SpawnPlayer(PlayerType type, Transform parent)
     {

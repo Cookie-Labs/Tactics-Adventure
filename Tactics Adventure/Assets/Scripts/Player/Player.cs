@@ -19,6 +19,11 @@ public abstract class Player : MonoBehaviour, IPoolObject
     public virtual void OnGettingFromPool()
     {
     }
+
+    public void SetAnim(int i)
+    {
+        anim.SetInteger("State", i);
+    }
 }
 
 public enum PlayerType { Knight, Archer, Ninja, Magician }

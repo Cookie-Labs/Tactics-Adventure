@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class Card_Trap : Card
 {
-    // 변수
+    [Title("자식 변수")]
     public int dmg;
     public int curWait; // isWait이라면 사용
+    public Direction[] targetDir;
 
     // 자식 컴포넌트
     private Trap trap;
@@ -27,6 +29,7 @@ public class Card_Trap : Card
 
         // 변수 설정 (후에 난이도 설정)
         dmg = Random.Range(1, 10); // 데미지
+        targetDir = trap.data.targetDir; // 타겟 방향
         if (trap.data.isWait) // 기다리는 타입 트랩 설정
             curWait = trap.data.wait;
 
@@ -41,12 +44,34 @@ public class Card_Trap : Card
 
     public override void DoCard()
     {
+        if (curWait == 0)
+            Atk();
 
+        spawnManager.PlayerCardMove(this);
+    }
+
+    public override void Anim(AnimID id)
+    {
     }
 
     public override void DoTurnCard()
     {
-        trap.DORotate();
+        trap.DORotate(); // 트랩 모양 돌리기
+
+        // 목표 타겟 바꾸기 (전 방향은 굳이 계산 x)
+        int length = targetDir.Length;
+        if (length < 4)
+        {
+            for(int i = 0; i < length; i++)
+            {
+                // 회전 진행
+                targetDir[i]++;
+
+                // 만약 R(enum 끝)이면 T(enum 첫)로 돌아오기
+                if (targetDir[i] > Direction.R)
+                    targetDir[i] = Direction.T;
+            }
+        }
     }
 
     public override void Damaged(int _amount)
@@ -60,6 +85,14 @@ public class Card_Trap : Card
         }
 
         SetUIText();
+    }
+
+    public void Atk()
+    {
+        Card[] neighborCard = FindNeighbors(targetDir);
+
+        foreach (Card card in neighborCard)
+            card.Damaged(dmg);
     }
 
     public string SetUIText()

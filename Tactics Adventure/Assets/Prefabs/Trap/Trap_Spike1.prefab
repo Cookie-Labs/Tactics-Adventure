@@ -121,3 +121,6 @@ MonoBehaviour:
   data:
     name: "\uAC00\uC2DC \uD568\uC815"
     type: 0
+    targetDir: 00000000
+    isWait: 0
+    wait: 0

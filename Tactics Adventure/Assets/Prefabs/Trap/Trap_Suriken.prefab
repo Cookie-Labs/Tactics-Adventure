@@ -121,5 +121,6 @@ MonoBehaviour:
   data:
     name: "\uC6D0\uD615 \uAC00\uC2DC\uD568\uC815"
     type: 5
+    targetDir: 00000000010000000200000003000000
     isWait: 1
     wait: 0

@@ -12,7 +12,6 @@ public class GameManager : Singleton<GameManager>
     [Title("변수 (저장X)")]
     public Stage stage;
     public Level level;
-    public bool isMoving; // true면 카드 클릭 불가
 
     [Title("수치 변수 (조정 가능)")]
     public int[] coinUnit;

@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class Card_Coin : Card
 {
-    // 변수
+    [Title("자식 변수")]
     public int amount;
 
     // 자식 컴포넌트
@@ -41,8 +42,7 @@ public class Card_Coin : Card
     {
         gameManager.EarnMoney(amount); // 돈 벌기
 
-        spawnManager.playerCard.Move(pos); // 플레이어 카드 이동
-        spawnManager.DeSpawnCard(this); // 카드 삭제
+        spawnManager.PlayerCardMove(this);
     }
 
     public override void Damaged(int _amount)
@@ -56,5 +56,9 @@ public class Card_Coin : Card
         }
 
         SetUI($"<sprite=3>{amount}");
+    }
+
+    public override void Anim(AnimID id)
+    {
     }
 }

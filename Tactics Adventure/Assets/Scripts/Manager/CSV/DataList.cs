@@ -41,6 +41,7 @@ public struct TrapData
 {
     public string name;
     public TrapType type;
+    public Direction[] targetDir;
     public bool isWait;
     public int wait;
 }

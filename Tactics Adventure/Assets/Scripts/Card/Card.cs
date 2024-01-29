@@ -46,15 +46,6 @@ public abstract class Card : MonoBehaviour, IPoolObject
         SetCard();
     }
 
-    protected void OnMouseUp()
-    {
-        if (!availableTouch || gameManager.isMoving)
-            return;
-        DoCard();
-        spawnManager.DoTurnCards();
-        spawnManager.playerCard.SetTouch();
-    }
-
     public abstract void SetCard();
 
     public abstract void DestroyCard();
@@ -69,12 +60,13 @@ public abstract class Card : MonoBehaviour, IPoolObject
     public virtual void Move(int pos)
     {
         Transform target = spawnManager.cardPos[pos];
+        transform.SetParent(target);
 
-        transform.DOMove(target.position, 0.5f).SetEase(Ease.OutBounce).OnComplete(() => {
-            transform.SetParent(target);
-            transform.localPosition = Vector3.zero;
-        });
+        transform.DOMove(target.position, 1f).SetEase(Ease.OutBounce).OnComplete(() =>
+            transform.localPosition = Vector3.zero);
     }
+
+    public abstract void Anim(AnimID id);
 
     public abstract void Damaged(int _amount);
 
@@ -96,9 +88,9 @@ public abstract class Card : MonoBehaviour, IPoolObject
     }
 
     // ÀÌ¿ô Ã£±â
-    protected Vector2 DirToPos(Direction dir)
+    public Vector2 DirToPos(Direction dir)
     {
-        Vector2 targetPos = transform.position;
+        Vector2 targetPos = transform.parent.position;
 
         switch (dir)
         {
@@ -119,12 +111,12 @@ public abstract class Card : MonoBehaviour, IPoolObject
         return targetPos;
     }
 
-    protected Card FindNeighbor(Direction dir)
+    public Card FindNeighbor(Direction dir)
     {
         return spawnManager.FindCard(DirToPos(dir));
     }
 
-    protected Card[] FindNeighbors(Direction[] dir)
+    public Card[] FindNeighbors(Direction[] dir)
     {
         int length = dir.Length;
         Vector3[] poses = new Vector3[length];
@@ -137,4 +129,5 @@ public abstract class Card : MonoBehaviour, IPoolObject
 }
 
 public enum CardType { Player, Chest, Coin, Consumable, Monster, Relics, Trap, Weapon }
-public enum Direction { T, B, L, R }
+public enum Direction { T, R, B, L }
+public enum AnimID { Idle = 0, Walk, Damaged }

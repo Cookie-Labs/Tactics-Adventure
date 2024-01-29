@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class Card_Weapon : Card
 {
+    [Title("자식 변수")]
     public int dmg;
 
     // 자식 컴포넌트
@@ -38,8 +40,11 @@ public class Card_Weapon : Card
     {
         spawnManager.playerCard.EquipWeapon(this);
 
-        spawnManager.playerCard.Move(pos);
-        spawnManager.DeSpawnCard(this);
+        spawnManager.PlayerCardMove(this);
+    }
+
+    public override void Anim(AnimID id)
+    {
     }
 
     public override void Damaged(int _amount)

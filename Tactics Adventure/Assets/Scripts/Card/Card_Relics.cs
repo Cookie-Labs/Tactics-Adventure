@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class Card_Relics : Card
 {
@@ -36,5 +37,9 @@ public class Card_Relics : Card
     public override void Damaged(int _amount)
     {
         return;
+    }
+
+    public override void Anim(AnimID id)
+    {
     }
 }

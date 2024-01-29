@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 
 public class Card_Player : Card
 {
-    // 변수
+    [Title("자식 변수")]
     public int hp, mp, defend, dmg;
     public Weapon weapon;
     public int poisonCount;
+    public bool isMoving;
 
     // 자식 컴포넌트
     private Player player;
@@ -48,13 +50,14 @@ public class Card_Player : Card
     public override void Move(int pos)
     {
         Transform target = spawnManager.cardPos[pos];
-        gameManager.isMoving = true;
+        transform.SetParent(target);
+        isMoving = true;
+        Anim(AnimID.Walk); // 애니메이션(걷기)
 
-        transform.DOMove(target.position, 0.5f).SetEase(Ease.OutBounce).OnComplete(() => {
-            transform.SetParent(target);
+        transform.DOMove(target.position, 1f).SetEase(Ease.OutBounce).OnComplete(() => {
             transform.localPosition = Vector3.zero;
-            SetTouch();
-            gameManager.isMoving = false;
+            isMoving = false;
+            Anim(AnimID.Idle);
         });
     }
 
@@ -62,20 +65,9 @@ public class Card_Player : Card
     {
     }
 
-    // 플레이어 위치에 따른 카드 설정
-    public void SetTouch()
+    public override void Anim(AnimID id)
     {
-        Card[] nearCard = FindNeighbors(new Direction[] { Direction.T, Direction.B, Direction.L, Direction.R });
-
-        // 모든 카드 터치 비활성화
-        foreach (Card card in spawnManager.cardList)
-            card.availableTouch = false;
-
-        // 인접한 카드 터치 활성화
-        foreach (Card near in nearCard)
-            near.availableTouch = true;
-
-        availableTouch = true; // 자신은 항상 터치 활성화
+        player.SetAnim((int)id);
     }
 
     public void HealHP(int amount)
@@ -109,7 +101,7 @@ public class Card_Player : Card
 
     public void Atk(Card_Monster monster)
     {
-        int defaultDmg = 0;
+        int defaultDmg;
         // Dmg가 0이하라면 체력 공격
         if (dmg <= 0)
         {

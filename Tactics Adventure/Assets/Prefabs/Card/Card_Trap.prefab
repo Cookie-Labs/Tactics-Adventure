@@ -455,6 +455,7 @@ MonoBehaviour:
   uiText: {fileID: 6453678274725741308}
   dmg: 0
   curWait: 0
+  targetDir: 
 --- !u!61 &-4047858077907333062
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -465,7 +466,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.02}

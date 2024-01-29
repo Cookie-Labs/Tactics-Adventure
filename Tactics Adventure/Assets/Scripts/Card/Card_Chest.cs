@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class Card_Chest : Card
 {
@@ -33,12 +34,15 @@ public class Card_Chest : Card
 
     public override void DoCard()
     {
-        spawnManager.SpawnCard((CardType)System.Enum.Parse(typeof(CardType), chest.data.type.ToString()), pos);
-        spawnManager.DeSpawnCard(this);
+        spawnManager.ChangeCard(this, (CardType)System.Enum.Parse(typeof(CardType), chest.data.type.ToString()));
     }
 
     public override void Damaged(int _amount)
     {
         return;
+    }
+
+    public override void Anim(AnimID id)
+    {
     }
 }

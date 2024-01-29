@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class Card_Monster : Card
 {
-    // 변수
+    [Title("자식 변수")]
     public int hp;
 
     // 자식 컴포넌트
@@ -52,12 +53,15 @@ public class Card_Monster : Card
         SetUI($"<sprite=1>{hp}");
     }
 
+    public override void Anim(AnimID id)
+    {
+    }
+
     private void Die()
     {
         // 변수 설정
         hp = 0;
 
-        spawnManager.playerCard.Move(pos); // 플레이어 이동
-        spawnManager.DeSpawnCard(this); // 카드 삭제
+        spawnManager.PlayerCardMove(this);
     }
 }
