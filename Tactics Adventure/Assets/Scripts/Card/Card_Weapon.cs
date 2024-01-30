@@ -40,7 +40,7 @@ public class Card_Weapon : Card
     {
         spawnManager.playerCard.EquipWeapon(this);
 
-        spawnManager.PlayerCardMove(this);
+        spawnManager.playerCard.Move(pos);
     }
 
     public override void Anim(AnimID id)

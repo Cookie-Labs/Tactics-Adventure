@@ -12,6 +12,7 @@ public class Card_Player : Card
     public Weapon weapon;
     public int poisonCount;
     public bool isMoving;
+    public Card[] neighborCards;
 
     // 자식 컴포넌트
     private Player player;
@@ -47,18 +48,36 @@ public class Card_Player : Card
         spawnManager.DeSpawnPlayer(player);
     }
 
-    public override void Move(int pos)
+    public override void Move(int _pos)
     {
-        Transform target = spawnManager.cardPos[pos];
-        transform.SetParent(target);
+        Transform targetTrans = spawnManager.cardPos[_pos]; // 타겟 위치 가져오기 (부모)
+        Card targetCard = spawnManager.FindCard(targetTrans.position); // 타겟 카드 가져오기
+
+        // 다른 카드 제거 & 이동 & 생성
+        // 뒷 카드 가져오기 (뒷 카드가 존재하지 않다면, 플레이어 이웃 카드 중 하나 가져오기 (타겟 카드 제외))
+        Card backCard = FindNeighbor(targetCard.PosToDir(pos)) ?? neighborCards.FirstOrDefault(card => card != targetCard);
+        backCard.Move(pos); // 뒷 카드 플레이어 위치로 이동시키기
+        spawnManager.DeSpawnCard(targetCard); // 타겟 카드 삭제
+
+        // 이동 시작
+        transform.SetParent(targetTrans); // 부모 설정
+        // 변수 설정
         isMoving = true;
+        pos = _pos;
         Anim(AnimID.Walk); // 애니메이션(걷기)
 
-        transform.DOMove(target.position, 1f).SetEase(Ease.OutBounce).OnComplete(() => {
+        // 이동 중
+        transform.DOMove(targetTrans.position, 1f).SetEase(Ease.OutBounce).OnComplete(() => {
+            // 이동 완료
             transform.localPosition = Vector3.zero;
             isMoving = false;
             Anim(AnimID.Idle);
         });
+    }
+
+    public void SetNeighbor()
+    {
+        neighborCards = FindNeighbors(new Direction[] { Direction.T, Direction.B, Direction.L, Direction.R });
     }
 
     public override void DoCard()

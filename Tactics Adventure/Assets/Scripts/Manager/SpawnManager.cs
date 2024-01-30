@@ -49,7 +49,7 @@ public class SpawnManager : Singleton<SpawnManager>
         }
 
         playerCard = cardList[0].GetComponent<Card_Player>(); // 플레이어 카드 대입
-        TouchManager.Instance.SetTouch(playerCard, cardList); // 플레이어 카드의 주변 카드 터치 활성화
+        playerCard.SetNeighbor(); // 플레이어 카드의 주변 카드 터치 활성화
     }
 
     #region 카드
@@ -118,12 +118,6 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         foreach (Card card in turnCardList)
             card.DoTurnCard();
-    }
-
-    public void PlayerCardMove(Card targetCard)
-    {
-        playerCard.Move(targetCard.pos);
-        DeSpawnCard(targetCard);
     }
 
     public void ChangeCard(Card oriCard, CardType targetType)

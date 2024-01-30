@@ -42,7 +42,7 @@ public class Card_Coin : Card
     {
         gameManager.EarnMoney(amount); // µ· ¹ú±â
 
-        spawnManager.PlayerCardMove(this);
+        spawnManager.playerCard.Move(pos);
     }
 
     public override void Damaged(int _amount)

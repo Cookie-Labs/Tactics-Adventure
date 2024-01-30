@@ -62,6 +62,6 @@ public class Card_Monster : Card
         // 변수 설정
         hp = 0;
 
-        spawnManager.PlayerCardMove(this);
+        spawnManager.playerCard.Move(pos);
     }
 }

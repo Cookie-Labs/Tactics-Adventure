@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -53,7 +54,8 @@ public class TouchManager : Singleton<TouchManager>
         SpawnManager spawnManager = SpawnManager.Instance;
         Card_Player playerCard = SpawnManager.Instance.playerCard;
 
-        if (!card.availableTouch || isTouching || playerCard.isMoving)
+        // 플레이어 이웃 카드 X || 터치 중 || 플레이어 카드 이동 중 -> 리턴
+        if (Array.IndexOf(playerCard.neighborCards, card) == -1 || isTouching || playerCard.isMoving)
             yield break;
 
         isTouching = true;
@@ -63,26 +65,8 @@ public class TouchManager : Singleton<TouchManager>
         spawnManager.DoTurnCards();
         yield return new WaitForSeconds(0.1f);
 
-        SetTouch(playerCard, spawnManager.cardList);
+        playerCard.SetNeighbor();
 
         isTouching = false;
-    }
-
-    // 플레이어 위치에 따른 카드 설정
-    public void SetTouch(Card_Player playerCard, List<Card> cardList)
-    {
-        Card[] nearCard = playerCard.FindNeighbors(new Direction[] { Direction.T, Direction.B, Direction.L, Direction.R });
-
-        // 모든 카드 터치 비활성화
-        foreach (Card card in cardList)
-            card.availableTouch = false;
-
-        // 인접한 카드 터치 활성화
-        foreach (Card near in nearCard)
-        {
-            near.availableTouch = true;
-        }
-
-        playerCard.availableTouch = true; // 자신은 항상 터치 활성화
     }
 }

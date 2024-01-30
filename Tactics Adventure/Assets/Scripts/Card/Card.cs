@@ -11,7 +11,6 @@ public abstract class Card : MonoBehaviour, IPoolObject
     [Title("변수")]
     public int pos;
     public CardType type;
-    public bool availableTouch;
     public bool isTurn; // 턴제 확인
 
     [Title("자식 컴포넌트")]
@@ -57,10 +56,11 @@ public abstract class Card : MonoBehaviour, IPoolObject
 
     }
 
-    public virtual void Move(int pos)
+    public virtual void Move(int _pos)
     {
-        Transform target = spawnManager.cardPos[pos];
+        Transform target = spawnManager.cardPos[_pos];
         transform.SetParent(target);
+        pos = _pos;
 
         transform.DOMove(target.position, 1f).SetEase(Ease.OutBounce).OnComplete(() =>
             transform.localPosition = Vector3.zero);
@@ -109,6 +109,31 @@ public abstract class Card : MonoBehaviour, IPoolObject
         }
 
         return targetPos;
+    }
+
+    public Direction PosToDir(int pos)
+    {
+        Vector2 curPos = transform.parent.position;
+        Vector2 tarPos = spawnManager.cardPos[pos].position;
+
+        if(curPos.x != tarPos.x)
+        {
+            if (curPos.x > tarPos.x)
+                return Direction.L;
+            else
+                return Direction.R;
+        }
+        else if(curPos.y != tarPos.y)
+        {
+            if (curPos.y > tarPos.y)
+                return Direction.B;
+            else
+                return Direction.T;
+        }
+
+        // 다 아니라면 (오류)
+        Debug.LogError("방향 찾기 오류");
+        return Direction.L;
     }
 
     public Card FindNeighbor(Direction dir)

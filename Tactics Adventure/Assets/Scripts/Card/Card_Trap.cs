@@ -47,7 +47,7 @@ public class Card_Trap : Card
         if (curWait == 0)
             Atk();
 
-        spawnManager.PlayerCardMove(this);
+        spawnManager.playerCard.Move(pos);
     }
 
     public override void Anim(AnimID id)

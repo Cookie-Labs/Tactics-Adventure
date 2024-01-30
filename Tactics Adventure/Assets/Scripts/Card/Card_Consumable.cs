@@ -60,7 +60,7 @@ public class Card_Consumable : Card
             }
         }
 
-        spawnManager.PlayerCardMove(this);
+        spawnManager.playerCard.Move(pos);
     }
 
     public override void Damaged(int _amount)

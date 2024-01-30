@@ -7,6 +7,7 @@ using DG.Tweening;
 public abstract class Trap : MonoBehaviour, IPoolObject
 {
     public TrapData data;
+    private int curZ;
 
     protected Animator anim;
 
@@ -19,6 +20,8 @@ public abstract class Trap : MonoBehaviour, IPoolObject
 
     public virtual void OnGettingFromPool()
     {
+        transform.rotation = Quaternion.Euler(Vector3.zero);
+        curZ = 0;
     }
 
     public void SetTrap()
@@ -36,8 +39,9 @@ public abstract class Trap : MonoBehaviour, IPoolObject
 
     public void DORotate()
     {
-        Vector3 target = transform.eulerAngles + new Vector3(0, 0, -90);
+        Vector3 target = new Vector3(0, 0, -(curZ + 90));
         transform.DOLocalRotate(target, 1f).SetEase(Ease.OutBack).OnComplete(() => transform.rotation = Quaternion.Euler(target));
+        curZ = (curZ + 90) % 360;
     }
 }
 
