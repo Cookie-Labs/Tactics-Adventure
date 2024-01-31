@@ -196,9 +196,10 @@ MonoBehaviour:
   money: 0
   stage: 0
   level: 0
-  isMoving: 0
   coinUnit: 0a0000001e000000
   weaponPerDmg: 2
+  maxPortion: 10
+  luck: 3c0000001e0000000700000003000000
 --- !u!4 &101397055
 Transform:
   m_ObjectHideFlags: 0
@@ -1005,6 +1006,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab2310d3661396d428785c0643a34360, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTouching: 0
 --- !u!1 &989069238
 GameObject:
   m_ObjectHideFlags: 0

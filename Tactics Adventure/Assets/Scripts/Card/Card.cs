@@ -20,7 +20,7 @@ public abstract class Card : MonoBehaviour, IPoolObject
     public TextMeshPro uiText;
 
     // 외부 컴포넌트
-    private SpriteData spriteData;
+    protected SpriteData spriteData;
 
     // 매니저
     protected GameManager gameManager;

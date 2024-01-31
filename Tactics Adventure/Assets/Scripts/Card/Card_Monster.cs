@@ -16,15 +16,10 @@ public class Card_Monster : Card
         base.OnCreatedInPool();
     }
 
-    public override void OnGettingFromPool()
-    {
-        base.OnGettingFromPool();
-    }
-
     public override void SetCard()
     {
         // 몬스터 소환
-        monster = spawnManager.SpawnRanMonster(objTrans);
+        monster = spawnManager.SpawnMonster_Ran(objTrans);
 
         // 변수 설정
         hp = monster.data.hp;
@@ -62,6 +57,6 @@ public class Card_Monster : Card
         // 변수 설정
         hp = 0;
 
-        spawnManager.playerCard.Move(pos);
+        spawnManager.ChangeCoinCard(this, monster.data.hp);
     }
 }

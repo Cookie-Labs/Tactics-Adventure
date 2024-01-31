@@ -11,20 +11,10 @@ public class Card_Consumable : Card
     // 자식 컴포넌트
     private Consumable consumable;
 
-    public override void OnCreatedInPool()
-    {
-        base.OnCreatedInPool();
-    }
-
-    public override void OnGettingFromPool()
-    {
-        base.OnGettingFromPool();
-    }
-
     public override void SetCard()
     {
-        amount = 7;
-        consumable = spawnManager.SpawnPortion(PortionType.HP, amount, objTrans); // 후에 설정
+        amount = Random.Range(1, gameManager.maxPortion);
+        consumable = spawnManager.SpawnPortion_Ran(amount, objTrans); // 현재는 포션만 존재
 
         // UI 설정
         SetCardName(consumable.consumableName); // 이름

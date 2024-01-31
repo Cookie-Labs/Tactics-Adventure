@@ -18,14 +18,9 @@ public class Card_Trap : Card
         base.OnCreatedInPool();
     }
 
-    public override void OnGettingFromPool()
-    {
-        base.OnGettingFromPool();
-    }
-
     public override void SetCard()
     {
-        trap = spawnManager.SpawnRanTrap(objTrans); // 트랩 소환
+        trap = spawnManager.SpawnTrap_Ran(objTrans); // 트랩 소환
 
         // 변수 설정 (후에 난이도 설정)
         dmg = Random.Range(1, 10); // 데미지
@@ -67,8 +62,8 @@ public class Card_Trap : Card
                 // 회전 진행
                 targetDir[i]++;
 
-                // 만약 R(enum 끝)이면 T(enum 첫)로 돌아오기
-                if (targetDir[i] > Direction.R)
+                // 만약 L(enum 끝)이면 T(enum 첫)로 돌아오기
+                if (targetDir[i] > Direction.L)
                     targetDir[i] = Direction.T;
             }
         }

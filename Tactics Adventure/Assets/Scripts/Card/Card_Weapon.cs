@@ -16,14 +16,9 @@ public class Card_Weapon : Card
         base.OnCreatedInPool();
     }
 
-    public override void OnGettingFromPool()
-    {
-        base.OnGettingFromPool();
-    }
-
     public override void SetCard()
     {
-        weapon = spawnManager.SpawnWeapon(WeaponType.LongSword, Tier.Common, objTrans); // 후에 생성 설정
+        weapon = spawnManager.SpawnWeapon_Ran(objTrans); // 무기 소환
 
         SetDmg(); // 변수 설정
 

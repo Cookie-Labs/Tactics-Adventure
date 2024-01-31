@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Redcode.Pools;
+using System.Linq;
+using Sirenix.OdinInspector;
 
 public class SpawnManager : Singleton<SpawnManager>
 {
+    [Title("변수", subtitle: "다른 스크립트 이용위해 저장")]
     public int[] maxCard;
     public Transform[] cardPos;
     public List<Card> cardList;
@@ -72,6 +75,30 @@ public class SpawnManager : Singleton<SpawnManager>
         return card;
     }
 
+    public Card SpawnRanCard()
+    {
+        List<int> typeIDList = new List<int>(); // 타입ID를 담을 리스트 (정수형)
+
+        // 랜덤 타입 정하기
+        // 확률 설정
+        for (int i = 0; i < maxCard.Length; i++)
+        {
+            typeIDList.AddRange(Enumerable.Repeat(i, maxCard[i])); // maxCard[i]만큼 i를 리스트에 추가한다
+        }
+
+        // 빈 pos 찾기
+        int pos = System.Array.FindIndex(cardPos, cp => cp.childCount == 0); // 자식의 수가 0인 pos
+
+        // 만약 빈 pos 가 없다면 (버그)
+        if (pos == -1)
+        {
+            Debug.LogError("빈 pos가 없어서 카드가 소환되지 않았습니다.");
+            return null;
+        }
+
+        return SpawnCard((CardType)typeIDList[Random.Range(0, typeIDList.Count)], pos); // 카드 소환!
+    }
+
     public void DeSpawnCard(Card card)
     {
         card.DestroyCard();
@@ -120,10 +147,18 @@ public class SpawnManager : Singleton<SpawnManager>
             card.DoTurnCard();
     }
 
-    public void ChangeCard(Card oriCard, CardType targetType)
+    public Card ChangeCard(Card oriCard, CardType type)
     {
-        SpawnCard(targetType, oriCard.pos);
+        Card newCard = SpawnCard(type, oriCard.pos);
         DeSpawnCard(oriCard);
+        return newCard;
+    }
+
+    public void ChangeCoinCard(Card oriCard, int amount)
+    {
+        Card_Coin coinCard = ChangeCard(oriCard, CardType.Coin).GetComponent<Card_Coin>();
+
+        coinCard.ChangeAmount(amount);
     }
     #endregion
 
@@ -157,13 +192,9 @@ public class SpawnManager : Singleton<SpawnManager>
     }
 
     // 후에 스테이지마다 나오는 몬스터 제한
-    public Monster SpawnRanMonster(Transform parent)
+    public Monster SpawnMonster_Ran(Transform parent)
     {
-        int ranMon = Random.Range(0, System.Enum.GetValues(typeof(MonsterType)).Length);
-
-        Monster monster = SpawnMonster((MonsterType)ranMon, parent);
-
-        return monster;
+        return SpawnMonster((MonsterType)RandomID(System.Enum.GetValues(typeof(MonsterType)).Length), parent);
     }
 
     public void DeSpawnMonster(Monster monster)
@@ -205,6 +236,11 @@ public class SpawnManager : Singleton<SpawnManager>
         return chest;
     }
 
+    public Chest SpawnChest_Ran(Transform parent)
+    {
+        return SpawnChest((ChestType)RandomID(System.Enum.GetValues(typeof(ChestType)).Length), parent);
+    }
+
     public void DeSpawnChest(Chest chest)
     {
         chest.transform.SetParent(null);
@@ -224,6 +260,13 @@ public class SpawnManager : Singleton<SpawnManager>
         portion.SetPortion(type, amount);
 
         return portion;
+    }
+
+    public Portion SpawnPortion_Ran(int amount, Transform parent)
+    {
+        int ranPortion = RandomID(System.Enum.GetValues(typeof(PortionType)).Length);
+
+        return SpawnPortion((PortionType)ranPortion, amount, parent);
     }
 
     public void DeSpawnConsumable(Consumable consumable)
@@ -247,11 +290,9 @@ public class SpawnManager : Singleton<SpawnManager>
         return trap;
     }
 
-    public Trap SpawnRanTrap(Transform parent)
+    public Trap SpawnTrap_Ran(Transform parent)
     {
-        int ranTrap = Random.Range(0, System.Enum.GetValues(typeof(TrapType)).Length);
-
-        return SpawnTrap((TrapType)ranTrap, parent);
+        return SpawnTrap((TrapType)RandomID(System.Enum.GetValues(typeof(TrapType)).Length), parent);
     }
 
     public void DeSpawnTrap(Trap trap)
@@ -275,6 +316,15 @@ public class SpawnManager : Singleton<SpawnManager>
         return weapon;
     }
 
+    public Weapon SpawnWeapon_Ran(Transform parent)
+    {
+        int ranType = RandomID(System.Enum.GetValues(typeof(WeaponType)).Length);
+
+        Tier ranTier = LuckToTier();
+
+        return SpawnWeapon((WeaponType)ranType, ranTier, parent);
+    }
+
     public void DeSpawnWeapon(Weapon weapon)
     {
         weapon.transform.SetParent(null);
@@ -296,10 +346,38 @@ public class SpawnManager : Singleton<SpawnManager>
         return relic;
     }
 
+    public Relic SpawnRelic_Ran(Transform parent)
+    {
+        int ranRelic = RandomID(CSVManager.Instance.csvList.weaponDatas.Length);
+
+        return SpawnRelic(ranRelic, parent);
+    }
+
     public void DeSpawnRelic(Relic relic)
     {
         relic.transform.SetParent(null);
 
         PoolManager.Instance.TakeToPool<Relic>("Relic", relic);
+    }
+
+    public Tier LuckToTier()
+    {
+        int[] luck = GameManager.Instance.luck;
+        int sum = luck.Sum();
+
+        int ranTier = Random.Range(0, sum);
+
+        for (int i = 0; i < luck.Length; i++)
+        {
+            if (ranTier < luck[i])
+                return (Tier)i;
+        }
+
+        return Tier.Common;
+    }
+
+    public int RandomID(int last)
+    {
+        return Random.Range(0, last);
     }
 }

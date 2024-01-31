@@ -7,19 +7,9 @@ public class Card_Chest : Card
 {
     private Chest chest;
 
-    public override void OnCreatedInPool()
-    {
-        base.OnCreatedInPool();
-    }
-
-    public override void OnGettingFromPool()
-    {
-        base.OnGettingFromPool();
-    }
-
     public override void SetCard()
     {
-        chest = spawnManager.SpawnChest(ChestType.Coin, objTrans); // 후에 지정 스폰
+        chest = spawnManager.SpawnChest_Ran(objTrans);
 
         // UI설정
         SetCardName(chest.data.name); // 이름

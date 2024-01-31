@@ -7,19 +7,9 @@ public class Card_Relics : Card
 {
     private Relic relic;
 
-    public override void OnCreatedInPool()
-    {
-        base.OnCreatedInPool();
-    }
-
-    public override void OnGettingFromPool()
-    {
-        base.OnGettingFromPool();
-    }
-
     public override void SetCard()
     {
-        relic = spawnManager.SpawnRelic(0, objTrans);
+        relic = spawnManager.SpawnRelic_Ran(objTrans); // 유물 소환
 
         SetCardName(relic.data.name);
         SetUI(relic.data.explanation);

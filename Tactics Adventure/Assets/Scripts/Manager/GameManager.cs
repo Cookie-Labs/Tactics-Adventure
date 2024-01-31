@@ -16,6 +16,8 @@ public class GameManager : Singleton<GameManager>
     [Title("수치 변수 (조정 가능)")]
     public int[] coinUnit;
     public int weaponPerDmg;
+    public int maxPortion;
+    public int[] luck;
 
     public void EarnMoney(int coin)
     {

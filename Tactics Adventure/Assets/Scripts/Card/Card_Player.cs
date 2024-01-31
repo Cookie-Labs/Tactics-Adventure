@@ -22,11 +22,6 @@ public class Card_Player : Card
         base.OnCreatedInPool();
     }
 
-    public override void OnGettingFromPool()
-    {
-        base.OnGettingFromPool();
-    }
-
     public override void SetCard()
     {
         // 플레이어 소환
@@ -53,7 +48,7 @@ public class Card_Player : Card
         Transform targetTrans = spawnManager.cardPos[_pos]; // 타겟 위치 가져오기 (부모)
         Card targetCard = spawnManager.FindCard(targetTrans.position); // 타겟 카드 가져오기
 
-        // 다른 카드 제거 & 이동 & 생성
+        // 다른 카드 제거 & 이동
         // 뒷 카드 가져오기 (뒷 카드가 존재하지 않다면, 플레이어 이웃 카드 중 하나 가져오기 (타겟 카드 제외))
         Card backCard = FindNeighbor(targetCard.PosToDir(pos)) ?? neighborCards.FirstOrDefault(card => card != targetCard);
         backCard.Move(pos); // 뒷 카드 플레이어 위치로 이동시키기
@@ -72,6 +67,8 @@ public class Card_Player : Card
             transform.localPosition = Vector3.zero;
             isMoving = false;
             Anim(AnimID.Idle);
+            // 비어있는 카드에 새 카드 생성
+            spawnManager.SpawnRanCard();
         });
     }
 
