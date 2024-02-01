@@ -13,8 +13,7 @@ public class Card_Chest : Card
 
         // UI설정
         SetCardName(chest.data.name); // 이름
-        string[] explains = csvManager.csvList.chestExpainTxt; // 상자 내용 텍스트 불러오기
-        SetUI(explains[Random.Range(0, explains.Length)]); // 내용
+        SetUI(csvManager.csvList.ExportExplain_Ran(type)); // 내용
     }
 
     public override void DestroyCard()

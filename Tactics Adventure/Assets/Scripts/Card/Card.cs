@@ -153,6 +153,6 @@ public abstract class Card : MonoBehaviour, IPoolObject
     }
 }
 
-public enum CardType { Player, Chest, Coin, Consumable, Monster, Relics, Trap, Weapon }
+public enum CardType { Player, Chest, Coin, Consumable, Monster, Relics, Trap, Weapon, Empty }
 public enum Direction { T, R, B, L }
 public enum AnimID { Idle = 0, Walk, Damaged }

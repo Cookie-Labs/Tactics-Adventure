@@ -21,9 +21,9 @@ public class SpawnManager : Singleton<SpawnManager>
 
     private void SpawnStage()
     {
-        // 종류별 소환될 카드 개수 (총 9개)
-        // Player, Chest, Coin, Consumable, Monster, Relics, Trap, Weapon
-        int[] spawnCount = { 1, 1, 1, 1, 3, 0, 1, 1 };
+        // 종류별 소환될 카드 개수 (총 10개)
+        // Player, Chest, Coin, Consumable, Monster, Relics, Trap, Weapon, Empty
+        int[] spawnCount = { 1, 1, 1, 1, 3, 0, 1, 1, 0 };
         int length = spawnCount.Length;
 
         List<int> drawnNumbers = new List<int> { 4 }; // 중복 방지용 리스트 (4는 플레이어 소환 위치)
@@ -191,10 +191,15 @@ public class SpawnManager : Singleton<SpawnManager>
         return monster;
     }
 
-    // 후에 스테이지마다 나오는 몬스터 제한
     public Monster SpawnMonster_Ran(Transform parent)
     {
-        return SpawnMonster((MonsterType)RandomID(System.Enum.GetValues(typeof(MonsterType)).Length), parent);
+        while(true)
+        {
+            MonsterType monsterType = (MonsterType)RandomID(System.Enum.GetValues(typeof(MonsterType)).Length);
+
+            if (CSVManager.Instance.availMonStage.Contains(monsterType)) // 알맞은 몬스터를 무작위로 뽑아낸 경우
+                return SpawnMonster(monsterType, parent);
+        }
     }
 
     public void DeSpawnMonster(Monster monster)

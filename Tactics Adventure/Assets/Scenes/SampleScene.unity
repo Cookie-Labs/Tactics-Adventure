@@ -807,6 +807,11 @@ MonoBehaviour:
     _count: 8
     _container: {fileID: 0}
     _nonLazy: 0
+  - _name: Card_Empty
+    _component: {fileID: 3742237065245979164, guid: 82eab7a827bce7d429a13629b25a81a2, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
   - _name: Player_Knight
     _component: {fileID: 6697540605415772358, guid: d8473e65f18bc7f488a8ee5aa4566144, type: 3}
     _count: 1
@@ -1087,7 +1092,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c41c1c7ccd9d9d24ca15f507eb817f85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxCard: 0100000006000000080000000500000007000000030000000600000005000000
+  maxCard: 010000000600000008000000050000000700000003000000060000000500000003000000
   cardPos:
   - {fileID: 816977067}
   - {fileID: 2059613365}
@@ -1133,18 +1138,39 @@ MonoBehaviour:
   textAssets:
   - {fileID: 4900000, guid: 133909a323918df408bfc5c6f6a49f41, type: 3}
   - {fileID: 4900000, guid: 470e990f6eed3d349823e46671551ca0, type: 3}
+  availMonStage: 
   csvList:
     relicDatas: []
     weaponDatas: []
-    chestExpainTxt:
-    - "\uB450\uADFC!\uB450\uADFC!"
-    - "\uC624\uB798\uB418\uC5B4 \uBCF4\uC778\uB2E4.."
-    - "\uC548 \uC7A0\uACA8\uC788\uB124?"
-    - "\uC548\uC774 \uBC18\uC9DD\uAC70\uB9B0\uB2E4!"
-    - '!!?'
-    - "(\uB300\uCDA9 \uC6C5\uC7A5\uD55C \uBE0C\uAE08)"
-    - "\uC4F0\uB808\uAE30"
-    - "\uB4E4\uC369!\uB4E4\uC369!"
+    stageMonsterDatas:
+    - stage: 0
+      type: 000000000100000002000000
+    - stage: 1
+      type: 030000000400000007000000
+    - stage: 2
+      type: 050000000600000008000000
+    availMonList: 
+    explainDatas:
+    - type: 1
+      explains:
+      - "\uB450\uADFC!\uB450\uADFC!"
+      - "\uC624\uB798\uB418\uC5B4 \uBCF4\uC778\uB2E4.."
+      - "\uC548 \uC7A0\uACA8\uC788\uB124?"
+      - "\uC548\uC774 \uBC18\uC9DD\uAC70\uB9B0\uB2E4!"
+      - '!!?'
+      - "(\uB300\uCDA9 \uC6C5\uC7A5\uD55C \uBE0C\uAE08)"
+      - "\uC4F0\uB808\uAE30"
+      - "\uB4E4\uC369!\uB4E4\uC369!"
+    - type: 8
+      explains:
+      - ...
+      - "\uD3C9\uBC94\uD558\uB2E4."
+      - "\uACE0\uC694\uD558\uB2E4."
+      - "\uC548\uC804\uD55C\uAC00?"
+      - "\uC794\uC794\uD55C \uBC14\uB78C\uB9CC \uB0A0\uB9B0\uB2E4."
+      - "\uC370\uB801~"
+      - "\uBB34\uC5B8\uAC00 \uC788\uC744\uC9C0\uB3C4...?"
+      - "\uC870\uC6A9\uD558\uB2E4."
 --- !u!4 &1199708848
 Transform:
   m_ObjectHideFlags: 0

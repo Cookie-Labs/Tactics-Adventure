@@ -56,11 +56,27 @@ public struct WeaponData
 }
 
 [Serializable]
+public struct StageMonsterData
+{
+    public Stage stage;
+    public MonsterType[] type;
+}
+
+[Serializable]
+public struct ExplainData
+{
+    public CardType type;
+    public string[] explains;
+}
+
+[Serializable]
 public class CSVList
 {
     public RelicData[] relicDatas;
     public WeaponData[] weaponDatas;
-    public string[] chestExpainTxt;
+    public StageMonsterData[] stageMonsterDatas;
+    public MonsterType[] availMonList;
+    public ExplainData[] explainDatas;
 
     #region Relic
     public RelicData FindRelic(int index)
@@ -92,6 +108,15 @@ public class CSVList
             Debug.LogError("무기 찾기 오류");
             return validWeapons[0];
         }
+    }
+    #endregion
+
+    #region Explain
+    public string ExportExplain_Ran(CardType type)
+    {
+        ExplainData explainData = Array.Find(explainDatas, data => data.type == type);
+
+        return explainData.explains[UnityEngine.Random.Range(0, explainData.explains.Length)];
     }
     #endregion
 }

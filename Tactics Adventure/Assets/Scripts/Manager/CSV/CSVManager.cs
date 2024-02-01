@@ -6,6 +6,7 @@ using UnityEngine;
 public class CSVManager : Singleton<CSVManager>
 {
     public TextAsset[] textAssets;
+    public MonsterType[] availMonStage; // 스테이지별 허용 몬스터
     public CSVList csvList = new CSVList();
 
     protected override void Awake()
@@ -14,6 +15,7 @@ public class CSVManager : Singleton<CSVManager>
 
         RelicCSVReading();
         WeaponCSVReading();
+        SetAvailMon();
     }
 
     public void RelicCSVReading()
@@ -54,5 +56,25 @@ public class CSVManager : Singleton<CSVManager>
                 index = i
             };
         }
+    }
+
+    public void SetAvailMon()
+    {
+        List<MonsterType> availMonList = new List<MonsterType>();
+        int curStage = (int)GameManager.Instance.stage;
+
+        if (curStage == Enum.GetValues(typeof(Stage)).Length - 1) // 마지막 스테이지라면
+            curStage--;
+
+        // 해당 스테이지 이하 몬스터 전부 해금
+        for (int i = 0; i <= curStage; i++)
+        {
+            foreach (MonsterType type in csvList.stageMonsterDatas[i].type)
+            {
+                availMonList.Add(type);
+            }
+        }
+
+        availMonStage = availMonList.ToArray();
     }
 }

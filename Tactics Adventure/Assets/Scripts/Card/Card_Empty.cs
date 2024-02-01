@@ -3,21 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-public class Card_Relics : Card
+public class Card_Empty : Card
 {
-    private Relic relic;
-
     public override void SetCard()
     {
-        relic = spawnManager.SpawnRelic_Ran(objTrans); // 유물 소환
-
-        SetCardName(relic.data.name);
-        SetUI(relic.data.explanation);
+        // UI설정
+        SetCardName("빈 카드");
+        SetUI(csvManager.csvList.ExportExplain_Ran(type));
     }
 
     public override void DestroyCard()
     {
-        spawnManager.DeSpawnRelic(relic);
+        return;
     }
 
     public override void DoCard()
@@ -32,5 +29,6 @@ public class Card_Relics : Card
 
     public override void Anim(AnimID id)
     {
+        return;
     }
 }
