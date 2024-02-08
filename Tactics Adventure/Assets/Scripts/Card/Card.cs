@@ -18,6 +18,7 @@ public abstract class Card : MonoBehaviour, IPoolObject
     public Transform objTrans;
     public TextMeshPro cardName;
     public TextMeshPro uiText;
+    protected SpriteRenderer spriteRenderer;
 
     // 외부 컴포넌트
     protected SpriteData spriteData;
@@ -31,6 +32,9 @@ public abstract class Card : MonoBehaviour, IPoolObject
     {
         name = name.Replace("(Clone)", "");
 
+        // 내부 컴포넌트 불러오기
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
         // 외부 컴포넌트 불러오기
         spriteData = SpriteData.Instance;
 
@@ -42,7 +46,10 @@ public abstract class Card : MonoBehaviour, IPoolObject
     public virtual void OnGettingFromPool()
     {
         backGround.sprite = spriteData.ExportRanStage();
+        spriteRenderer.color = Color.white;
         SetCard();
+
+        DOSpawn();
     }
 
     public abstract void SetCard();
@@ -62,11 +69,9 @@ public abstract class Card : MonoBehaviour, IPoolObject
         transform.SetParent(target);
         pos = _pos;
 
-        transform.DOMove(target.position, 1f).SetEase(Ease.OutBounce).OnComplete(() =>
+        transform.DOMove(target.position, 0.5f).SetEase(Ease.OutBounce).SetUpdate(true).OnComplete(() =>
             transform.localPosition = Vector3.zero);
     }
-
-    public abstract void Anim(AnimID id);
 
     public abstract void Damaged(int _amount);
 
@@ -76,7 +81,30 @@ public abstract class Card : MonoBehaviour, IPoolObject
         isTurn = true;
     }
 
-    // UI
+    #region 애니메이션
+    public void DOSpawn()
+    {
+        transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+        transform.DOScale(1f, 0.2f).SetEase(Ease.OutBounce).SetUpdate(true);
+    }
+
+    public void DODestroy()
+    {
+        transform.DOScale(0.05f, 0.2f).SetEase(Ease.InBounce).SetUpdate(true);
+    }
+
+    public void DODamaged()
+    {
+        spriteRenderer.color = Color.white;
+
+        Sequence seq = DOTween.Sequence();
+
+        seq.Append(spriteRenderer.DOColor(Color.red, 0.2f))
+            .Append(spriteRenderer.DOColor(Color.white, 0.1f)).SetUpdate(true);
+    }
+    #endregion
+
+    #region UI
     protected void SetCardName(string s)
     {
         cardName.text = s;
@@ -86,8 +114,9 @@ public abstract class Card : MonoBehaviour, IPoolObject
     {
         uiText.text = s;
     }
+    #endregion
 
-    // 이웃 찾기
+    #region 이웃찾기
     public Vector2 DirToPos(Direction dir)
     {
         Vector2 targetPos = transform.parent.position;
@@ -151,8 +180,8 @@ public abstract class Card : MonoBehaviour, IPoolObject
 
         return spawnManager.FindCards(poses);
     }
+    #endregion
 }
 
 public enum CardType { Player, Chest, Coin, Consumable, Monster, Relics, Trap, Weapon, Empty }
 public enum Direction { T, R, B, L }
-public enum AnimID { Idle = 0, Walk, Damaged }

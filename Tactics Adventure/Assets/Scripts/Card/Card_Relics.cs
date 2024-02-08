@@ -18,6 +18,7 @@ public class Card_Relics : Card
     public override void DestroyCard()
     {
         spawnManager.DeSpawnRelic(relic);
+        DODestroy();
     }
 
     public override void DoCard()
@@ -28,9 +29,5 @@ public class Card_Relics : Card
     public override void Damaged(int _amount)
     {
         return;
-    }
-
-    public override void Anim(AnimID id)
-    {
     }
 }

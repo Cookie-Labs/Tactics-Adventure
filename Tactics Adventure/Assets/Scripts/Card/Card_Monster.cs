@@ -11,11 +11,6 @@ public class Card_Monster : Card
     // 자식 컴포넌트
     private Monster monster;
 
-    public override void OnCreatedInPool()
-    {
-        base.OnCreatedInPool();
-    }
-
     public override void SetCard()
     {
         // 몬스터 소환
@@ -31,6 +26,7 @@ public class Card_Monster : Card
     public override void DestroyCard()
     {
         spawnManager.DeSpawnMonster(monster);
+        DODestroy();
     }
 
     public override void DoCard()
@@ -45,11 +41,8 @@ public class Card_Monster : Card
         if (hp <= 0)
             Die();
 
+        DODamaged();
         SetUI($"<sprite=1>{hp}");
-    }
-
-    public override void Anim(AnimID id)
-    {
     }
 
     private void Die()

@@ -14,7 +14,7 @@ public class Card_Empty : Card
 
     public override void DestroyCard()
     {
-        return;
+        DODestroy();
     }
 
     public override void DoCard()
@@ -23,11 +23,6 @@ public class Card_Empty : Card
     }
 
     public override void Damaged(int _amount)
-    {
-        return;
-    }
-
-    public override void Anim(AnimID id)
     {
         return;
     }

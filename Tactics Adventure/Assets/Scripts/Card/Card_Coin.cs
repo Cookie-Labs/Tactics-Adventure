@@ -25,6 +25,7 @@ public class Card_Coin : Card
     public override void DestroyCard()
     {
         spawnManager.DeSpawnCoin(coin);
+        DODestroy();
     }
 
     public override void DoCard()
@@ -39,14 +40,9 @@ public class Card_Coin : Card
         ChangeAmount(amount - _amount);
 
         if (amount <= 0)
-        {
-            amount = 0;
-            spawnManager.DeSpawnCard(this);
-        }
-    }
+            Die();
 
-    public override void Anim(AnimID id)
-    {
+        DODamaged();
     }
 
     public void ChangeAmount(int _amount)
@@ -56,5 +52,11 @@ public class Card_Coin : Card
         coin.UpdateAnim(amount);
 
         SetUI($"<sprite=3>{amount}");
+    }
+
+    public void Die()
+    {
+        amount = 0;
+        spawnManager.ChangeCard(this, CardType.Empty);
     }
 }

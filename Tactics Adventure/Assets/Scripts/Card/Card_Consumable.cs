@@ -24,6 +24,7 @@ public class Card_Consumable : Card
     public override void DestroyCard()
     {
         spawnManager.DeSpawnConsumable(consumable);
+        DODestroy();
     }
 
     public override void DoCard()
@@ -58,16 +59,22 @@ public class Card_Consumable : Card
         amount -= _amount;
 
         if (amount <= 0)
-        {
-            amount = 0;
-            spawnManager.DeSpawnCard(this);
-        }
+            Die();
+
+        DODamaged();
+    }
+
+    public void ChangeAmount(int _amount)
+    {
+        amount = _amount;
 
         SetUIText();
     }
 
-    public override void Anim(AnimID id)
+    public void Die()
     {
+        amount = 0;
+        spawnManager.ChangeCard(this, CardType.Empty);
     }
 
     public string SetUIText()

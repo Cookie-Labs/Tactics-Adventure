@@ -11,11 +11,6 @@ public class Card_Weapon : Card
     // 자식 컴포넌트
     [HideInInspector] public Weapon weapon;
 
-    public override void OnCreatedInPool()
-    {
-        base.OnCreatedInPool();
-    }
-
     public override void SetCard()
     {
         weapon = spawnManager.SpawnWeapon_Ran(objTrans); // 무기 소환
@@ -29,6 +24,7 @@ public class Card_Weapon : Card
     public override void DestroyCard()
     {
         spawnManager.DeSpawnWeapon(weapon);
+        DODestroy();
     }
 
     public override void DoCard()
@@ -36,10 +32,6 @@ public class Card_Weapon : Card
         spawnManager.playerCard.EquipWeapon(this);
 
         spawnManager.playerCard.Move(pos);
-    }
-
-    public override void Anim(AnimID id)
-    {
     }
 
     public override void Damaged(int _amount)
@@ -52,7 +44,7 @@ public class Card_Weapon : Card
         int dmgPer = gameManager.weaponPerDmg;
         int tierID = (int)weapon.data.tier;
 
-        dmg = Random.Range(dmgPer * tierID, dmgPer * (tierID + 1) + 1); // 티어에 따라 무작위 공격력 설정
+        dmg = Random.Range(dmgPer * tierID, dmgPer * (tierID + 1)); // 티어에 따라 무작위 공격력 설정
         dmg = Mathf.Max(1, dmg); // 무기 데미지 0 방지
     }
 }

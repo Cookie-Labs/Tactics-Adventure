@@ -13,11 +13,6 @@ public class Card_Trap : Card
     // ÀÚ½Ä ÄÄÆ÷³ÍÆ®
     private Trap trap;
 
-    public override void OnCreatedInPool()
-    {
-        base.OnCreatedInPool();
-    }
-
     public override void SetCard()
     {
         trap = spawnManager.SpawnTrap_Ran(objTrans); // Æ®·¦ ¼ÒÈ¯
@@ -35,6 +30,7 @@ public class Card_Trap : Card
     public override void DestroyCard()
     {
         spawnManager.DeSpawnTrap(trap);
+        DODestroy();
     }
 
     public override void DoCard()
@@ -43,10 +39,6 @@ public class Card_Trap : Card
             Atk();
 
         spawnManager.playerCard.Move(pos);
-    }
-
-    public override void Anim(AnimID id)
-    {
     }
 
     public override void DoTurnCard()
@@ -71,13 +63,17 @@ public class Card_Trap : Card
 
     public override void Damaged(int _amount)
     {
-        dmg -= _amount;
+        ChangeDmg(dmg - _amount);
 
-        if(dmg <= 0)
-        {
-            dmg = 0;
-            spawnManager.DeSpawnCard(this);
-        }
+        if (dmg <= 0)
+            Die();
+
+        DODamaged();
+    }
+
+    public void ChangeDmg(int _amount)
+    {
+        dmg = _amount;
 
         SetUIText();
     }
@@ -88,6 +84,12 @@ public class Card_Trap : Card
 
         foreach (Card card in neighborCard)
             card.Damaged(dmg);
+    }
+
+    public void Die()
+    {
+        dmg = 0;
+        spawnManager.ChangeCard(this, CardType.Empty);
     }
 
     public string SetUIText()

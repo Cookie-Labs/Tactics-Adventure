@@ -169,6 +169,7 @@ public class SpawnManager : Singleton<SpawnManager>
         // 위치 설정
         player.transform.SetParent(parent);
         player.transform.localPosition = Vector3.zero;
+        player.transform.localScale = Vector3.one;
 
         return player;
     }
@@ -187,6 +188,7 @@ public class SpawnManager : Singleton<SpawnManager>
         // 위치 설정
         monster.transform.SetParent(parent);
         monster.transform.localPosition = Vector3.zero;
+        monster.transform.localScale = Vector3.one;
 
         return monster;
     }
@@ -216,6 +218,7 @@ public class SpawnManager : Singleton<SpawnManager>
         // 위치 설정
         coin.transform.SetParent(parent);
         coin.transform.localPosition = Vector3.zero;
+        coin.transform.localScale = Vector3.one;
 
         // 애니메이션 설정
         coin.UpdateAnim(a);
@@ -237,6 +240,7 @@ public class SpawnManager : Singleton<SpawnManager>
         // 위치 설정
         chest.transform.SetParent(parent);
         chest.transform.localPosition = Vector3.zero;
+        chest.transform.localScale = Vector3.one;
 
         return chest;
     }
@@ -260,6 +264,7 @@ public class SpawnManager : Singleton<SpawnManager>
         // 위치 설정
         portion.transform.SetParent(parent);
         portion.transform.localPosition = Vector3.zero;
+        portion.transform.localScale = Vector3.one;
 
         // 포션 설정
         portion.SetPortion(type, amount);
@@ -288,6 +293,7 @@ public class SpawnManager : Singleton<SpawnManager>
         // 위치 설정
         trap.transform.SetParent(parent);
         trap.transform.localPosition = Vector3.zero;
+        trap.transform.localScale = Vector3.one;
 
         // 변수 설정
         trap.SetTrap();
@@ -314,6 +320,7 @@ public class SpawnManager : Singleton<SpawnManager>
         // 위치 설정
         weapon.transform.SetParent(parent);
         weapon.transform.localPosition = Vector3.zero;
+        weapon.transform.localScale = Vector3.one;
 
         // 변수 설정
         weapon.SetWeapon(CSVManager.Instance.csvList.FindWeapon(type, tier));
@@ -344,6 +351,7 @@ public class SpawnManager : Singleton<SpawnManager>
         // 위치 설정
         relic.transform.SetParent(parent);
         relic.transform.localPosition = Vector3.zero;
+        relic.transform.localScale = Vector3.one;
 
         // 변수 설정
         relic.SetRelic(index);

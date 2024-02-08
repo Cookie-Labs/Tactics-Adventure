@@ -19,6 +19,7 @@ public class Card_Chest : Card
     public override void DestroyCard()
     {
         spawnManager.DeSpawnChest(chest);
+        DODestroy();
     }
 
     public override void DoCard()
@@ -29,9 +30,5 @@ public class Card_Chest : Card
     public override void Damaged(int _amount)
     {
         return;
-    }
-
-    public override void Anim(AnimID id)
-    {
     }
 }

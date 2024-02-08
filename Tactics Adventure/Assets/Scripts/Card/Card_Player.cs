@@ -17,11 +17,6 @@ public class Card_Player : Card
     // 자식 컴포넌트
     private Player player;
 
-    public override void OnCreatedInPool()
-    {
-        base.OnCreatedInPool();
-    }
-
     public override void SetCard()
     {
         // 플레이어 소환
@@ -41,6 +36,7 @@ public class Card_Player : Card
     public override void DestroyCard()
     {
         spawnManager.DeSpawnPlayer(player);
+        DODestroy();
     }
 
     public override void Move(int _pos)
@@ -59,14 +55,12 @@ public class Card_Player : Card
         // 변수 설정
         isMoving = true;
         pos = _pos;
-        Anim(AnimID.Walk); // 애니메이션(걷기)
 
         // 이동 중
-        transform.DOMove(targetTrans.position, 1f).SetEase(Ease.OutBounce).OnComplete(() => {
+        transform.DOMove(targetTrans.position, 0.5f).SetEase(Ease.OutBounce).SetUpdate(true).OnComplete(() => {
             // 이동 완료
             transform.localPosition = Vector3.zero;
             isMoving = false;
-            Anim(AnimID.Idle);
             // 비어있는 카드에 새 카드 생성
             spawnManager.SpawnRanCard();
         });
@@ -79,11 +73,6 @@ public class Card_Player : Card
 
     public override void DoCard()
     {
-    }
-
-    public override void Anim(AnimID id)
-    {
-        player.SetAnim((int)id);
     }
 
     public void HealHP(int amount)
@@ -105,13 +94,14 @@ public class Card_Player : Card
     public override void Damaged(int _amount)
     {
         hp -= _amount;
-        
-        if(hp <= 0)
+
+        if (hp <= 0)
         {
             // Die
             hp = 0;
         }
 
+        DODamaged();
         SetUI($"<sprite=0>{dmg}  <sprite=1>{hp}");
     }
 

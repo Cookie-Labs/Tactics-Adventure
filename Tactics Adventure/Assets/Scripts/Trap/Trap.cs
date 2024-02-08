@@ -40,7 +40,7 @@ public abstract class Trap : MonoBehaviour, IPoolObject
     public void DORotate()
     {
         Vector3 target = new Vector3(0, 0, -(curZ + 90));
-        transform.DOLocalRotate(target, 1f).SetEase(Ease.OutBack).OnComplete(() => transform.rotation = Quaternion.Euler(target));
+        transform.DOLocalRotate(target, 0.5f).SetEase(Ease.OutBack).OnComplete(() => transform.rotation = Quaternion.Euler(target));
         curZ = (curZ + 90) % 360;
     }
 }
