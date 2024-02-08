@@ -15,6 +15,5 @@ Swarm -> Fire Soul, Ice Soul, Monkey
 - 스킬 버튼 추가<br/>
 - 스킬 아이콘 스프라이트 Import<br/>
 - Canvas 추가<br/>
-<br/>
 - 무기 데미지 산정 공식 재정의<br/>
 - 카드 애니메이션(닷트윈) 추가 (스폰, 삭제, 데미지)<br/>
