@@ -26,8 +26,6 @@ public abstract class Trap : MonoBehaviour, IPoolObject
 
     public void SetTrap()
     {
-        transform.parent.parent.GetComponent<Card>().SetTurnCard(); // 모든 트랩 턴제 카드 설정
-
         if (data.isWait)
             RanWait();
     }

@@ -53,6 +53,8 @@ public class SpawnManager : Singleton<SpawnManager>
 
         playerCard = cardList[0].GetComponent<Card_Player>(); // 플레이어 카드 대입
         playerCard.SetNeighbor(); // 플레이어 카드의 주변 카드 터치 활성화
+
+        UIManager.Instance.CheckSkillUI();
     }
 
     #region 카드
@@ -71,6 +73,8 @@ public class SpawnManager : Singleton<SpawnManager>
 
         // 카드 리스트에 추가
         cardList.Add(card);
+        if (card.isTurn)
+            turnCardList.Add(card);
 
         return card;
     }
@@ -113,7 +117,6 @@ public class SpawnManager : Singleton<SpawnManager>
         if (card.isTurn)
         {
             turnCardList.Remove(card);
-            card.isTurn = false;
         }
     }
 

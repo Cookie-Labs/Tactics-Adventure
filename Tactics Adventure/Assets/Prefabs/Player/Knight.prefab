@@ -124,3 +124,5 @@ MonoBehaviour:
     hp: 10
     mp: 10
     defend: 1
+    skillMP: 3
+    passiveCount: 3

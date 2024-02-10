@@ -4,18 +4,34 @@ using System.Linq;
 using UnityEngine;
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using TMPro;
 
 public class Card_Player : Card
 {
-    [Title("자식 변수")]
-    public int hp, mp, defend, dmg;
-    public Weapon weapon;
+    [Title("플레이어 변수")]
+    public int hp;
+    public int mp;
+    public int defend;
+    public int dmg;
+    public WeaponData weaponData;
     public int poisonCount;
     public bool isMoving;
     public Card[] neighborCards;
+    public int activeMP;
+    public int passiveCount;
 
     // 자식 컴포넌트
-    private Player player;
+    [Title("플레이어 컴포넌트")]
+    public TextMeshPro iconTxt;
+    [HideInInspector] public Player player;
+
+    private UIManager uiManager;
+
+    public override void OnCreatedInPool()
+    {
+        base.OnCreatedInPool();
+        uiManager = UIManager.Instance;
+    }
 
     public override void SetCard()
     {
@@ -27,10 +43,12 @@ public class Card_Player : Card
         mp = player.data.mp;
         defend = player.data.defend;
         dmg = 0;
+        activeMP = player.data.skillMP;
+        passiveCount = player.data.passiveCount;
 
         // 카드 UI 설정
         SetCardName(player.data.name);
-        SetUI($"<sprite=0>{dmg}  <sprite=1>{hp}");
+        SetIconTxt();
     }
 
     public override void DestroyCard()
@@ -66,6 +84,28 @@ public class Card_Player : Card
         });
     }
 
+    public void Active()
+    {
+        if (mp < activeMP)
+            return;
+
+        mp -= activeMP;
+        player.ActiveSkill();
+
+        SetIconTxt();
+    }
+
+    public void Passive()
+    {
+        passiveCount--;
+
+        if(passiveCount <= 0)
+        {
+            player.PassiveSkill();
+            passiveCount = player.data.passiveCount;
+        }
+    }
+
     public void SetNeighbor()
     {
         neighborCards = FindNeighbors(new Direction[] { Direction.T, Direction.B, Direction.L, Direction.R });
@@ -75,41 +115,51 @@ public class Card_Player : Card
     {
     }
 
+    public override void DoTurnCard()
+    {
+        Passive();
+
+        uiManager.CheckSkillUI();
+        SetIconTxt();
+    }
+
     public void HealHP(int amount)
     {
         hp += amount; // 체력회복
         hp = Mathf.Min(hp, player.data.hp); // 최대체력 확인
-
-        SetUI($"<sprite=0>{dmg}  <sprite=1>{hp}");
     }
 
     public void HealMP(int amount)
     {
         mp += amount; // 체력회복
-        mp = Mathf.Min(hp, player.data.mp); // 최대체력 확인
-
-        SetUI($"<sprite=0>{dmg}  <sprite=1>{hp}");
+        mp = Mathf.Min(mp, player.data.mp); // 최대체력 확인
     }
 
     public override void Damaged(int _amount)
     {
-        hp -= _amount;
+        // 방어 계산
+        if (defend > 0)
+        {
+            defend -= _amount;
+            _amount = Mathf.Max(0, -defend);
+            defend = Mathf.Max(0, defend);
+        }
+
+        hp = Mathf.Max(0, hp - _amount);
 
         if (hp <= 0)
         {
             // Die
-            hp = 0;
         }
 
         DODamaged();
-        SetUI($"<sprite=0>{dmg}  <sprite=1>{hp}");
     }
 
     public void Atk(Card_Monster monster)
     {
         int defaultDmg;
-        // Dmg가 0이하라면 체력 공격
-        if (dmg <= 0)
+        // 무기가 없다면
+        if (string.IsNullOrEmpty(weaponData.name))
         {
             defaultDmg = Mathf.Min(hp, monster.hp);
 
@@ -117,7 +167,7 @@ public class Card_Player : Card
             Damaged(defaultDmg);
         }
 
-        // Dmg가 1이상이면 무기 공격
+        // 무기가 있다면
         else
         {
             defaultDmg = Mathf.Min(dmg, monster.hp);
@@ -125,19 +175,24 @@ public class Card_Player : Card
             monster.Damaged(defaultDmg);
             dmg -= defaultDmg;
 
+            if (dmg <= 0)
+                weaponData = new WeaponData();
         }
-        SetUI($"<sprite=0>{dmg}  <sprite=1>{hp}");
     }
 
     public void EquipWeapon(Card_Weapon weaponCard)
     {
-        // 무기 장착
-        weapon = weaponCard.weapon;
-
-        // 변수 설정
         dmg = weaponCard.dmg;
 
-        SetUI($"<sprite=0>{dmg}  <sprite=1>{hp}");
+        // 무기 장착
+        weaponData = weaponCard.weapon.data;
+    }
+
+    public void EquipWeapon(int ID, int _dmg)
+    {
+        dmg = _dmg;
+
+        weaponData = csvManager.csvList.FindWeapon(ID);
     }
 
     public void Poisoned()
@@ -147,7 +202,11 @@ public class Card_Player : Card
 
         Damaged(1);
         poisonCount--;
+    }
 
-        SetUI($"<sprite=0>{dmg}  <sprite=1>{hp}");
+    private void SetIconTxt()
+    {
+        uiText.text = $"<sprite=0>{dmg}  <sprite=1>{hp}";
+        iconTxt.text = $"<sprite=2>{defend}  <sprite=3>{mp}";
     }
 }

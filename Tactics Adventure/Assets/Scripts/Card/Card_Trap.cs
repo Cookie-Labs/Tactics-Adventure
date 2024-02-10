@@ -63,7 +63,7 @@ public class Card_Trap : Card
 
     public override void Damaged(int _amount)
     {
-        ChangeDmg(dmg - _amount);
+        ChangeDmg(Mathf.Max(0, dmg - _amount));
 
         if (dmg <= 0)
             Die();
@@ -75,7 +75,7 @@ public class Card_Trap : Card
     {
         dmg = _amount;
 
-        SetUIText();
+        SetUI(SetUIText());
     }
 
     public void Atk()
@@ -100,9 +100,9 @@ public class Card_Trap : Card
         if (trap.data.isWait)
         {
             for (int i = 0; i < curWait; i++)
-                s += "<sprite=4> ";
-            for (int i = 0; i < trap.data.wait - curWait; i++)
                 s += "<sprite=5> ";
+            for (int i = 0; i < trap.data.wait - curWait; i++)
+                s += "<sprite=6> ";
             s = s.TrimEnd();
         }
         else // 트랩이 회전 형이라면

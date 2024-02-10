@@ -56,7 +56,7 @@ public class Card_Consumable : Card
 
     public override void Damaged(int _amount)
     {
-        amount -= _amount;
+        ChangeAmount(Mathf.Max(0, amount - _amount));
 
         if (amount <= 0)
             Die();
@@ -68,7 +68,7 @@ public class Card_Consumable : Card
     {
         amount = _amount;
 
-        SetUIText();
+        SetUI(SetUIText());
     }
 
     public void Die()
@@ -97,7 +97,7 @@ public class Card_Consumable : Card
                         break;
                     // ¸¶³ª
                     case PortionType.MP:
-                        s = $"<sprite=2>{amount}";
+                        s = $"<sprite=3>{amount}";
                         break;
                     // µ¶
                     case PortionType.Poison:

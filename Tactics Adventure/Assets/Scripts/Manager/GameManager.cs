@@ -22,6 +22,8 @@ public class GameManager : Singleton<GameManager>
     public void EarnMoney(int coin)
     {
         money += coin;
+
+        UIManager.Instance.MoneyTxt(money);
     }
 }
 

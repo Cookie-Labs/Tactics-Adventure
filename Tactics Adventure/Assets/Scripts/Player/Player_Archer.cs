@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Player_Archer : Player
 {
-    public override void OnCreatedInPool()
+    public override void ActiveSkill()
     {
-        base.OnCreatedInPool();
+
     }
 
-    public override void OnGettingFromPool()
+    public override void PassiveSkill()
     {
-        base.OnGettingFromPool();
+
     }
 }

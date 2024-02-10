@@ -10,6 +10,7 @@ public struct PlayerData
     public string name;
     public PlayerType type;
     public int hp, mp, defend;
+    public int skillMP, passiveCount;
 }
 
 [Serializable]
@@ -108,6 +109,11 @@ public class CSVList
             Debug.LogError("무기 찾기 오류");
             return validWeapons[0];
         }
+    }
+
+    public WeaponData FindWeapon(int ID)
+    {
+        return Array.Find(weaponDatas, data => data.index == ID);
     }
     #endregion
 

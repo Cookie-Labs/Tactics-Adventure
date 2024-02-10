@@ -60,13 +60,34 @@ public class TouchManager : Singleton<TouchManager>
 
         isTouching = true;
 
-        card.DoCard();
-        yield return new WaitForSeconds(0.1f);
-        spawnManager.DoTurnCards();
-        yield return new WaitForSeconds(0.1f);
+        if (card == spawnManager.playerCard)
+        {
+            card.DoCard();
+        }
+        else
+        {
+            card.DoCard();
+            yield return new WaitForSeconds(0.1f);
+            spawnManager.DoTurnCards();
+            yield return new WaitForSeconds(0.1f);
 
-        playerCard.SetNeighbor();
+            playerCard.SetNeighbor();
+        }
 
         isTouching = false;
+
+        yield return null;
+    }
+
+    public IEnumerator TouchEvent()
+    {
+        SpawnManager sm = SpawnManager.Instance;
+
+        sm.DoTurnCards();
+        yield return new WaitForSeconds(0.1f);
+
+        sm.playerCard.SetNeighbor();
+
+        yield return null;
     }
 }

@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class Player_Knight : Player
 {
-    public override void OnCreatedInPool()
+    public override void ActiveSkill()
     {
-        base.OnCreatedInPool();
+        if (string.IsNullOrEmpty(spawnManager.playerCard.weaponData.name))
+            spawnManager.playerCard.EquipWeapon(0, 1);
+        else
+            spawnManager.playerCard.dmg++;
     }
 
-    public override void OnGettingFromPool()
+    public override void PassiveSkill()
     {
-        base.OnGettingFromPool();
+        spawnManager.playerCard.defend++;
     }
 }

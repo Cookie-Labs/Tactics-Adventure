@@ -19,7 +19,7 @@ public class Card_Coin : Card
 
         // UI설정
         SetCardName("코인");
-        SetUI($"<sprite=3>{amount}");
+        SetUI($"<sprite=4>{amount}");
     }
 
     public override void DestroyCard()
@@ -37,7 +37,7 @@ public class Card_Coin : Card
 
     public override void Damaged(int _amount)
     {
-        ChangeAmount(amount - _amount);
+        ChangeAmount(Mathf.Max(0, amount - _amount));
 
         if (amount <= 0)
             Die();
@@ -51,7 +51,7 @@ public class Card_Coin : Card
 
         coin.UpdateAnim(amount);
 
-        SetUI($"<sprite=3>{amount}");
+        SetUI($"<sprite=4>{amount}");
     }
 
     public void Die()

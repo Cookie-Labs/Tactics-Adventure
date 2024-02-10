@@ -75,12 +75,6 @@ public abstract class Card : MonoBehaviour, IPoolObject
 
     public abstract void Damaged(int _amount);
 
-    public void SetTurnCard()
-    {
-        spawnManager.turnCardList.Add(this);
-        isTurn = true;
-    }
-
     #region 애니메이션
     public void DOSpawn()
     {

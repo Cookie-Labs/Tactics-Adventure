@@ -36,7 +36,7 @@ public class Card_Monster : Card
 
     public override void Damaged(int _amount)
     {
-        hp -= _amount;
+        hp = Mathf.Max(0, hp - _amount);
 
         if (hp <= 0)
             Die();
