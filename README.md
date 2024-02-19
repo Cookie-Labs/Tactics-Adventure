@@ -18,7 +18,7 @@ Swarm -> Fire Soul, Ice Soul, Monkey
 - 무기 데미지 산정 공식 재정의<br/>
 - 카드 애니메이션(닷트윈) 추가 (스폰, 삭제, 데미지)<br/>
 
-**[Alpha 1.2.3]**<br/>
+**[Alpha 1.2.2]**<br/>
 <img src="https://github.com/HongDaHyun/Tactics-Adventure/assets/101586627/1b58c2ea-4ea6-4e22-98cd-25b6fac02c1a" width="540" alt="Alpha 1.2.2">
 <br/>
 - Knight 스킬 추가<br/>
@@ -33,7 +33,7 @@ Passive : 방어도 1 증가
 - MP, Defend UI와 알고리즘 추가<br/>
 - Player 무기 장착 알고리즘 변경<br/>
 
-**[Alpha 1.2.2]**<br/>
+**[Alpha 1.2.3]**<br/>
 <img src="https://github.com/HongDaHyun/Tactics-Adventure/assets/101586627/e30bb835-1f3d-4059-829b-8eca463e647f" width="540" alt="Alpha 1.2.3">
 <br/>
 - Player 애니메이션 추가 (Idle, Walk, Damaged, Atk, Die, Interaction)<br/>
