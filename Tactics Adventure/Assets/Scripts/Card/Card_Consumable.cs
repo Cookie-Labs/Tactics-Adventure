@@ -27,13 +27,18 @@ public class Card_Consumable : Card
         DODestroy();
     }
 
-    public override void DoCard()
+    public override IEnumerator DoCard()
     {
+        Card_Player playerCard = spawnManager.playerCard;
+
+        SetAnim(playerCard.player.anim, AnimID.Interaction);
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(playerCard.player.anim.GetCurrentAnimatorStateInfo(0).length);
+
         // 현재 포션 밖에 없음(확장성 고려)
-        if(consumable.type == ConsumableType.Portion)
+        if (consumable.type == ConsumableType.Portion)
         {
             Portion portion = consumable.GetComponent<Portion>(); // 포션 컴포넌트 가져오기
-            Card_Player playerCard = spawnManager.playerCard;
 
             // 포션 타입 별 분류
             switch(portion.portionType)
@@ -50,18 +55,19 @@ public class Card_Consumable : Card
                     break;
             }
         }
-
-        spawnManager.playerCard.Move(pos);
+        yield return playerCard.Move(pos);
     }
 
-    public override void Damaged(int _amount)
+    public override IEnumerator Damaged(int _amount)
     {
         ChangeAmount(Mathf.Max(0, amount - _amount));
 
+        DODamaged();
+
+        yield return new WaitForSeconds(0.1f);
+
         if (amount <= 0)
             Die();
-
-        DODamaged();
     }
 
     public void ChangeAmount(int _amount)

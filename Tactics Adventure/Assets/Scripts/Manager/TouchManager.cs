@@ -52,32 +52,29 @@ public class TouchManager : Singleton<TouchManager>
     IEnumerator TouchEvent(Card card)
     {
         SpawnManager spawnManager = SpawnManager.Instance;
-        Card_Player playerCard = SpawnManager.Instance.playerCard;
+        UIManager uiManager = UIManager.Instance;
+        Card_Player playerCard = spawnManager.playerCard;
 
-        // 플레이어 이웃 카드 X || 터치 중 || 플레이어 카드 이동 중 -> 리턴
         if (Array.IndexOf(playerCard.neighborCards, card) == -1 || isTouching || playerCard.isMoving)
             yield break;
 
         isTouching = true;
+        uiManager.skillUI.EnableActive(false);
 
-        if (card == spawnManager.playerCard)
+        yield return card.DoCard();
+
+        if (card != spawnManager.playerCard)
         {
-            card.DoCard();
-        }
-        else
-        {
-            card.DoCard();
-            yield return new WaitForSeconds(0.1f);
             spawnManager.DoTurnCards();
             yield return new WaitForSeconds(0.1f);
-
             playerCard.SetNeighbor();
         }
 
         isTouching = false;
-
+        uiManager.skillUI.EnableActive(true);
         yield return null;
     }
+
 
     public IEnumerator TouchEvent()
     {

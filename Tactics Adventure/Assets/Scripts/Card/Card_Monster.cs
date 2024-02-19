@@ -9,7 +9,7 @@ public class Card_Monster : Card
     public int hp;
 
     // 자식 컴포넌트
-    private Monster monster;
+    [HideInInspector] public Monster monster;
 
     public override void SetCard()
     {
@@ -29,26 +29,50 @@ public class Card_Monster : Card
         DODestroy();
     }
 
-    public override void DoCard()
+    public override IEnumerator DoCard()
     {
-        spawnManager.playerCard.Atk(this);
+        yield return spawnManager.playerCard.Atk(this);
     }
 
-    public override void Damaged(int _amount)
+    public override IEnumerator Damaged(int _amount)
     {
         hp = Mathf.Max(0, hp - _amount);
 
+        DODamaged();
+        SetUI($"<sprite=1>{hp}");
+
+        // 피격 애니메이션 (딜레이 포함)
+        SetAnim(monster.anim, AnimID.Damaged);
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(monster.anim.GetCurrentAnimatorStateInfo(0).length);
+
         if (hp <= 0)
             Die();
+    }
+
+    public IEnumerator Atk(int _amount)
+    {
+        hp = Mathf.Max(0, hp - _amount);
 
         DODamaged();
         SetUI($"<sprite=1>{hp}");
+
+        SetAnim(monster.anim, AnimID.Atk);
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(monster.anim.GetCurrentAnimatorStateInfo(0).length);
+
+        if (hp <= 0)
+            yield return Die();
     }
 
-    private void Die()
+    private IEnumerator Die()
     {
         // 변수 설정
         hp = 0;
+
+        SetAnim(monster.anim, AnimID.Die);
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(monster.anim.GetCurrentAnimatorStateInfo(0).length);
 
         spawnManager.ChangeCoinCard(this, monster.data.hp);
     }

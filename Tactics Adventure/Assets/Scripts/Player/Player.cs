@@ -8,7 +8,7 @@ public abstract class Player : MonoBehaviour, IPoolObject
     public PlayerData data;
 
     // 내부 컴포넌트
-    private Animator anim;
+    [HideInInspector] public Animator anim;
     // 외부 컴포넌트
     protected SpawnManager spawnManager;
 
@@ -23,11 +23,6 @@ public abstract class Player : MonoBehaviour, IPoolObject
 
     public virtual void OnGettingFromPool()
     {
-    }
-
-    public void SetAnim(int i)
-    {
-        anim.SetInteger("State", i);
     }
 
     public abstract void ActiveSkill();

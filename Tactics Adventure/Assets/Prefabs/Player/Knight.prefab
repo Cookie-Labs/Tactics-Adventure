@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6697540605415772357}
   - component: {fileID: 6697540605415772356}
-  - component: {fileID: 6697540605415772359}
+  - component: {fileID: 3587201482168958879}
   - component: {fileID: 6697540605415772358}
   m_Layer: 0
   m_Name: Knight
@@ -86,7 +86,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &6697540605415772359
+--- !u!95 &3587201482168958879
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -126,3 +126,4 @@ MonoBehaviour:
     defend: 1
     skillMP: 3
     passiveCount: 3
+  anim: {fileID: 0}

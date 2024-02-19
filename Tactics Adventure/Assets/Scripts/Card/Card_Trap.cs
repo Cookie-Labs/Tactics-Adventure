@@ -33,18 +33,17 @@ public class Card_Trap : Card
         DODestroy();
     }
 
-    public override void DoCard()
+    public override IEnumerator DoCard()
     {
         if (curWait == 0)
-            Atk();
+            yield return Atk();
 
-        spawnManager.playerCard.Move(pos);
+        yield return spawnManager.playerCard.Move(pos);
     }
 
     public override void DoTurnCard()
     {
-        trap.DORotate(); // 트랩 모양 돌리기
-
+        trap.DORotate();
         // 목표 타겟 바꾸기 (전 방향은 굳이 계산 x)
         int length = targetDir.Length;
         if (length < 4)
@@ -61,14 +60,17 @@ public class Card_Trap : Card
         }
     }
 
-    public override void Damaged(int _amount)
+    public override IEnumerator Damaged(int _amount)
     {
         ChangeDmg(Mathf.Max(0, dmg - _amount));
 
-        if (dmg <= 0)
-            Die();
-
         DODamaged();
+        yield return new WaitForSeconds(0.1f);
+
+        if (dmg <= 0)
+        {
+            Die();
+        }
     }
 
     public void ChangeDmg(int _amount)
@@ -78,12 +80,16 @@ public class Card_Trap : Card
         SetUI(SetUIText());
     }
 
-    public void Atk()
+    public IEnumerator Atk()
     {
         Card[] neighborCard = FindNeighbors(targetDir);
 
         foreach (Card card in neighborCard)
-            card.Damaged(dmg);
+            card.StartCoroutine(card.Damaged(dmg));
+
+        SetAnim(trap.anim, AnimID.Atk);
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(trap.anim.GetCurrentAnimatorStateInfo(0).length);
     }
 
     public void Die()

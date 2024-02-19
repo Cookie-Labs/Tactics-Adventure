@@ -1137,11 +1137,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b27aec74cfba27b45a3af7ac156e7da9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeBtn: {fileID: 154016113}
-  passiveCountTxt: {fileID: 2057233198}
-  skillCool:
-  - {fileID: 614046226}
-  - {fileID: 2027991292}
+  skillUI:
+    activeBtn: {fileID: 154016113}
+    passiveCountTxt: {fileID: 2057233198}
+    skillCool:
+    - {fileID: 614046226}
+    - {fileID: 2027991292}
   moneyTxt: {fileID: 1869384309}
 --- !u!4 &750853790
 Transform:

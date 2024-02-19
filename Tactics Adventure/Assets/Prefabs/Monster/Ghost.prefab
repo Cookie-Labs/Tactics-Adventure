@@ -122,3 +122,4 @@ MonoBehaviour:
     name: "\uACE0\uC2A4\uD2B8"
     type: 4
     hp: 9
+  anim: {fileID: 0}

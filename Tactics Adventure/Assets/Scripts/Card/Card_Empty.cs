@@ -17,13 +17,13 @@ public class Card_Empty : Card
         DODestroy();
     }
 
-    public override void DoCard()
+    public override IEnumerator DoCard()
     {
-        spawnManager.playerCard.Move(pos);
+        yield return spawnManager.playerCard.Move(pos);
     }
 
-    public override void Damaged(int _amount)
+    public override IEnumerator Damaged(int _amount)
     {
-        return;
+        yield return new WaitForEndOfFrame();
     }
 }

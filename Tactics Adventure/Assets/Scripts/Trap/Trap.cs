@@ -9,7 +9,7 @@ public abstract class Trap : MonoBehaviour, IPoolObject
     public TrapData data;
     private int curZ;
 
-    protected Animator anim;
+    [HideInInspector] public Animator anim;
 
     public virtual void OnCreatedInPool()
     {

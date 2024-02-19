@@ -26,6 +26,7 @@ public abstract class Card : MonoBehaviour, IPoolObject
     // 매니저
     protected GameManager gameManager;
     protected SpawnManager spawnManager;
+    protected TouchManager touchManager;
     protected CSVManager csvManager;
 
     public virtual void OnCreatedInPool()
@@ -40,6 +41,7 @@ public abstract class Card : MonoBehaviour, IPoolObject
 
         gameManager = GameManager.Instance;
         spawnManager = SpawnManager.Instance;
+        touchManager = TouchManager.Instance;
         csvManager = CSVManager.Instance;
     }
 
@@ -56,14 +58,14 @@ public abstract class Card : MonoBehaviour, IPoolObject
 
     public abstract void DestroyCard();
 
-    public abstract void DoCard();
+    public abstract IEnumerator DoCard();
 
     public virtual void DoTurnCard()
     {
 
     }
 
-    public virtual void Move(int _pos)
+    public virtual IEnumerator Move(int _pos)
     {
         Transform target = spawnManager.cardPos[_pos];
         transform.SetParent(target);
@@ -71,9 +73,11 @@ public abstract class Card : MonoBehaviour, IPoolObject
 
         transform.DOMove(target.position, 0.5f).SetEase(Ease.OutBounce).SetUpdate(true).OnComplete(() =>
             transform.localPosition = Vector3.zero);
+
+        yield return new WaitForSeconds(0.5f);
     }
 
-    public abstract void Damaged(int _amount);
+    public abstract IEnumerator Damaged(int _amount);
 
     #region 애니메이션
     public void DOSpawn()
@@ -95,6 +99,11 @@ public abstract class Card : MonoBehaviour, IPoolObject
 
         seq.Append(spriteRenderer.DOColor(Color.red, 0.2f))
             .Append(spriteRenderer.DOColor(Color.white, 0.1f)).SetUpdate(true);
+    }
+
+    public void SetAnim(Animator _anim, AnimID id)
+    {
+        _anim.SetTrigger(id.ToString());
     }
     #endregion
 

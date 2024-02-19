@@ -126,3 +126,5 @@ public class CSVList
     }
     #endregion
 }
+
+public enum AnimID { Idle, Walk, Damaged, Atk, Die, Interaction}

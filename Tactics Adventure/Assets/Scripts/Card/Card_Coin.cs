@@ -28,21 +28,22 @@ public class Card_Coin : Card
         DODestroy();
     }
 
-    public override void DoCard()
+    public override IEnumerator DoCard()
     {
         gameManager.EarnMoney(amount); // µ· ¹ú±â
-
-        spawnManager.playerCard.Move(pos);
+        yield return spawnManager.playerCard.Move(pos);
     }
 
-    public override void Damaged(int _amount)
+    public override IEnumerator Damaged(int _amount)
     {
         ChangeAmount(Mathf.Max(0, amount - _amount));
 
+        DODamaged();
+
+        yield return new WaitForEndOfFrame();
+
         if (amount <= 0)
             Die();
-
-        DODamaged();
     }
 
     public void ChangeAmount(int _amount)

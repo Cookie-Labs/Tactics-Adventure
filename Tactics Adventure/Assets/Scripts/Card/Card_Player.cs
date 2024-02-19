@@ -57,7 +57,7 @@ public class Card_Player : Card
         DODestroy();
     }
 
-    public override void Move(int _pos)
+    public override IEnumerator Move(int _pos)
     {
         Transform targetTrans = spawnManager.cardPos[_pos]; // 타겟 위치 가져오기 (부모)
         Card targetCard = spawnManager.FindCard(targetTrans.position); // 타겟 카드 가져오기
@@ -65,7 +65,7 @@ public class Card_Player : Card
         // 다른 카드 제거 & 이동
         // 뒷 카드 가져오기 (뒷 카드가 존재하지 않다면, 플레이어 이웃 카드 중 하나 가져오기 (타겟 카드 제외))
         Card backCard = FindNeighbor(targetCard.PosToDir(pos)) ?? neighborCards.FirstOrDefault(card => card != targetCard);
-        backCard.Move(pos); // 뒷 카드 플레이어 위치로 이동시키기
+        StartCoroutine(backCard.Move(pos)); // 뒷 카드 플레이어 위치로 이동시키기
         spawnManager.DeSpawnCard(targetCard); // 타겟 카드 삭제
 
         // 이동 시작
@@ -73,6 +73,8 @@ public class Card_Player : Card
         // 변수 설정
         isMoving = true;
         pos = _pos;
+        SetAnim(player.anim, AnimID.Walk);
+        yield return new WaitForEndOfFrame();
 
         // 이동 중
         transform.DOMove(targetTrans.position, 0.5f).SetEase(Ease.OutBounce).SetUpdate(true).OnComplete(() => {
@@ -82,6 +84,8 @@ public class Card_Player : Card
             // 비어있는 카드에 새 카드 생성
             spawnManager.SpawnRanCard();
         });
+
+        yield return new WaitForSeconds(0.5f);
     }
 
     public void Active()
@@ -111,8 +115,9 @@ public class Card_Player : Card
         neighborCards = FindNeighbors(new Direction[] { Direction.T, Direction.B, Direction.L, Direction.R });
     }
 
-    public override void DoCard()
+    public override IEnumerator DoCard()
     {
+        yield return new WaitForSeconds(0.1f);
     }
 
     public override void DoTurnCard()
@@ -135,7 +140,18 @@ public class Card_Player : Card
         mp = Mathf.Min(mp, player.data.mp); // 최대체력 확인
     }
 
-    public override void Damaged(int _amount)
+    private IEnumerator Die()
+    {
+        hp = 0;
+
+        SetAnim(player.anim, AnimID.Die);
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(player.anim.GetCurrentAnimatorStateInfo(0).length);
+
+        Debug.Log("게임 종료");
+    }
+
+    public override IEnumerator Damaged(int _amount)
     {
         // 방어 계산
         if (defend > 0)
@@ -147,15 +163,21 @@ public class Card_Player : Card
 
         hp = Mathf.Max(0, hp - _amount);
 
+        DODamaged();
+        SetIconTxt();
+
+        // 피격 애니메이션 (딜레이 포함)
+        SetAnim(player.anim, AnimID.Damaged);
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(player.anim.GetCurrentAnimatorStateInfo(0).length);
+
         if (hp <= 0)
         {
-            // Die
+            yield return Die();
         }
-
-        DODamaged();
     }
 
-    public void Atk(Card_Monster monster)
+    public IEnumerator Atk(Card_Monster monster)
     {
         int defaultDmg;
         // 무기가 없다면
@@ -163,8 +185,9 @@ public class Card_Player : Card
         {
             defaultDmg = Mathf.Min(hp, monster.hp);
 
-            monster.Damaged(defaultDmg);
-            Damaged(defaultDmg);
+            StartCoroutine(Damaged(defaultDmg));
+
+            yield return monster.Atk(defaultDmg);
         }
 
         // 무기가 있다면
@@ -172,11 +195,17 @@ public class Card_Player : Card
         {
             defaultDmg = Mathf.Min(dmg, monster.hp);
 
-            monster.Damaged(defaultDmg);
             dmg -= defaultDmg;
 
-            if (dmg <= 0)
+            if (dmg <= 0) // 무기 깨짐
                 weaponData = new WeaponData();
+
+            SetIconTxt();
+
+            // 공격 애니메이션
+            SetAnim(player.anim, AnimID.Atk);
+
+            yield return monster.Damaged(defaultDmg);
         }
     }
 

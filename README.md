@@ -19,7 +19,7 @@ Swarm -> Fire Soul, Ice Soul, Monkey
 - 카드 애니메이션(닷트윈) 추가 (스폰, 삭제, 데미지)<br/>
 
 **[Alpha 1.2.2]**<br/>
-<img src="https://github.com/HongDaHyun/Tactics-Adventure/assets/101586627/1b58c2ea-4ea6-4e22-98cd-25b6fac02c1a" width="540" alt="Alpha 1.2.1">
+<img src="https://github.com/HongDaHyun/Tactics-Adventure/assets/101586627/1b58c2ea-4ea6-4e22-98cd-25b6fac02c1a" width="540" alt="Alpha 1.2.2">
 <br/>
 - Knight 스킬 추가<br/>
 Active : 무기 공격력 1 증가, 무기가 없다면 공격력 1인 롱소드 장착<br/>
@@ -32,3 +32,13 @@ Passive : 방어도 1 증가
 - 데미지 받았을 때 텍스트 나오지 않던 버그들 수정<br/>
 - MP, Defend UI와 알고리즘 추가<br/>
 - Player 무기 장착 알고리즘 변경<br/>
+
+**[Alpha 1.2.2]**<br/>
+<img src="https://github.com/HongDaHyun/Tactics-Adventure/assets/101586627/e30bb835-1f3d-4059-829b-8eca463e647f" width="540" alt="Alpha 1.2.3">
+<br/>
+- Player 애니메이션 추가 (Idle, Walk, Damaged, Atk, Die, Interaction)<br/>
+- Monster 애니메이션 추가 (Idle, Walk, Damaged, Atk, Die)<br/>
+- 딜레이 로직 변경 (0.1f -> 애니메이션 종료 시점)<br/>
+- 중복된 이미지 통합<br/>
+- 카드 작동 관련 전부 코루틴화<br/>
+- 카드 작동 중 액티브 스킬 비활성화<br/>

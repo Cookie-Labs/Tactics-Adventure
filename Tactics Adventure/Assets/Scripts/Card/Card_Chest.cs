@@ -22,13 +22,15 @@ public class Card_Chest : Card
         DODestroy();
     }
 
-    public override void DoCard()
+    public override IEnumerator DoCard()
     {
         spawnManager.ChangeCard(this, (CardType)System.Enum.Parse(typeof(CardType), chest.data.type.ToString()));
+
+        yield return new WaitForSeconds(0.1f);
     }
 
-    public override void Damaged(int _amount)
+    public override IEnumerator Damaged(int _amount)
     {
-        return;
+        yield return new WaitForEndOfFrame();
     }
 }

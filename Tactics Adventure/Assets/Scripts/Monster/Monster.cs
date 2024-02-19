@@ -7,7 +7,7 @@ public abstract class Monster : MonoBehaviour, IPoolObject
 {
     public MonsterData data;
 
-    private Animator anim;
+    [HideInInspector] public Animator anim;
 
     public virtual void OnCreatedInPool()
     {
