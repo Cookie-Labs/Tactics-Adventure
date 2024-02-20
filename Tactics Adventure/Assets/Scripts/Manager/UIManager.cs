@@ -15,6 +15,9 @@ public class UIManager : Singleton<UIManager>
     [Title("돈 UI")]
     public TextMeshProUGUI moneyTxt;
 
+    [Title("손 UI")]
+    public HandUI handUI;
+
     public void CheckSkillUI()
     {
         Card_Player playerCard = SpawnManager.Instance.playerCard;
@@ -63,5 +66,59 @@ public class SkillUI
         passiveSeq.Append(skillCool[1].DOFillAmount((float)playerCard.passiveCount / playerCard.player.data.passiveCount, 0.2f))
             .Join(passiveCountTxt.transform.DOScale(2f, 0.2f))
             .Append(passiveCountTxt.transform.DOScale(1f, 0.1f));
+    }
+}
+
+[Serializable]
+public class HandUI
+{
+    // 0 : LEFT,    1 : RIGHT
+    public Image[] handImg;
+    public CanvasGroup[] handAlpha;
+    public Image[] weaponIcon;
+
+    // 손 이미지 설정
+    public void HandImgUI()
+    {
+        SpriteData spriteData = SpriteData.Instance;
+        Card_Player player = SpawnManager.Instance.playerCard;
+
+        for(int i = 0; i < 2; i++)
+        {
+            Sprite handSprite = (player.equipWeapon[i].dmg == 0) ? spriteData.handSprites[i + 2] : spriteData.handSprites[i];
+            handImg[i].sprite = handSprite;
+        }
+    }
+
+    // 손 투명도 설정
+    public void HandAlphaUI()
+    {
+        int curHand = SpawnManager.Instance.playerCard.curHand;
+
+        for (int i = 0; i < 2; i++)
+            handAlpha[i].alpha = (curHand == i) ? 1f : 0.5f;
+    }
+
+    // 무기 설정
+    public void WeaponIconUI()
+    {
+        SpriteData spriteData = SpriteData.Instance;
+        Card_Player player = SpawnManager.Instance.playerCard;
+
+        for (int i = 0; i < 2; i++)
+        {
+            if (player.equipWeapon[i].dmg == 0)
+            {
+                weaponIcon[i].gameObject.SetActive(false);
+                weaponIcon[i].sprite = null;
+            }
+            
+            else
+            {
+                weaponIcon[i].gameObject.SetActive(true);
+                weaponIcon[i].sprite = spriteData.ExportWeaponSprite(player.equipWeapon[i].weaponData.index);
+                weaponIcon[i].SetNativeSize();
+            }
+        }
     }
 }

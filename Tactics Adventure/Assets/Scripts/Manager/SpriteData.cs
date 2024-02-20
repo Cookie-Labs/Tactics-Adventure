@@ -18,6 +18,9 @@ public class SpriteData : Singleton<SpriteData>
     [Title("유물 스프라이트", subtitle: "순서대로")]
     public Sprite[] relicSprites;
 
+    [Title("손 스프라이트")]
+    public Sprite[] handSprites;
+
     // 랜덤 스테이지 이미지 스프라이트 추출
     public Sprite ExportRanStage()
     {

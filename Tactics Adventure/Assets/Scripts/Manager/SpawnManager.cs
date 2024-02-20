@@ -19,7 +19,7 @@ public class SpawnManager : Singleton<SpawnManager>
         SpawnStage();
     }
 
-    private void SpawnStage()
+    private void SpawnStage() // 후에 씬 전환에서 InGame씬으로 전환할때 사용되도록 바꿀 것임
     {
         // 종류별 소환될 카드 개수 (총 10개)
         // Player, Chest, Coin, Consumable, Monster, Relics, Trap, Weapon, Empty
@@ -54,7 +54,11 @@ public class SpawnManager : Singleton<SpawnManager>
         playerCard = cardList[0].GetComponent<Card_Player>(); // 플레이어 카드 대입
         playerCard.SetNeighbor(); // 플레이어 카드의 주변 카드 터치 활성화
 
-        UIManager.Instance.CheckSkillUI();
+        UIManager uiManager = UIManager.Instance;
+        uiManager.CheckSkillUI();
+        uiManager.handUI.HandImgUI();
+        uiManager.handUI.HandAlphaUI();
+        uiManager.handUI.WeaponIconUI();
     }
 
     #region 카드

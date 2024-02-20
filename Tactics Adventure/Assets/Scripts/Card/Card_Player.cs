@@ -12,8 +12,8 @@ public class Card_Player : Card
     public int hp;
     public int mp;
     public int defend;
-    public int dmg;
-    public WeaponData weaponData;
+    public int curHand;
+    public EquipWeapon[] equipWeapon = new EquipWeapon[2];
     public int poisonCount;
     public bool isMoving;
     public Card[] neighborCards;
@@ -42,7 +42,7 @@ public class Card_Player : Card
         hp = player.data.hp;
         mp = player.data.mp;
         defend = player.data.defend;
-        dmg = 0;
+        curHand = 0;
         activeMP = player.data.skillMP;
         passiveCount = player.data.passiveCount;
 
@@ -125,6 +125,8 @@ public class Card_Player : Card
         Passive();
 
         uiManager.CheckSkillUI();
+        uiManager.handUI.HandImgUI();
+        uiManager.handUI.WeaponIconUI();
         SetIconTxt();
     }
 
@@ -181,7 +183,7 @@ public class Card_Player : Card
     {
         int defaultDmg;
         // 무기가 없다면
-        if (string.IsNullOrEmpty(weaponData.name))
+        if (equipWeapon[curHand].dmg == 0)
         {
             defaultDmg = Mathf.Min(hp, monster.hp);
 
@@ -193,12 +195,12 @@ public class Card_Player : Card
         // 무기가 있다면
         else
         {
-            defaultDmg = Mathf.Min(dmg, monster.hp);
+            defaultDmg = Mathf.Min(equipWeapon[curHand].dmg, monster.hp);
 
-            dmg -= defaultDmg;
+            equipWeapon[curHand].dmg -= defaultDmg;
 
-            if (dmg <= 0) // 무기 깨짐
-                weaponData = new WeaponData();
+            if (equipWeapon[curHand].dmg <= 0) // 무기 깨짐
+                equipWeapon[curHand] = new EquipWeapon();
 
             SetIconTxt();
 
@@ -211,17 +213,41 @@ public class Card_Player : Card
 
     public void EquipWeapon(Card_Weapon weaponCard)
     {
-        dmg = weaponCard.dmg;
+        // 현재 손에 무기 X || 모든 손에 무기
+        if(equipWeapon[curHand].dmg == 0 || (equipWeapon[0].dmg != 0 && equipWeapon[1].dmg != 0))
+            equipWeapon[curHand] = new EquipWeapon(weaponCard.dmg, weaponCard.weapon.data); // 현재 손에 무기 장착
 
-        // 무기 장착
-        weaponData = weaponCard.weapon.data;
+        // 다른 손에 무기 X
+        else if (equipWeapon[(curHand + 1) % 2].dmg == 0)
+            equipWeapon[(curHand + 1) % 2] = new EquipWeapon(weaponCard.dmg, weaponCard.weapon.data); // 다른 손에 무기 장착
     }
 
     public void EquipWeapon(int ID, int _dmg)
     {
-        dmg = _dmg;
+        WeaponData newWeapon = csvManager.csvList.FindWeapon(ID);
+        // 현재 손에 무기 X || 모든 손에 무기
+        if (equipWeapon[curHand].dmg == 0 || (equipWeapon[0].dmg != 0 && equipWeapon[1].dmg != 0))
+            equipWeapon[curHand] = new EquipWeapon(_dmg, newWeapon); // 현재 손에 무기 장착
 
-        weaponData = csvManager.csvList.FindWeapon(ID);
+        // 다른 손에 무기 X
+        else if(equipWeapon[(curHand + 1) % 2].dmg == 0)
+            equipWeapon[(curHand + 1) % 2] = new EquipWeapon(_dmg, newWeapon); // 다른 손에 무기 장착
+    }
+
+    public void ChangeHand(int _number)
+    {
+        if (touchManager.isTouching)
+            return;
+
+        curHand = _number;
+
+        SetIconTxt();
+        uiManager.handUI.HandAlphaUI();
+    }
+
+    public void UpDmg(int dmg)
+    {
+        equipWeapon[curHand].dmg += dmg;
     }
 
     public void Poisoned()
@@ -235,7 +261,8 @@ public class Card_Player : Card
 
     private void SetIconTxt()
     {
-        uiText.text = $"<sprite=0>{dmg}  <sprite=1>{hp}";
+        uiText.text = $"<sprite=0>{equipWeapon[curHand].dmg}  <sprite=1>{hp}";
         iconTxt.text = $"<sprite=2>{defend}  <sprite=3>{mp}";
     }
 }
+

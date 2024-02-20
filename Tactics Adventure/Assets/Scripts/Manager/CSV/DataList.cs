@@ -127,4 +127,18 @@ public class CSVList
     #endregion
 }
 
+// 기타 데이터
 public enum AnimID { Idle, Walk, Damaged, Atk, Die, Interaction}
+
+[Serializable]
+public struct EquipWeapon
+{
+    public int dmg;
+    public WeaponData weaponData;
+
+    public EquipWeapon(int _dmg, WeaponData _data)
+    {
+        dmg = _dmg;
+        weaponData = _data;
+    }
+}

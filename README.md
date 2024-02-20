@@ -2,9 +2,9 @@
 
 **[Alpha 1.2]**<br/>
 - 스테이지별 몬스터 해금 활성화<br/>
-Grass -> Goblin, Slime, Mushroom<br/>
-Cave -> Skeleton, Ghost, Poison Soul<br/>
-Swarm -> Fire Soul, Ice Soul, Monkey
+<pre>	Grass -> Goblin, Slime, Mushroom</pre><br/>
+<pre>	Cave -> Skeleton, Ghost, Poison Soul</pre><br/>
+<pre>	Swarm -> Fire Soul, Ice Soul, Monkey</pre>
 - Empty Card 새로 등장<br/>
 - Card 이미지 스프라이트 추가 (빈카드, 보스카드)<br/>
 - 설명 추출 로직 추가 (Chest, Empty에 적용) (Player 추가 예정)<br/>
@@ -22,8 +22,8 @@ Swarm -> Fire Soul, Ice Soul, Monkey
 <img src="https://github.com/HongDaHyun/Tactics-Adventure/assets/101586627/1b58c2ea-4ea6-4e22-98cd-25b6fac02c1a" width="540" alt="Alpha 1.2.2">
 <br/>
 - Knight 스킬 추가<br/>
-Active : 무기 공격력 1 증가, 무기가 없다면 공격력 1인 롱소드 장착<br/>
-Passive : 방어도 1 증가
+<pre>	Active : 무기 공격력 1 증가, 무기가 없다면 공격력 1인 롱소드 장착</pre><br/>
+<pre>	Passive : 방어도 1 증가</pre>
 - 스킬 UI 쿨타임 표시<br/>
 - 턴 알고리즘 최적화<br/>
 - UIManager, BtnManager 추가<br/>
@@ -42,3 +42,13 @@ Passive : 방어도 1 증가
 - 중복된 이미지 통합<br/>
 - 카드 작동 관련 전부 코루틴화<br/>
 - 카드 작동 중 액티브 스킬 비활성화<br/>
+
+**[Alpha 1.2.4]**<br/>
+<img src="https://github.com/HongDaHyun/Tactics-Adventure/assets/101586627/e3c7ed1d-1b97-4cec-b4f3-2c8016826d36" width="540" alt="Alpha 1.2.4">
+<br/>
+- 손 이미지 추가 (활성화, 비활성화)<br/>
+- 손 시스템 추가<br/>
+<pre>	이제 무기를 최대 2개 저장할 수 있습니다.</pre><br/>
+<pre>	손 UI가 플레이어의 클릭에 반응합니다.</pre><br/>
+<pre>	터치 동작 수행중이 아니라면 언제든지 손을 변경할 수 있습니다.</pre>
+- UI 재배치<br/>

@@ -31,4 +31,8 @@ public class BtnManager : Singleton<BtnManager>
         isClicking = false;
     }
 
+    public void HandBtn(int num)
+    {
+        SpawnManager.Instance.playerCard.ChangeHand(num);
+    }
 }
