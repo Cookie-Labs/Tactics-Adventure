@@ -14,11 +14,11 @@ public class Card_Player : Card
     public int defend;
     public int curHand;
     public EquipWeapon[] equipWeapon = new EquipWeapon[2];
-    public int poisonCount;
-    public bool isMoving;
     public Card[] neighborCards;
+    public int poisonCount;
     public int activeMP;
     public int passiveCount;
+    public bool isTalking;
 
     // 자식 컴포넌트
     [Title("플레이어 컴포넌트")]
@@ -71,7 +71,6 @@ public class Card_Player : Card
         // 이동 시작
         transform.SetParent(targetTrans); // 부모 설정
         // 변수 설정
-        isMoving = true;
         pos = _pos;
         SetAnim(player.anim, AnimID.Walk);
         yield return new WaitForEndOfFrame();
@@ -80,7 +79,6 @@ public class Card_Player : Card
         transform.DOMove(targetTrans.position, 0.5f).SetEase(Ease.OutBounce).SetUpdate(true).OnComplete(() => {
             // 이동 완료
             transform.localPosition = Vector3.zero;
-            isMoving = false;
             // 비어있는 카드에 새 카드 생성
             spawnManager.SpawnRanCard();
         });
@@ -113,11 +111,15 @@ public class Card_Player : Card
     public void SetNeighbor()
     {
         neighborCards = FindNeighbors(new Direction[] { Direction.T, Direction.B, Direction.L, Direction.R });
+
+        SetActive(true);
+        foreach (Card card in neighborCards)
+            card.SetActive(true);
     }
 
     public override IEnumerator DoCard()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return Talk(csvManager.csvList.ExportExplain_Ran(CardType.Player), 1.5f);
     }
 
     public override void DoTurnCard()
@@ -167,6 +169,7 @@ public class Card_Player : Card
 
         DODamaged();
         SetIconTxt();
+        StartCoroutine(Talk("아얏!", 0.5f));
 
         // 피격 애니메이션 (딜레이 포함)
         SetAnim(player.anim, AnimID.Damaged);
@@ -206,6 +209,7 @@ public class Card_Player : Card
 
             // 공격 애니메이션
             SetAnim(player.anim, AnimID.Atk);
+            StartCoroutine(Talk("죽어라!!", 1f));
 
             yield return monster.Damaged(defaultDmg);
         }
@@ -257,6 +261,28 @@ public class Card_Player : Card
 
         Damaged(1);
         poisonCount--;
+    }
+
+    private Sequence talkSeq;
+    public IEnumerator Talk(string explain, float time)
+    {
+        if (talkSeq != null && talkSeq.IsActive())
+            talkSeq.Kill();
+
+        isTalking = true;
+
+        cardName.text = "";
+
+        talkSeq = DOTween.Sequence().SetUpdate(true);
+        talkSeq.Append(cardName.DOText(explain, time))
+            .AppendInterval(0.5f)
+            .OnComplete(() =>
+            {
+                cardName.text = player.data.name;
+                isTalking = false;
+            });
+
+        yield return new WaitForSeconds(time + 0.5f);
     }
 
     private void SetIconTxt()

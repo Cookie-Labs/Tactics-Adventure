@@ -52,3 +52,11 @@
 &nbsp; &nbsp; &nbsp; &nbsp;손 UI가 플레이어의 클릭에 반응합니다.<br/>
 &nbsp; &nbsp; &nbsp; &nbsp;터치 동작 수행중이 아니라면 언제든지 손을 변경할 수 있습니다.
 - UI 재배치<br/>
+
+**[Alpha 1.2.5]**<br/>
+<img src="https://github.com/HongDaHyun/Tactics-Adventure/assets/101586627/2ffcf7a0-02fc-4675-99fc-29f8edf87e79" width="540" alt="Alpha 1.2.5">
+<br/>
+- Player 말 기능 추가 (피격, 공격, 클릭)<br/>
+- Card 비활성화 스프라이트 추가<br/>
+- 클릭 불가 카드 비활성화 시각화<br/>
+- 사용 중인 카드 포커스화<br/>

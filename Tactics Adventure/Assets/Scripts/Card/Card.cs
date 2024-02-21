@@ -15,6 +15,7 @@ public abstract class Card : MonoBehaviour, IPoolObject
 
     [Title("자식 컴포넌트")]
     public SpriteRenderer backGround;
+    public SpriteRenderer activeImg;
     public Transform objTrans;
     public TextMeshPro cardName;
     public TextMeshPro uiText;
@@ -50,6 +51,7 @@ public abstract class Card : MonoBehaviour, IPoolObject
         backGround.sprite = spriteData.ExportRanStage();
         spriteRenderer.color = Color.white;
         SetCard();
+        SetActive(false);
 
         DOSpawn();
     }
@@ -116,6 +118,14 @@ public abstract class Card : MonoBehaviour, IPoolObject
     protected void SetUI(string s)
     {
         uiText.text = s;
+    }
+
+    public void SetActive(bool isActive)
+    {
+        if(isActive)
+            activeImg.gameObject.SetActive(false);
+        else
+            activeImg.gameObject.SetActive(true);
     }
     #endregion
 
