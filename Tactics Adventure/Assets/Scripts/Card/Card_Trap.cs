@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using System;
 
 public class Card_Trap : Card
 {
@@ -18,10 +19,11 @@ public class Card_Trap : Card
         trap = spawnManager.SpawnTrap_Ran(objTrans); // 트랩 소환
 
         // 변수 설정 (후에 난이도 설정)
-        dmg = Random.Range(1, 10); // 데미지
-        targetDir = trap.data.targetDir; // 타겟 방향
+        dmg = UnityEngine.Random.Range(1, 10); // 데미지
+        targetDir = new Direction[trap.data.targetDir.Length];
+        Array.Copy(trap.data.targetDir, targetDir, trap.data.targetDir.Length); // 타겟 방향
         if (trap.data.isWait) // 기다리는 타입 트랩 설정
-            curWait = trap.data.wait;
+            curWait = trap.waitCount;
 
         SetCardName(trap.data.name);
         SetUI(SetUIText());
@@ -84,12 +86,16 @@ public class Card_Trap : Card
     {
         Card[] neighborCard = FindNeighbors(targetDir);
 
-        foreach (Card card in neighborCard)
-            card.StartCoroutine(card.Damaged(dmg));
-
         SetAnim(trap.anim, AnimID.Atk);
+        float maxAnim = animTime;
+
+        foreach (Card card in neighborCard)
+        {
+            card.StartCoroutine(card.Damaged(dmg));
+            maxAnim = Mathf.Max(maxAnim, card.animTime);
+        }
         yield return new WaitForEndOfFrame();
-        yield return new WaitForSeconds(trap.anim.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(maxAnim);
     }
 
     public void Die()
@@ -107,7 +113,7 @@ public class Card_Trap : Card
         {
             for (int i = 0; i < curWait; i++)
                 s += "<sprite=5> ";
-            for (int i = 0; i < trap.data.wait - curWait; i++)
+            for (int i = 0; i < trap.waitCount - curWait; i++)
                 s += "<sprite=6> ";
             s = s.TrimEnd();
         }

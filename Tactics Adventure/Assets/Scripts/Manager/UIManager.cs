@@ -9,6 +9,10 @@ using System;
 
 public class UIManager : Singleton<UIManager>
 {
+    [Title("공통UI")]
+    public bool isUI;
+    public GameObject raycastPannel;
+
     [Title("스킬 버튼")]
     public SkillUI skillUI;
 
@@ -17,6 +21,10 @@ public class UIManager : Singleton<UIManager>
 
     [Title("손 UI")]
     public HandUI handUI;
+
+    [Title("가방 UI")]
+    public BagUI bagUI;
+
 
     public void CheckSkillUI()
     {
@@ -120,5 +128,71 @@ public class HandUI
                 weaponIcon[i].SetNativeSize();
             }
         }
+    }
+}
+
+[Serializable]
+public class BagUI
+{
+    public RectTransform btnPos;
+    public RectTransform bagUI;
+    public GameObject explainPannel;
+    public TextMeshProUGUI nameTxt, tierTxt, explainTxt;
+    private Sequence textSequence;
+
+    public void OpenUI()
+    {
+        // 초기설정
+        UIManager uiManager = UIManager.Instance;
+        uiManager.isUI = true;
+        uiManager.raycastPannel.SetActive(true);
+        bagUI.gameObject.SetActive(true);
+        bagUI.position = btnPos.position;
+        bagUI.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+        explainPannel.SetActive(false);
+
+        // 닷트윈
+        Sequence seq = DOTween.Sequence().SetUpdate(true);
+        seq.Append(bagUI.DOScale(1f, 0.5f))
+            .Join(bagUI.DOLocalMove(Vector3.zero, 0.5f));
+    }
+
+    public void CloseUI()
+    {
+        // 초기 설정
+        UIManager uiManager = UIManager.Instance;
+        uiManager.isUI = false;
+        uiManager.raycastPannel.SetActive(false);
+
+        // 닷트윈
+        Sequence seq = DOTween.Sequence().SetUpdate(true);
+        seq.Append(bagUI.DOScale(0.05f, 0.3f))
+            .Join(bagUI.DOLocalMove(btnPos.localPosition, 0.3f))
+            .OnComplete(() => bagUI.gameObject.SetActive(false));
+    }
+
+    public void ShowExplain(int index)
+    {
+        // 유물 불러오기
+        CSVList csvList = CSVManager.Instance.csvList;
+        RelicData data = csvList.FindRelic(index); // 데이터 불러옴
+        Color tierColor = csvList.ExportColor(data.tier); // 티어 색 불러옴
+
+        // 초기 설정
+        explainPannel.SetActive(true);
+        nameTxt.SetText("");
+        tierTxt.SetText("");
+        explainTxt.SetText("");
+        tierTxt.color = tierColor;
+
+        // 닷트윈
+        // 동작중인 닷트윈 무시
+        if (textSequence != null && textSequence.IsActive())
+            textSequence.Kill();
+
+        textSequence = DOTween.Sequence().SetUpdate(true);
+        textSequence.Append(nameTxt.DOText(data.name, 0.2f))
+                    .Join(tierTxt.DOText(data.tier.ToString(), 0.2f))
+                    .Append(explainTxt.DOText(data.explanation, 0.5f));
     }
 }

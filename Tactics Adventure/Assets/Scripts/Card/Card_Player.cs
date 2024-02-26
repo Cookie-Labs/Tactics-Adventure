@@ -150,7 +150,7 @@ public class Card_Player : Card
 
         SetAnim(player.anim, AnimID.Die);
         yield return new WaitForEndOfFrame();
-        yield return new WaitForSeconds(player.anim.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(animTime);
 
         Debug.Log("게임 종료");
     }
@@ -174,7 +174,7 @@ public class Card_Player : Card
         // 피격 애니메이션 (딜레이 포함)
         SetAnim(player.anim, AnimID.Damaged);
         yield return new WaitForEndOfFrame();
-        yield return new WaitForSeconds(player.anim.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(animTime);
 
         if (hp <= 0)
         {
@@ -271,14 +271,14 @@ public class Card_Player : Card
 
         isTalking = true;
 
-        cardName.text = "";
+        cardName.SetText("");
 
         talkSeq = DOTween.Sequence().SetUpdate(true);
         talkSeq.Append(cardName.DOText(explain, time))
             .AppendInterval(0.5f)
             .OnComplete(() =>
             {
-                cardName.text = player.data.name;
+                cardName.SetText(player.data.name);
                 isTalking = false;
             });
 

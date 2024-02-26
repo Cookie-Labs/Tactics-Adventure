@@ -4,6 +4,7 @@ using UnityEngine;
 using Redcode.Pools;
 using System.Linq;
 using Sirenix.OdinInspector;
+using UnityEngine.UI;
 
 public class SpawnManager : Singleton<SpawnManager>
 {
@@ -158,6 +159,7 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         Card newCard = SpawnCard(type, oriCard.pos);
         DeSpawnCard(oriCard);
+        playerCard.SetNeighbor();
         return newCard;
     }
 
@@ -169,6 +171,7 @@ public class SpawnManager : Singleton<SpawnManager>
     }
     #endregion
 
+    #region 플레이어
     public Player SpawnPlayer(PlayerType type, Transform parent)
     {
         Player player = PoolManager.Instance.GetFromPool<Player>("Player_" + type); // 플레이어 소환
@@ -187,7 +190,9 @@ public class SpawnManager : Singleton<SpawnManager>
 
         PoolManager.Instance.TakeToPool<Player>("Player_" + player.name, player);
     }
+    #endregion
 
+    #region 몬스터
     public Monster SpawnMonster(MonsterType type, Transform parent)
     {
         Monster monster = PoolManager.Instance.GetFromPool<Monster>("Monster_" + type); // 플레이어 소환
@@ -217,7 +222,9 @@ public class SpawnManager : Singleton<SpawnManager>
 
         PoolManager.Instance.TakeToPool<Monster>("Monster_" + monster.name, monster);
     }
+    #endregion
 
+    #region 코인
     public Coin SpawnCoin(int a, Transform parent)
     {
         Coin coin = PoolManager.Instance.GetFromPool<Coin>("Coin"); // 코인 생성
@@ -239,7 +246,9 @@ public class SpawnManager : Singleton<SpawnManager>
 
         PoolManager.Instance.TakeToPool<Coin>("Coin", coin);
     }
+    #endregion
 
+    #region 상자
     public Chest SpawnChest(ChestType type, Transform parent)
     {
         Chest chest = PoolManager.Instance.GetFromPool<Chest>("Chest_" + type); // 상자 소환
@@ -263,7 +272,9 @@ public class SpawnManager : Singleton<SpawnManager>
 
         PoolManager.Instance.TakeToPool<Chest>(chest.name, chest);
     }
+    #endregion
 
+    #region 아이템
     public Portion SpawnPortion(PortionType type, int amount, Transform parent)
     {
         Portion portion = PoolManager.Instance.GetFromPool<Portion>("Consumable_Portion"); // 포션 소환
@@ -292,7 +303,9 @@ public class SpawnManager : Singleton<SpawnManager>
 
         PoolManager.Instance.TakeToPool<Consumable>("Consumable_Portion", consumable);
     }
+    #endregion
 
+    #region 트랩
     public Trap SpawnTrap(TrapType trapName, Transform parent)
     {
         Trap trap = PoolManager.Instance.GetFromPool<Trap>("Trap_" + trapName); // 트랩 생성
@@ -303,7 +316,7 @@ public class SpawnManager : Singleton<SpawnManager>
         trap.transform.localScale = Vector3.one;
 
         // 변수 설정
-        trap.SetTrap();
+        trap.SetTrap(trapName);
 
         return trap;
     }
@@ -319,7 +332,9 @@ public class SpawnManager : Singleton<SpawnManager>
 
         PoolManager.Instance.TakeToPool<Trap>(trap.name, trap);
     }
+    #endregion
 
+    #region 무기
     public Weapon SpawnWeapon(WeaponType type, Tier tier, Transform parent)
     {
         Weapon weapon = PoolManager.Instance.GetFromPool<Weapon>("Weapon"); // 무기 생성
@@ -350,7 +365,9 @@ public class SpawnManager : Singleton<SpawnManager>
 
         PoolManager.Instance.TakeToPool<Weapon>("Weapon", weapon);
     }
+    #endregion
 
+    #region 유물
     public Relic SpawnRelic(int index, Transform parent)
     {
         Relic relic = PoolManager.Instance.GetFromPool<Relic>("Relic"); // 무기 생성
@@ -368,7 +385,12 @@ public class SpawnManager : Singleton<SpawnManager>
 
     public Relic SpawnRelic_Ran(Transform parent)
     {
-        int ranRelic = RandomID(CSVManager.Instance.csvList.weaponDatas.Length);
+        CSVList csvList = CSVManager.Instance.csvList;
+
+        int ranRelic = RandomID(csvList.relicDatas.Length);
+
+        if (csvList.FindRelic(ranRelic).isCollect)
+            return SpawnRelic_Ran(parent);
 
         return SpawnRelic(ranRelic, parent);
     }
@@ -379,6 +401,18 @@ public class SpawnManager : Singleton<SpawnManager>
 
         PoolManager.Instance.TakeToPool<Relic>("Relic", relic);
     }
+    #endregion
+
+    #region UI
+    public RelicIcon SpawnRelicIcon(int index)
+    {
+        RelicIcon icon = PoolManager.Instance.GetFromPool<RelicIcon>("RelicIcon");
+
+        icon.SetIcon(index);
+
+        return icon;
+    }
+    #endregion
 
     public Tier LuckToTier()
     {

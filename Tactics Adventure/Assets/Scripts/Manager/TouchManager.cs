@@ -55,7 +55,7 @@ public class TouchManager : Singleton<TouchManager>
         UIManager uiManager = UIManager.Instance;
         Card_Player playerCard = spawnManager.playerCard;
 
-        if (isTouching)
+        if (isTouching || uiManager.isUI)
             yield break;
 
         if (card == playerCard)
@@ -84,7 +84,6 @@ public class TouchManager : Singleton<TouchManager>
         playerCard.SetNeighbor();
 
         isTouching = false;
-        uiManager.skillUI.EnableActive(true);
         yield return null;
     }
 

@@ -33,7 +33,7 @@ public class Card_Consumable : Card
 
         SetAnim(playerCard.player.anim, AnimID.Interaction);
         yield return new WaitForEndOfFrame();
-        yield return new WaitForSeconds(playerCard.player.anim.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(playerCard.animTime);
 
         // 현재 포션 밖에 없음(확장성 고려)
         if (consumable.type == ConsumableType.Portion)

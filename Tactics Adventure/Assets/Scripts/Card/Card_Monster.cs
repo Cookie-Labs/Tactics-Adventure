@@ -44,10 +44,10 @@ public class Card_Monster : Card
         // 피격 애니메이션 (딜레이 포함)
         SetAnim(monster.anim, AnimID.Damaged);
         yield return new WaitForEndOfFrame();
-        yield return new WaitForSeconds(monster.anim.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(animTime);
 
         if (hp <= 0)
-            Die();
+            yield return Die();
     }
 
     public IEnumerator Atk(int _amount)
@@ -59,7 +59,7 @@ public class Card_Monster : Card
 
         SetAnim(monster.anim, AnimID.Atk);
         yield return new WaitForEndOfFrame();
-        yield return new WaitForSeconds(monster.anim.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(animTime);
 
         if (hp <= 0)
             yield return Die();
@@ -72,7 +72,7 @@ public class Card_Monster : Card
 
         SetAnim(monster.anim, AnimID.Die);
         yield return new WaitForEndOfFrame();
-        yield return new WaitForSeconds(monster.anim.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(animTime);
 
         spawnManager.ChangeCoinCard(this, monster.data.hp);
     }

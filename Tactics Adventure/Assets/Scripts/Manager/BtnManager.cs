@@ -35,4 +35,14 @@ public class BtnManager : Singleton<BtnManager>
     {
         SpawnManager.Instance.playerCard.ChangeHand(num);
     }
+
+    public void BagBtn(bool isOpen)
+    {
+        BagUI bagUI = UIManager.Instance.bagUI;
+
+        if (isOpen)
+            bagUI.OpenUI();
+        else
+            bagUI.CloseUI();
+    }
 }

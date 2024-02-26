@@ -23,11 +23,18 @@ public class Card_Relics : Card
 
     public override IEnumerator DoCard()
     {
+        CollectRelic();
         yield return spawnManager.playerCard.Move(pos);
     }
 
     public override IEnumerator Damaged(int _amount)
     {
         yield return new WaitForEndOfFrame();
+    }
+
+    private void CollectRelic()
+    {
+        csvManager.csvList.ExportRelic(relic.data).isCollect = true;
+        spawnManager.SpawnRelicIcon(relic.data.index);
     }
 }

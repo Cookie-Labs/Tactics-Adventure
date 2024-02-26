@@ -60,3 +60,14 @@
 - Card 비활성화 스프라이트 추가<br/>
 - 클릭 불가 카드 비활성화 시각화<br/>
 - 사용 중인 카드 포커스화<br/>
+
+**[Alpha 1.2.6]**<br/>
+<img src="https://github.com/HongDaHyun/Tactics-Adventure/assets/101586627/18bbc0ba-ba60-41dc-9e64-0b93c158fcd6" width="540" alt="Alpha 1.2.6">
+<br/>
+- 버그 수정<br/>
+&nbsp; &nbsp; &nbsp; &nbsp;트랩 공격 딜레이 비정상<br/>
+&nbsp; &nbsp; &nbsp; &nbsp;몬스터 데미지 관련 코루틴 호출 문제<br/>
+&nbsp; &nbsp; &nbsp; &nbsp;플레이어 주변 카드 때때로 찾지 못하는 버그<br/>
+- 가방 UI 이미지 스프라이트 추가<br/>
+- 가방 추가 (유물 보관용)<br/>
+- 유물 아이콘 UI 프리팹화<br/>

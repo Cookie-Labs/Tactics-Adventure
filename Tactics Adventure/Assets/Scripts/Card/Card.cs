@@ -10,6 +10,7 @@ public abstract class Card : MonoBehaviour, IPoolObject
 {
     [Title("변수")]
     public int pos;
+    public float animTime;
     public CardType type;
     public bool isTurn; // 턴제 확인
 
@@ -106,6 +107,7 @@ public abstract class Card : MonoBehaviour, IPoolObject
     public void SetAnim(Animator _anim, AnimID id)
     {
         _anim.SetTrigger(id.ToString());
+        animTime = _anim.GetCurrentAnimatorStateInfo(0).length;
     }
     #endregion
 

@@ -7,14 +7,17 @@ using DG.Tweening;
 public abstract class Trap : MonoBehaviour, IPoolObject
 {
     public TrapData data;
+    public int waitCount;
     private int curZ;
 
     [HideInInspector] public Animator anim;
+    private CSVManager csvManager;
 
     public virtual void OnCreatedInPool()
     {
         name = name.Replace("(Clone)", "");
 
+        csvManager = CSVManager.Instance;
         anim = GetComponent<Animator>();
     }
 
@@ -24,15 +27,16 @@ public abstract class Trap : MonoBehaviour, IPoolObject
         curZ = 0;
     }
 
-    public void SetTrap()
+    public void SetTrap(TrapType type)
     {
+        data = csvManager.csvList.FindTrap(type);
         if (data.isWait)
             RanWait();
     }
 
     public void RanWait()
     {
-        data.wait = Random.Range(2, 5); // 난이도 설정
+        waitCount = Random.Range(2, 5); // 난이도 설정
     }
 
     public void DORotate()
@@ -43,4 +47,4 @@ public abstract class Trap : MonoBehaviour, IPoolObject
     }
 }
 
-public enum TrapType { Spike1, Spike2, Spike3, Spike4, Flame, Suriken}
+public enum TrapType { Spike1, Spike2, Spike3, Spike4, Flame, Suriken }

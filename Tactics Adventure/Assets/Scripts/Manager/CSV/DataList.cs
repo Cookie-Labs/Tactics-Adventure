@@ -33,7 +33,7 @@ public struct RelicData
 {
     public string name, explanation;
     public Tier tier;
-    public bool isHave;
+    public bool isCollect;
     public int index;
 }
 
@@ -44,7 +44,6 @@ public struct TrapData
     public TrapType type;
     public Direction[] targetDir;
     public bool isWait;
-    public int wait;
 }
 
 [Serializable]
@@ -71,18 +70,32 @@ public struct ExplainData
 }
 
 [Serializable]
+public struct TierColor
+{
+    public Tier tier;
+    public Color color;
+}
+
+[Serializable]
 public class CSVList
 {
     public RelicData[] relicDatas;
     public WeaponData[] weaponDatas;
+    public TrapData[] trapDatas;
     public StageMonsterData[] stageMonsterDatas;
     public MonsterType[] availMonList;
     public ExplainData[] explainDatas;
+    public TierColor[] tierColors;
 
     #region Relic
     public RelicData FindRelic(int index)
     {
         return relicDatas[index];
+    }
+
+    public ref RelicData ExportRelic(RelicData data)
+    {
+        return ref relicDatas[data.index];
     }
     #endregion
 
@@ -117,12 +130,26 @@ public class CSVList
     }
     #endregion
 
+    #region Trap
+    public TrapData FindTrap(TrapType type)
+    {
+        return Array.Find(trapDatas, data => data.type == type);
+    }
+    #endregion
+
     #region Explain
     public string ExportExplain_Ran(CardType type)
     {
         ExplainData explainData = Array.Find(explainDatas, data => data.type == type);
 
         return explainData.explains[UnityEngine.Random.Range(0, explainData.explains.Length)];
+    }
+    #endregion
+
+    #region Tier
+    public Color ExportColor(Tier tier)
+    {
+        return Array.Find(tierColors, color => color.tier == tier).color;
     }
     #endregion
 }
