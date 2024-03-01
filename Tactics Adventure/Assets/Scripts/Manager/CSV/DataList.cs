@@ -33,7 +33,6 @@ public struct RelicData
 {
     public string name, explanation;
     public Tier tier;
-    public bool isCollect;
     public int index;
 }
 
@@ -43,7 +42,6 @@ public struct TrapData
     public string name;
     public TrapType type;
     public Direction[] targetDir;
-    public bool isWait;
 }
 
 [Serializable]

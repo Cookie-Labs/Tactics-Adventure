@@ -104,9 +104,12 @@ public abstract class Card : MonoBehaviour, IPoolObject
             .Append(spriteRenderer.DOColor(Color.white, 0.1f)).SetUpdate(true);
     }
 
-    public void SetAnim(Animator _anim, AnimID id)
+    public IEnumerator SetAnim(Animator _anim, AnimID id)
     {
         _anim.SetTrigger(id.ToString());
+
+        yield return new WaitForEndOfFrame();
+
         animTime = _anim.GetCurrentAnimatorStateInfo(0).length;
     }
     #endregion

@@ -42,8 +42,7 @@ public class Card_Monster : Card
         SetUI($"<sprite=1>{hp}");
 
         // 피격 애니메이션 (딜레이 포함)
-        SetAnim(monster.anim, AnimID.Damaged);
-        yield return new WaitForEndOfFrame();
+        yield return SetAnim(monster.anim, AnimID.Damaged);
         yield return new WaitForSeconds(animTime);
 
         if (hp <= 0)
@@ -57,8 +56,7 @@ public class Card_Monster : Card
         DODamaged();
         SetUI($"<sprite=1>{hp}");
 
-        SetAnim(monster.anim, AnimID.Atk);
-        yield return new WaitForEndOfFrame();
+        yield return SetAnim(monster.anim, AnimID.Atk);
         yield return new WaitForSeconds(animTime);
 
         if (hp <= 0)
@@ -70,8 +68,7 @@ public class Card_Monster : Card
         // 변수 설정
         hp = 0;
 
-        SetAnim(monster.anim, AnimID.Die);
-        yield return new WaitForEndOfFrame();
+        yield return SetAnim(monster.anim, AnimID.Die);
         yield return new WaitForSeconds(animTime);
 
         spawnManager.ChangeCoinCard(this, monster.data.hp);

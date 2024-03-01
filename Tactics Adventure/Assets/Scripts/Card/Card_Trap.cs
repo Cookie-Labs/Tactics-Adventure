@@ -8,7 +8,6 @@ public class Card_Trap : Card
 {
     [Title("자식 변수")]
     public int dmg;
-    public int curWait; // isWait이라면 사용
     public Direction[] targetDir;
 
     // 자식 컴포넌트
@@ -22,11 +21,9 @@ public class Card_Trap : Card
         dmg = UnityEngine.Random.Range(1, 10); // 데미지
         targetDir = new Direction[trap.data.targetDir.Length];
         Array.Copy(trap.data.targetDir, targetDir, trap.data.targetDir.Length); // 타겟 방향
-        if (trap.data.isWait) // 기다리는 타입 트랩 설정
-            curWait = trap.waitCount;
 
         SetCardName(trap.data.name);
-        SetUI(SetUIText());
+        SetUI($"<sprite=0>{dmg}");
     }
 
     public override void DestroyCard()
@@ -37,20 +34,20 @@ public class Card_Trap : Card
 
     public override IEnumerator DoCard()
     {
-        if (curWait == 0)
-            yield return Atk();
+        yield return Atk();
 
         yield return spawnManager.playerCard.Move(pos);
     }
 
     public override void DoTurnCard()
     {
-        trap.DORotate();
         // 목표 타겟 바꾸기 (전 방향은 굳이 계산 x)
         int length = targetDir.Length;
         if (length < 4)
         {
-            for(int i = 0; i < length; i++)
+            trap.DORotate();
+
+            for (int i = 0; i < length; i++)
             {
                 // 회전 진행
                 targetDir[i]++;
@@ -79,14 +76,16 @@ public class Card_Trap : Card
     {
         dmg = _amount;
 
-        SetUI(SetUIText());
+        SetUI($"<sprite=0>{dmg}");
     }
 
     public IEnumerator Atk()
     {
         Card[] neighborCard = FindNeighbors(targetDir);
 
-        SetAnim(trap.anim, AnimID.Atk);
+        yield return SetAnim(trap.anim, AnimID.Atk);
+
+        animTime = trap.anim.GetCurrentAnimatorStateInfo(0).length;
         float maxAnim = animTime;
 
         foreach (Card card in neighborCard)
@@ -94,7 +93,6 @@ public class Card_Trap : Card
             card.StartCoroutine(card.Damaged(dmg));
             maxAnim = Mathf.Max(maxAnim, card.animTime);
         }
-        yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(maxAnim);
     }
 
@@ -102,24 +100,5 @@ public class Card_Trap : Card
     {
         dmg = 0;
         spawnManager.ChangeCard(this, CardType.Empty);
-    }
-
-    public string SetUIText()
-    {
-        string s = ""; // 빈 문자열 준비
-
-        // 트랩이 기다리는 형이라면
-        if (trap.data.isWait)
-        {
-            for (int i = 0; i < curWait; i++)
-                s += "<sprite=5> ";
-            for (int i = 0; i < trap.waitCount - curWait; i++)
-                s += "<sprite=6> ";
-            s = s.TrimEnd();
-        }
-        else // 트랩이 회전 형이라면
-            s = $"<sprite=0>{dmg}";
-
-        return s;
     }
 }

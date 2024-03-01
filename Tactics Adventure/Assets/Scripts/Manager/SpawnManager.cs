@@ -389,7 +389,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
         int ranRelic = RandomID(csvList.relicDatas.Length);
 
-        if (csvList.FindRelic(ranRelic).isCollect)
+        if (RelicManager.Instance.CheckRelicCollection(ranRelic))
             return SpawnRelic_Ran(parent);
 
         return SpawnRelic(ranRelic, parent);

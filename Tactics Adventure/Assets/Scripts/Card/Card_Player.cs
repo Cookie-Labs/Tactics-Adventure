@@ -72,8 +72,7 @@ public class Card_Player : Card
         transform.SetParent(targetTrans); // 부모 설정
         // 변수 설정
         pos = _pos;
-        SetAnim(player.anim, AnimID.Walk);
-        yield return new WaitForEndOfFrame();
+        yield return SetAnim(player.anim, AnimID.Walk);
 
         // 이동 중
         transform.DOMove(targetTrans.position, 0.5f).SetEase(Ease.OutBounce).SetUpdate(true).OnComplete(() => {
@@ -126,7 +125,6 @@ public class Card_Player : Card
     {
         Passive();
 
-        uiManager.CheckSkillUI();
         uiManager.handUI.HandImgUI();
         uiManager.handUI.WeaponIconUI();
         SetIconTxt();
@@ -148,8 +146,7 @@ public class Card_Player : Card
     {
         hp = 0;
 
-        SetAnim(player.anim, AnimID.Die);
-        yield return new WaitForEndOfFrame();
+        yield return SetAnim(player.anim, AnimID.Die);
         yield return new WaitForSeconds(animTime);
 
         Debug.Log("게임 종료");
@@ -172,8 +169,7 @@ public class Card_Player : Card
         StartCoroutine(Talk("아얏!", 0.5f));
 
         // 피격 애니메이션 (딜레이 포함)
-        SetAnim(player.anim, AnimID.Damaged);
-        yield return new WaitForEndOfFrame();
+        yield return SetAnim(player.anim, AnimID.Damaged);
         yield return new WaitForSeconds(animTime);
 
         if (hp <= 0)
@@ -208,7 +204,7 @@ public class Card_Player : Card
             SetIconTxt();
 
             // 공격 애니메이션
-            SetAnim(player.anim, AnimID.Atk);
+            yield return SetAnim(player.anim, AnimID.Atk);
             StartCoroutine(Talk("죽어라!!", 1f));
 
             yield return monster.Damaged(defaultDmg);

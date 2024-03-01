@@ -81,6 +81,7 @@ public class TouchManager : Singleton<TouchManager>
             yield return new WaitForSeconds(0.1f);
         }
 
+        uiManager.CheckSkillUI();
         playerCard.SetNeighbor();
 
         isTouching = false;

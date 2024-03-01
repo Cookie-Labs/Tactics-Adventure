@@ -5,7 +5,14 @@ using Sirenix.OdinInspector;
 
 public class Card_Relics : Card
 {
+    private RelicManager relicManager;
     private Relic relic;
+
+    public override void OnCreatedInPool()
+    {
+        base.OnCreatedInPool();
+        relicManager = RelicManager.Instance;
+    }
 
     public override void SetCard()
     {
@@ -34,7 +41,7 @@ public class Card_Relics : Card
 
     private void CollectRelic()
     {
-        csvManager.csvList.ExportRelic(relic.data).isCollect = true;
+        relicManager.AddRelicList(relic);
         spawnManager.SpawnRelicIcon(relic.data.index);
     }
 }

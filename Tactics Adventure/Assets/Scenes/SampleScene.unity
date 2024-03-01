@@ -1900,11 +1900,6 @@ MonoBehaviour:
     _count: 8
     _container: {fileID: 0}
     _nonLazy: 0
-  - _name: Trap_Suriken
-    _component: {fileID: -7219221382559301300, guid: c08b51fbca9baf24f82f7cf256ae5440, type: 3}
-    _count: 8
-    _container: {fileID: 0}
-    _nonLazy: 0
   - _name: Weapon
     _component: {fileID: 8291101080416544501, guid: 3bff17b7e7e63074c95994943b4e8634, type: 3}
     _count: 8
@@ -2394,27 +2389,21 @@ MonoBehaviour:
     - name: "\uD654\uC5FC\uD568\uC815"
       type: 4
       targetDir: 00000000
-      isWait: 0
     - name: "\uAC00\uC2DC\uD568\uC815"
       type: 0
       targetDir: 00000000
-      isWait: 0
     - name: "\uC77C\uC790 \uAC00\uC2DC\uD568\uC815"
       type: 1
       targetDir: 0000000002000000
-      isWait: 0
     - name: "\uBC29\uC0AC\uD615 \uAC00\uC2DC\uD568\uC815"
       type: 2
       targetDir: 000000000100000002000000
-      isWait: 0
     - name: "\uC2ED\uC790 \uAC00\uC2DC\uD568\uC815"
       type: 3
       targetDir: 00000000010000000200000003000000
-      isWait: 0
     - name: "\uC6D0\uD615 \uAC00\uC2DC\uD568\uC815"
       type: 5
       targetDir: 00000000010000000200000003000000
-      isWait: 1
     stageMonsterDatas:
     - stage: 0
       type: 000000000100000002000000

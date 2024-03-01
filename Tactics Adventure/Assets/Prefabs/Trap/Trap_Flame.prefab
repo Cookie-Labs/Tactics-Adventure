@@ -96,7 +96,7 @@ Animator:
   m_GameObject: {fileID: 3773151898732757853}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 43f9c27737f5d0d4592f3600570ec7b7, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -123,4 +123,5 @@ MonoBehaviour:
     type: 4
     targetDir: 00000000
     isWait: 0
-    wait: 0
+  waitCount: 0
+  anim: {fileID: 0}
