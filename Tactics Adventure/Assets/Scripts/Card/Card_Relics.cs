@@ -39,9 +39,9 @@ public class Card_Relics : Card
         yield return new WaitForEndOfFrame();
     }
 
-    private void CollectRelic()
+    private IEnumerator CollectRelic()
     {
-        relicManager.AddRelicList(relic);
+        yield return relicManager.AddRelicList(relic);
         spawnManager.SpawnRelicIcon(relic.data.index);
     }
 }

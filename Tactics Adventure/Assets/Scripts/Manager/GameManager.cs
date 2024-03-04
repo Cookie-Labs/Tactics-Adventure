@@ -7,7 +7,7 @@ public class GameManager : Singleton<GameManager>
 {
     [Title("변수 (저장O)")]
     public PlayerType playerType;
-    public int money;
+    public int totalMoney;
 
     [Title("변수 (저장X)")]
     public Stage stage;
@@ -15,16 +15,7 @@ public class GameManager : Singleton<GameManager>
 
     [Title("수치 변수 (조정 가능)")]
     public int[] coinUnit;
-    public int weaponPerDmg;
     public int maxPortion;
-    public int[] luck;
-
-    public void EarnMoney(int coin)
-    {
-        money += coin;
-
-        UIManager.Instance.MoneyTxt(money);
-    }
 }
 
 public enum Stage { Grass = 0, Cave, Swarm, Forest }

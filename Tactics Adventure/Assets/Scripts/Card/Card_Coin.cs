@@ -30,7 +30,7 @@ public class Card_Coin : Card
 
     public override IEnumerator DoCard()
     {
-        gameManager.EarnMoney(amount); // µ· ¹ú±â
+        csvManager.money.EarnMoney(amount); // µ· ¹ú±â
         yield return spawnManager.playerCard.Move(pos);
     }
 

@@ -50,6 +50,7 @@ public struct WeaponData
     public string name;
     public WeaponType type;
     public Tier tier;
+    public WeaponAttribute attribute;
     public int index;
 }
 
@@ -120,6 +121,19 @@ public class CSVList
             Debug.LogError("무기 찾기 오류");
             return validWeapons[0];
         }
+    }
+
+    public WeaponData FindWeapon(Tier _tier)
+    {
+        // 조건 맞춤 무기 리스트
+        WeaponData[] validWeapons = Array.FindAll(weaponDatas, data => data.tier == _tier);
+
+        return validWeapons[UnityEngine.Random.Range(0, validWeapons.Length)];
+    }
+
+    public WeaponData[] FindWeapon(WeaponAttribute attribute)
+    {
+        return Array.FindAll(weaponDatas, data => data.attribute == attribute);
     }
 
     public WeaponData FindWeapon(int ID)

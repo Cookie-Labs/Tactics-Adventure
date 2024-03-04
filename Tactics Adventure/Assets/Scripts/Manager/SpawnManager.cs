@@ -4,7 +4,6 @@ using UnityEngine;
 using Redcode.Pools;
 using System.Linq;
 using Sirenix.OdinInspector;
-using UnityEngine.UI;
 
 public class SpawnManager : Singleton<SpawnManager>
 {
@@ -354,7 +353,7 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         int ranType = RandomID(System.Enum.GetValues(typeof(WeaponType)).Length);
 
-        Tier ranTier = LuckToTier();
+        Tier ranTier = CSVManager.Instance.luck.LuckToTier();
 
         return SpawnWeapon((WeaponType)ranType, ranTier, parent);
     }
@@ -413,22 +412,6 @@ public class SpawnManager : Singleton<SpawnManager>
         return icon;
     }
     #endregion
-
-    public Tier LuckToTier()
-    {
-        int[] luck = GameManager.Instance.luck;
-        int sum = luck.Sum();
-
-        int ranTier = Random.Range(0, sum);
-
-        for (int i = 0; i < luck.Length; i++)
-        {
-            if (ranTier < luck[i])
-                return (Tier)i;
-        }
-
-        return Tier.Common;
-    }
 
     public int RandomID(int last)
     {

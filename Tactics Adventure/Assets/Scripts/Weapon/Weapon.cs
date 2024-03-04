@@ -42,3 +42,4 @@ public class Weapon : MonoBehaviour, IPoolObject
 }
 
 public enum WeaponType { LongSword = 0, ShortSword, Wand, Book }
+public enum WeaponAttribute { Physics, Magic }

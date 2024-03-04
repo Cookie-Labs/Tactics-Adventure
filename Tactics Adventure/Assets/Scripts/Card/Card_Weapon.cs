@@ -15,7 +15,7 @@ public class Card_Weapon : Card
     {
         weapon = spawnManager.SpawnWeapon_Ran(objTrans); // 무기 소환
 
-        SetDmg(); // 변수 설정
+        dmg = csvManager.luck.TierToDmg(weapon.data.tier);
 
         SetCardName(weapon.data.name);
         SetUI($"<sprite=0>{dmg}");
@@ -37,14 +37,5 @@ public class Card_Weapon : Card
     public override IEnumerator Damaged(int _amount)
     {
         yield return new WaitForEndOfFrame();
-    }
-
-    private void SetDmg()
-    {
-        int dmgPer = gameManager.weaponPerDmg;
-        int tierID = (int)weapon.data.tier;
-
-        dmg = Random.Range(dmgPer * tierID, dmgPer * (tierID + 1)); // 티어에 따라 무작위 공격력 설정
-        dmg = Mathf.Max(1, dmg); // 무기 데미지 0 방지
     }
 }

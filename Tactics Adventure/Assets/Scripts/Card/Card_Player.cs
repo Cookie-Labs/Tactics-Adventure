@@ -130,6 +130,13 @@ public class Card_Player : Card
         SetIconTxt();
     }
 
+    public void SetMaxHP(int max)
+    {
+        player.data.hp = max;
+
+        hp = Mathf.Min(player.data.hp, hp);
+    }
+
     public void HealHP(int amount)
     {
         hp += amount; // 체력회복
@@ -140,6 +147,11 @@ public class Card_Player : Card
     {
         mp += amount; // 체력회복
         mp = Mathf.Min(mp, player.data.mp); // 최대체력 확인
+    }
+
+    public void UpDefend(int amount)
+    {
+        defend += amount;
     }
 
     private IEnumerator Die()
@@ -247,7 +259,11 @@ public class Card_Player : Card
 
     public void UpDmg(int dmg)
     {
-        equipWeapon[curHand].dmg += dmg;
+        if (equipWeapon[curHand].dmg != 0)
+            equipWeapon[curHand].dmg += dmg;
+        else if (equipWeapon[(curHand + 1) % 2].dmg != 0)
+            equipWeapon[(curHand + 1) % 2].dmg += dmg;
+        else return;
     }
 
     public void Poisoned()
