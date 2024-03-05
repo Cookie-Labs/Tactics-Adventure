@@ -5,9 +5,6 @@ using Sirenix.OdinInspector;
 
 public class Card_Weapon : Card
 {
-    [Title("자식 변수")]
-    public int dmg;
-
     // 자식 컴포넌트
     [HideInInspector] public Weapon weapon;
 
@@ -15,10 +12,10 @@ public class Card_Weapon : Card
     {
         weapon = spawnManager.SpawnWeapon_Ran(objTrans); // 무기 소환
 
-        dmg = csvManager.luck.TierToDmg(weapon.data.tier);
+        weapon.data.plus.dmg = csvManager.luck.TierToDmg(weapon.data.tier);
 
         SetCardName(weapon.data.name);
-        SetUI($"<sprite=0>{dmg}");
+        SetUI($"<sprite=0>{weapon.data.plus.dmg}");
     }
 
     public override void DestroyCard()

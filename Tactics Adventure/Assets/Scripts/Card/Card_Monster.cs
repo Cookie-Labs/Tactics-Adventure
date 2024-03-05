@@ -71,6 +71,9 @@ public class Card_Monster : Card
         yield return SetAnim(monster.anim, AnimID.Die);
         yield return new WaitForSeconds(animTime);
 
+        if (spawnManager.playerCard.isLotto && csvManager.luck.Probability(0.01f))
+            csvManager.money.EarnMoney(500);
+
         spawnManager.ChangeCoinCard(this, monster.data.hp);
     }
 }

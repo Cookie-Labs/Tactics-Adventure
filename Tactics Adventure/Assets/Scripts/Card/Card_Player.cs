@@ -13,12 +13,16 @@ public class Card_Player : Card
     public int mp;
     public int defend;
     public int curHand;
-    public EquipWeapon[] equipWeapon = new EquipWeapon[2];
+    public WeaponData[] equipWeapon = new WeaponData[2];
     public Card[] neighborCards;
     public int poisonCount;
     public int activeMP;
     public int passiveCount;
     public bool isTalking;
+
+    [Title("특성", "유물 관련")]
+    public int bonusDmg;
+    public bool isLotto;
 
     // 자식 컴포넌트
     [Title("플레이어 컴포넌트")]
@@ -194,7 +198,7 @@ public class Card_Player : Card
     {
         int defaultDmg;
         // 무기가 없다면
-        if (equipWeapon[curHand].dmg == 0)
+        if (equipWeapon[curHand].plus.dmg == 0)
         {
             defaultDmg = Mathf.Min(hp, monster.hp);
 
@@ -206,12 +210,15 @@ public class Card_Player : Card
         // 무기가 있다면
         else
         {
-            defaultDmg = Mathf.Min(equipWeapon[curHand].dmg, monster.hp);
+            defaultDmg = Mathf.Min(equipWeapon[curHand].plus.dmg, monster.hp);
 
-            equipWeapon[curHand].dmg -= defaultDmg;
+            equipWeapon[curHand].plus.dmg -= defaultDmg;
 
-            if (equipWeapon[curHand].dmg <= 0) // 무기 깨짐
-                equipWeapon[curHand] = new EquipWeapon();
+            if (equipWeapon[curHand].plus.dmg <= 0) // 무기 깨짐
+            {
+                equipWeapon[curHand] = new WeaponData();
+            }
+
 
             SetIconTxt();
 
@@ -219,31 +226,33 @@ public class Card_Player : Card
             yield return SetAnim(player.anim, AnimID.Atk);
             StartCoroutine(Talk("죽어라!!", 1f));
 
-            yield return monster.Damaged(defaultDmg);
+            yield return monster.Damaged(defaultDmg + bonusDmg);
         }
     }
 
     public void EquipWeapon(Card_Weapon weaponCard)
     {
         // 현재 손에 무기 X || 모든 손에 무기
-        if(equipWeapon[curHand].dmg == 0 || (equipWeapon[0].dmg != 0 && equipWeapon[1].dmg != 0))
-            equipWeapon[curHand] = new EquipWeapon(weaponCard.dmg, weaponCard.weapon.data); // 현재 손에 무기 장착
+        if (equipWeapon[curHand].plus.dmg == 0 || (equipWeapon[0].plus.dmg != 0 && equipWeapon[1].plus.dmg != 0))
+            equipWeapon[curHand] = weaponCard.weapon.data; // 현재 손에 무기 장착
 
         // 다른 손에 무기 X
-        else if (equipWeapon[(curHand + 1) % 2].dmg == 0)
-            equipWeapon[(curHand + 1) % 2] = new EquipWeapon(weaponCard.dmg, weaponCard.weapon.data); // 다른 손에 무기 장착
+        else if (equipWeapon[(curHand + 1) % 2].plus.dmg == 0)
+            equipWeapon[(curHand + 1) % 2] = weaponCard.weapon.data; // 다른 손에 무기 장착
     }
 
-    public void EquipWeapon(int ID, int _dmg)
+    public void EquipWeapon(int ID)
     {
         WeaponData newWeapon = csvManager.csvList.FindWeapon(ID);
-        // 현재 손에 무기 X || 모든 손에 무기
-        if (equipWeapon[curHand].dmg == 0 || (equipWeapon[0].dmg != 0 && equipWeapon[1].dmg != 0))
-            equipWeapon[curHand] = new EquipWeapon(_dmg, newWeapon); // 현재 손에 무기 장착
+        newWeapon.plus.dmg = csvManager.luck.TierToDmg(newWeapon.tier);
+
+        // 현재 손에 무기 X || 모든 손에 무기 O
+        if (equipWeapon[curHand].plus.dmg == 0 || (equipWeapon[0].plus.dmg != 0 && equipWeapon[1].plus.dmg != 0))
+            equipWeapon[curHand] = newWeapon; // 현재 손에 무기 장착
 
         // 다른 손에 무기 X
-        else if(equipWeapon[(curHand + 1) % 2].dmg == 0)
-            equipWeapon[(curHand + 1) % 2] = new EquipWeapon(_dmg, newWeapon); // 다른 손에 무기 장착
+        else if(equipWeapon[(curHand + 1) % 2].plus.dmg == 0)
+            equipWeapon[(curHand + 1) % 2] = newWeapon; // 다른 손에 무기 장착
     }
 
     public void ChangeHand(int _number)
@@ -259,10 +268,10 @@ public class Card_Player : Card
 
     public void UpDmg(int dmg)
     {
-        if (equipWeapon[curHand].dmg != 0)
-            equipWeapon[curHand].dmg += dmg;
-        else if (equipWeapon[(curHand + 1) % 2].dmg != 0)
-            equipWeapon[(curHand + 1) % 2].dmg += dmg;
+        if (equipWeapon[curHand].plus.dmg != 0)
+            equipWeapon[curHand].plus.dmg += dmg;
+        else if (equipWeapon[(curHand + 1) % 2].plus.dmg != 0)
+            equipWeapon[(curHand + 1) % 2].plus.dmg += dmg;
         else return;
     }
 
@@ -299,7 +308,11 @@ public class Card_Player : Card
 
     private void SetIconTxt()
     {
-        uiText.text = $"<sprite=0>{equipWeapon[curHand].dmg}  <sprite=1>{hp}";
+        if(equipWeapon[curHand].plus.dmg != 0 && bonusDmg > 0)
+            uiText.text = $"<sprite=0>{equipWeapon[curHand].plus.dmg}<color=orange>+{bonusDmg}</color> <sprite=1>{hp}";
+        else
+            uiText.text = $"<sprite=0>{equipWeapon[curHand].plus.dmg} <sprite=1>{hp}";
+
         iconTxt.text = $"<sprite=2>{defend}  <sprite=3>{mp}";
     }
 }

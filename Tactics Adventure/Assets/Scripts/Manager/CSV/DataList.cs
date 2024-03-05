@@ -51,7 +51,13 @@ public struct WeaponData
     public WeaponType type;
     public Tier tier;
     public WeaponAttribute attribute;
+    public WeaponPlus plus;
     public int index;
+}
+[Serializable]
+public struct WeaponPlus
+{
+    public int dmg;
 }
 
 [Serializable]
@@ -168,16 +174,3 @@ public class CSVList
 
 // 기타 데이터
 public enum AnimID { Idle, Walk, Damaged, Atk, Die, Interaction}
-
-[Serializable]
-public struct EquipWeapon
-{
-    public int dmg;
-    public WeaponData weaponData;
-
-    public EquipWeapon(int _dmg, WeaponData _data)
-    {
-        dmg = _dmg;
-        weaponData = _data;
-    }
-}

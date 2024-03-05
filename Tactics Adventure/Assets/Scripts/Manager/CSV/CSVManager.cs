@@ -43,7 +43,7 @@ public class CSVManager : Singleton<CSVManager>
 
     public void WeaponCSVReading()
     {
-        int order = 1; int size = 3;
+        int order = 1; int size = 4;
         string[] data = textAssets[order].text.Split(new string[] { ",", "\n" }, StringSplitOptions.None);
         int tableSize = data.Length / size - 1;
         csvList.weaponDatas = new WeaponData[tableSize];
@@ -124,12 +124,10 @@ public class Luck
         return (int)MathF.Max(1, UnityEngine.Random.Range(weaponPerDmg * tierID, weaponPerDmg * (tierID + 1)));
     }
 
-    public (WeaponData data, int dmg) TierToWeapon(WeaponData[] datas)
+    public WeaponData TierToWeapon(WeaponData[] datas)
     {
         WeaponData[] weaponDatas = Array.FindAll(datas, data => data.tier == LuckToTier());
-        WeaponData weaponData = weaponDatas[UnityEngine.Random.Range(0, weaponDatas.Length)];
-
-        return (weaponData, TierToDmg(weaponData.tier));
+        return weaponDatas[UnityEngine.Random.Range(0, weaponDatas.Length)];
     }
 }
 

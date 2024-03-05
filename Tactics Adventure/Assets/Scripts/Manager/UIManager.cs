@@ -25,7 +25,6 @@ public class UIManager : Singleton<UIManager>
     [Title("°¡¹æ UI")]
     public BagUI bagUI;
 
-
     public void CheckSkillUI()
     {
         Card_Player playerCard = SpawnManager.Instance.playerCard;
@@ -93,7 +92,7 @@ public class HandUI
 
         for(int i = 0; i < 2; i++)
         {
-            Sprite handSprite = (player.equipWeapon[i].dmg == 0) ? spriteData.handSprites[i + 2] : spriteData.handSprites[i];
+            Sprite handSprite = (player.equipWeapon[i].plus.dmg == 0) ? spriteData.handSprites[i + 2] : spriteData.handSprites[i];
             handImg[i].sprite = handSprite;
         }
     }
@@ -115,7 +114,7 @@ public class HandUI
 
         for (int i = 0; i < 2; i++)
         {
-            if (player.equipWeapon[i].dmg == 0)
+            if (player.equipWeapon[i].plus.dmg == 0)
             {
                 weaponIcon[i].gameObject.SetActive(false);
                 weaponIcon[i].sprite = null;
@@ -124,7 +123,7 @@ public class HandUI
             else
             {
                 weaponIcon[i].gameObject.SetActive(true);
-                weaponIcon[i].sprite = spriteData.ExportWeaponSprite(player.equipWeapon[i].weaponData.index);
+                weaponIcon[i].sprite = spriteData.ExportWeaponSprite(player.equipWeapon[i].index);
                 weaponIcon[i].SetNativeSize();
             }
         }

@@ -352,11 +352,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerType: 0
-  money: 0
+  totalMoney: 0
   stage: 0
   level: 0
   coinUnit: 0a0000001e000000
-  weaponPerDmg: 3
   maxPortion: 10
 --- !u!4 &101397055
 Transform:
@@ -2438,6 +2437,9 @@ MonoBehaviour:
   luck:
     luck: 1
     tierLuck: 3c0000001e0000000700000003000000
+    weaponPerDmg: 3
+  money:
+    money: 0
   textAssets:
   - {fileID: 4900000, guid: 133909a323918df408bfc5c6f6a49f41, type: 3}
   - {fileID: 4900000, guid: 470e990f6eed3d349823e46671551ca0, type: 3}

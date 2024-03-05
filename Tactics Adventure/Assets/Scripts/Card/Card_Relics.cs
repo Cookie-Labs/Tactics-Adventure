@@ -30,7 +30,7 @@ public class Card_Relics : Card
 
     public override IEnumerator DoCard()
     {
-        CollectRelic();
+        yield return CollectRelic();
         yield return spawnManager.playerCard.Move(pos);
     }
 

@@ -12,6 +12,7 @@ public class Weapon : MonoBehaviour, IPoolObject
     private SpriteRenderer spriteRenderer;
 
     // 매니저
+    private CSVManager csvManager;
     private SpriteData spriteData;
 
     public virtual void OnCreatedInPool()
@@ -19,6 +20,8 @@ public class Weapon : MonoBehaviour, IPoolObject
         name = name.Replace("(Clone)", "");
 
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        csvManager = CSVManager.Instance;
         spriteData = SpriteData.Instance;
     }
 
@@ -30,6 +33,7 @@ public class Weapon : MonoBehaviour, IPoolObject
     {
         // 변수 대입
         data = _data;
+        data.plus.dmg = csvManager.luck.TierToDmg(data.tier);
 
         // 스프라이트 설정
         SetSprite();

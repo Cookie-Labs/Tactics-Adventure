@@ -95,6 +95,7 @@ public class TouchManager : Singleton<TouchManager>
         sm.DoTurnCards();
         yield return new WaitForSeconds(0.1f);
 
+        UIManager.Instance.CheckSkillUI();
         sm.playerCard.SetNeighbor();
 
         yield return null;

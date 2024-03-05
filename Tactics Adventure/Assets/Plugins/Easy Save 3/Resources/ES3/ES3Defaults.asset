@@ -34,7 +34,6 @@ MonoBehaviour:
     - Assembly-CSharp-firstpass
     - Nementic.SelectionUtility.Runtime
     - Nementic.SelectionUtility.Samples
-    - ProCamera2D.Examples
     - ProCamera2D.Runtime
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0

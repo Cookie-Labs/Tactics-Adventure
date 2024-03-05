@@ -36,7 +36,7 @@ public class RelicManager : Singleton<RelicManager>
 
         float delay = 0f;
 
-        switch(relicID)
+        switch (relicID)
         {
             // 벌크업: 최대체력 1 증가 (완)
             case 1:
@@ -83,20 +83,20 @@ public class RelicManager : Singleton<RelicManager>
             case 12:
                 // 상점 제작 후 제작
                 break;
-            // 쇠약: 모든 몬스터 피해 3
+            // 쇠약: 모든 몬스터 피해 3 (완)
             case 13:
                 delay += AtkAll(3);
                 break;
-            // 로또: 몬스터 처치 시 1% 확률로 500코인 획득
+            // 로또: 몬스터 사망 시 1% 확률로 500코인 획득 (완)
             case 14:
-                // 운 패치 후 제작
+                player.isLotto = true;
                 break;
             // 임상실험: 무작위 포션 섭취
             case 15:
                 PortionType ranType = (PortionType)Random.Range(0, System.Enum.GetValues(typeof(PortionType)).Length);
                 int amount = Random.Range(0, 5);
 
-                switch(ranType)
+                switch (ranType)
                 {
                     case PortionType.HP:
                         player.HealHP(amount);
@@ -109,34 +109,35 @@ public class RelicManager : Singleton<RelicManager>
                         break;
                 }
                 break;
-            // 목장갑: 공격력 +1
+            // 목장갑: 공격력 +1 (완)
             case 16:
-                // 보너스(기본) 공격력 제작 후 제작
+                player.bonusDmg++;
                 break;
-            // 웨폰 마스터: 공격력 +2
+            // 웨폰 마스터: 공격력 +2 (완)
             case 17:
-                // 보너스(기본) 공격력 제작 후 제작
+                player.bonusDmg += 2;
                 break;
-            // 슈프림: 공격력 +3
+            // 슈프림: 공격력 +3 (완)
             case 18:
-                // 보너스(기본) 공격력 제작 후 제작
+                player.bonusDmg += 3;
                 break;
-            // 맹독: 내 무기에 공격력 +3
+            // 맹독: 내 무기에 공격력 +3 (완)
             case 19:
                 player.UpDmg(3);
                 break;
+            // 착취: 내 무기에 생명력흡수 부여
             case 20:
                 // 생명력 흡수 제작
                 break;
-            // 하급 주문서: 60% 내 무기 공격력 +5
+            // 하급 주문서: 60% 내 무기 공격력 +5 (완)
             case 21:
                 player.UpDmg(OrderSheet(0.6f, 5));
                 break;
-            // 중급 주문서: 40% 내 무기 공격력 +10
+            // 중급 주문서: 40% 내 무기 공격력 +10 (완)
             case 22:
                 player.UpDmg(OrderSheet(0.4f, 10));
                 break;
-            // 상급 주문서: 10% 내 무기 공격력 +25
+            // 상급 주문서: 10% 내 무기 공격력 +25 (완)
             case 23:
                 player.UpDmg(OrderSheet(0.1f, 25));
                 break;
@@ -272,16 +273,16 @@ public class RelicManager : Singleton<RelicManager>
                 break;
             // 무기파괴술: 현재 장착한 무기를 파괴 후 모든 몬스터에게 그만큼 피해
             case 61:
-                delay += AtkAll(player.equipWeapon[player.curHand].dmg);
-                player.equipWeapon[player.curHand] = new EquipWeapon();
+                delay += AtkAll(player.equipWeapon[player.curHand].plus.dmg);
+                player.equipWeapon[player.curHand] = new WeaponData();
                 break;
             // 요상한버섯: 전설 등급 무기를 얻습니다.
             case 62:
-                player.EquipWeapon(csvList.FindWeapon(Tier.Legend).index, luck.TierToDmg(Tier.Legend));
+                player.EquipWeapon(csvList.FindWeapon(Tier.Legend).index);
                 break;
             // 스컬: 뼈다귀 얻습니다
             case 63:
-                player.EquipWeapon(28, luck.TierToDmg(csvList.FindWeapon(28).tier));
+                player.EquipWeapon(28);
                 break;
             // 작은고추: 공격력이 5턴동안 1 증가함
             case 64:
@@ -305,11 +306,11 @@ public class RelicManager : Singleton<RelicManager>
                 break;
             // 작은지니: 레어 등급 무기 줌
             case 72:
-                player.EquipWeapon(csvList.FindWeapon(Tier.Rare).index, luck.TierToDmg(Tier.Rare));
+                player.EquipWeapon(csvList.FindWeapon(Tier.Rare).index);
                 break;
             // 큰지니: 에픽 등급 무기를 줌
             case 73:
-                player.EquipWeapon(csvList.FindWeapon(Tier.Epic).index, luck.TierToDmg(Tier.Epic));
+                player.EquipWeapon(csvList.FindWeapon(Tier.Epic).index);
                 break;
             // 펑펑펑: 모든 캐릭터 2 피해(자신도)
             case 74:
@@ -333,28 +334,28 @@ public class RelicManager : Singleton<RelicManager>
                 int expendMoney = 0;
                 Tier weaponTier = Tier.Common;
 
-                if(curMoney >= 300)
+                if (curMoney >= 300)
                 {
                     expendMoney = 300;
                     weaponTier = Tier.Legend;
                 }
-                else if(curMoney >= 150)
+                else if (curMoney >= 150)
                 {
                     expendMoney = 150;
                     weaponTier = Tier.Epic;
                 }
-                else if(curMoney >= 50)
+                else if (curMoney >= 50)
                 {
                     expendMoney = 50;
                     weaponTier = Tier.Rare;
                 }
-                else if(curMoney >= 10)
+                else if (curMoney >= 10)
                 {
                     expendMoney = 10;
                     weaponTier = Tier.Common;
                 }
                 csvManager.money.LoseMoney(expendMoney);
-                player.EquipWeapon(csvList.FindWeapon(weaponTier).index, luck.TierToDmg(weaponTier));
+                player.EquipWeapon(csvList.FindWeapon(weaponTier).index);
                 break;
             // 압수: 보유한 무기를 한 단계 낮은 등급의 무작위 무기로 바꿈
             case 78:
@@ -393,7 +394,7 @@ public class RelicManager : Singleton<RelicManager>
 
     private void EarnWeapon(WeaponData[] datas)
     {
-        (WeaponData, int) ranWeapon = CSVManager.Instance.luck.TierToWeapon(datas);
-        SpawnManager.Instance.playerCard.EquipWeapon(ranWeapon.Item1.index, ranWeapon.Item2);
+        WeaponData ranWeapon = CSVManager.Instance.luck.TierToWeapon(datas);
+        SpawnManager.Instance.playerCard.EquipWeapon(ranWeapon.index);
     }
 }
