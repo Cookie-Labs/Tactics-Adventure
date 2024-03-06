@@ -22,6 +22,7 @@ public class Card_Player : Card
 
     [Title("특성", "유물 관련")]
     public int bonusDmg;
+    public int invincible;
     public bool isLotto;
 
     // 자식 컴포넌트
@@ -142,6 +143,24 @@ public class Card_Player : Card
         hp = Mathf.Min(player.data.hp, hp);
     }
 
+    public void UpInvincible(int count)
+    {
+        if(FindEffect(EffectType.Invincible) == null)
+            effectList.Add(spawnManager.SpawnInvincible(backGround.transform));
+        invincible += count;
+    }
+
+    private void DoInvincible()
+    {
+        invincible--;
+
+        StartCoroutine(Talk("무적이지롱!", 0.5f));
+
+        Debug.Log(FindEffect(EffectType.Invincible));
+        if (invincible <= 0)
+            spawnManager.DeSpawnEffect(FindEffect(EffectType.Invincible));
+    }
+
     public void HealHP(int amount)
     {
         hp += amount; // 체력회복
@@ -171,19 +190,27 @@ public class Card_Player : Card
 
     public override IEnumerator Damaged(int _amount)
     {
-        // 방어 계산
-        if (defend > 0)
+        // 무적 O
+        if (invincible > 0)
+            DoInvincible();
+
+        // 무적 X
+        else
         {
-            defend -= _amount;
-            _amount = Mathf.Max(0, -defend);
-            defend = Mathf.Max(0, defend);
+            // 방어 계산
+            if (defend > 0)
+            {
+                defend -= _amount;
+                _amount = Mathf.Max(0, -defend);
+                defend = Mathf.Max(0, defend);
+            }
+
+            hp = Mathf.Max(0, hp - _amount);
+
+            DODamaged();
+            SetIconTxt();
+            StartCoroutine(Talk("아얏!", 0.5f));
         }
-
-        hp = Mathf.Max(0, hp - _amount);
-
-        DODamaged();
-        SetIconTxt();
-        StartCoroutine(Talk("아얏!", 0.5f));
 
         // 피격 애니메이션 (딜레이 포함)
         yield return SetAnim(player.anim, AnimID.Damaged);
@@ -241,6 +268,13 @@ public class Card_Player : Card
             return ref equipWeapon[(curHand + 1) % 2]; // 다른 손 return
 
         return ref equipWeapon[curHand]; // 현재 손 return
+    }
+
+    public void EnforceWeapon(EnforceID id)
+    {
+        if (GetEquipWeapon().plus.dmg == 0)
+            return;
+        GetEquipWeapon().plus.enforce[(int)id] = true;
     }
 
     public void EquipWeapon(Card_Weapon weaponCard)

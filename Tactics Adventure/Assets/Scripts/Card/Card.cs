@@ -21,6 +21,7 @@ public abstract class Card : MonoBehaviour, IPoolObject
     public TextMeshPro cardName;
     public TextMeshPro uiText;
     protected SpriteRenderer spriteRenderer;
+    protected List<Transform> effectList = new List<Transform>();
 
     // 외부 컴포넌트
     protected SpriteData spriteData;
@@ -81,6 +82,11 @@ public abstract class Card : MonoBehaviour, IPoolObject
     }
 
     public abstract IEnumerator Damaged(int _amount);
+
+    protected Transform FindEffect(EffectType type)
+    {
+        return effectList.Find(effectTransform => effectTransform.name == type.ToString());
+    }
 
     #region 애니메이션
     public void DOSpawn()

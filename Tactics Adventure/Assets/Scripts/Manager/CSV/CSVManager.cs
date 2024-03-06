@@ -91,7 +91,7 @@ public class Luck
     public int[] tierLuck = new int[4];
     public int weaponPerDmg;
 
-    public void GainLuck(float _gain)
+    public void GainLuck(float _gain) // ex) 10% -> 1.1f
     {
         luck *= _gain;
         luck = MathF.Floor(luck * 10f) / 10f;
@@ -106,11 +106,11 @@ public class Luck
     {
         int sum = tierLuck.Sum();
 
-        int ranTier = UnityEngine.Random.Range(0, sum);
+        int ranInt = UnityEngine.Random.Range(0, sum);
 
         for (int i = 0; i < tierLuck.Length; i++)
         {
-            if (ranTier * luck < tierLuck[i])
+            if (ranInt < tierLuck[i] * luck)
                 return (Tier)i;
         }
 

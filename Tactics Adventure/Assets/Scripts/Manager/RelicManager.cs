@@ -125,9 +125,9 @@ public class RelicManager : Singleton<RelicManager>
             case 19:
                 player.UpDmg(3);
                 break;
-            // 착취: 내 무기에 생명력흡수 부여
+            // 착취: 내 무기에 생명력흡수 부여 (완)
             case 20:
-                // 생명력 흡수 제작
+                player.EnforceWeapon(EnforceID.Drain);
                 break;
             // 하급 주문서: 60% 내 무기 공격력 +5 (완)
             case 21:
@@ -141,23 +141,23 @@ public class RelicManager : Singleton<RelicManager>
             case 23:
                 player.UpDmg(OrderSheet(0.1f, 25));
                 break;
-            // 스타: 딱 한번 모든 공격 무시
+            // 스타: 딱 한번 모든 공격 무시 (완)
             case 24:
-                // 무적 제작 후 제작
+                player.UpInvincible(1);
                 break;
-            // 버섯스프: 최대 체력 +3
+            // 버섯스프: 최대 체력 +3 (완)
             case 25:
                 player.SetMaxHP(player.player.data.hp + 3);
                 break;
-            // 방어도 +7
+            // 방어도 +7 (완)
             case 26:
                 player.UpDefend(7);
                 break;
-            // 럭키: 운 증가
+            // 럭키: 운 10% 증가 (완)
             case 27:
-                // 운 제작 후 제작
+                luck.GainLuck(1.1f);
                 break;
-            // 방패밀치기: 방어도 전부 잃고 그만큼 무기 공격력++
+            // 방패밀치기: 방어도 전부 잃고 그만큼 무기 공격력++ (완)
             case 28:
                 int dmg = player.defend;
                 player.defend = 0;

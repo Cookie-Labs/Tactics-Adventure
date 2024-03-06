@@ -413,8 +413,44 @@ public class SpawnManager : Singleton<SpawnManager>
     }
     #endregion
 
+    #region 이펙트
+    public Transform SpawnEffect(EffectType type, Transform parent)
+    {
+        Transform effect = PoolManager.Instance.GetFromPool<Transform>(type.ToString()); // 이펙트 소환
+
+        effect.name = effect.name.Replace("(Clone)", "");
+
+        // 위치 설정
+        effect.transform.SetParent(parent);
+        effect.transform.localPosition = Vector3.zero;
+        effect.transform.localScale = Vector3.one;
+
+        return effect;
+    }
+
+    public void DeSpawnEffect(Transform effect)
+    {
+        effect.transform.SetParent(null);
+
+        PoolManager.Instance.TakeToPool<Transform>(effect.name, effect);
+    }
+
+    public Transform SpawnInvincible(Transform parent)
+    {
+        Transform invincible = SpawnEffect(EffectType.Invincible, parent);
+
+        invincible.transform.localPosition = new Vector3(0, -0.2f, 0);
+
+        // invincible.GetComponentInChildren<TextMeshPro>().text = count.ToString();
+
+        return invincible;
+    }
+    #endregion
+
     public int RandomID(int last)
     {
         return Random.Range(0, last);
     }
 }
+
+public enum EffectType { Invincible }

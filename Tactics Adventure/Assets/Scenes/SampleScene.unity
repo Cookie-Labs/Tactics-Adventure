@@ -1970,6 +1970,11 @@ MonoBehaviour:
     _count: 0
     _container: {fileID: 1976773214}
     _nonLazy: 0
+  - _name: Invincible
+    _component: {fileID: 4206659449502644044, guid: c6453c75431bfdd40957baef5e31d316, type: 3}
+    _count: 0
+    _container: {fileID: 0}
+    _nonLazy: 0
 --- !u!4 &843055633
 Transform:
   m_ObjectHideFlags: 0
