@@ -49,8 +49,7 @@ public class Card_Consumable : Card
                     playerCard.HealMP(amount); // 마나회복
                     break;
                 case PortionType.Poison: // 독포션
-                    playerCard.Damaged(amount);
-                    playerCard.poisonCount = 4; // 독 효과는 모두 4턴 지속
+                    playerCard.GetPoison(amount);
                     break;
             }
         }

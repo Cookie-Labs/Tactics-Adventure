@@ -91,7 +91,7 @@ public class RelicManager : Singleton<RelicManager>
             case 14:
                 player.isLotto = true;
                 break;
-            // 임상실험: 무작위 포션 섭취
+            // 임상실험: 무작위 포션 섭취 (완)
             case 15:
                 PortionType ranType = (PortionType)Random.Range(0, System.Enum.GetValues(typeof(PortionType)).Length);
                 int amount = Random.Range(0, 5);
@@ -105,7 +105,7 @@ public class RelicManager : Singleton<RelicManager>
                         player.HealMP(amount);
                         break;
                     case PortionType.Poison:
-                        // 독 제작 후 제작
+                        player.GetPoison(amount);
                         break;
                 }
                 break;
@@ -271,10 +271,14 @@ public class RelicManager : Singleton<RelicManager>
             // 버그 404: ...
             case 60:
                 break;
-            // 무기파괴술: 현재 장착한 무기를 파괴 후 모든 몬스터에게 그만큼 피해
+            // 무기파괴술: 무기를 파괴 후 모든 몬스터에게 그만큼 피해 (무기가 없다면 1 피해)
             case 61:
-                delay += AtkAll(player.equipWeapon[player.curHand].plus.dmg);
-                player.equipWeapon[player.curHand] = new WeaponData();
+                dmg = player.GetEquipWeapon().plus.dmg;
+                if (dmg == 0)
+                    delay += AtkAll(1);
+                else
+                    delay += AtkAll(dmg);
+                player.GetEquipWeapon() = new WeaponData();
                 break;
             // 요상한버섯: 전설 등급 무기를 얻습니다.
             case 62:

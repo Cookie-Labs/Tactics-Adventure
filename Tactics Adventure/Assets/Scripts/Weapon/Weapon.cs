@@ -33,7 +33,10 @@ public class Weapon : MonoBehaviour, IPoolObject
     {
         // 변수 대입
         data = _data;
+
+        // 추가 스탯
         data.plus.dmg = csvManager.luck.TierToDmg(data.tier);
+        data.plus.enforce = new bool[1]; // 0: Drain
 
         // 스프라이트 설정
         SetSprite();
@@ -47,3 +50,4 @@ public class Weapon : MonoBehaviour, IPoolObject
 
 public enum WeaponType { LongSword = 0, ShortSword, Wand, Book }
 public enum WeaponAttribute { Physics, Magic }
+public enum EnforceID { Drain = 0 }

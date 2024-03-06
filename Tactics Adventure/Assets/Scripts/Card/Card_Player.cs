@@ -128,6 +128,7 @@ public class Card_Player : Card
     public override void DoTurnCard()
     {
         Passive();
+        Poisoned();
 
         uiManager.handUI.HandImgUI();
         uiManager.handUI.WeaponIconUI();
@@ -214,11 +215,14 @@ public class Card_Player : Card
 
             equipWeapon[curHand].plus.dmg -= defaultDmg;
 
-            if (equipWeapon[curHand].plus.dmg <= 0) // 무기 깨짐
-            {
-                equipWeapon[curHand] = new WeaponData();
-            }
+            int totalDmg = defaultDmg + bonusDmg;
 
+            // 생명력 흡수
+            if (csvManager.csvList.EnforceCheck(equipWeapon[curHand], EnforceID.Drain))
+                HealHP(totalDmg);
+
+            if (equipWeapon[curHand].plus.dmg <= 0) // 무기 깨짐
+                equipWeapon[curHand] = new WeaponData();
 
             SetIconTxt();
 
@@ -226,19 +230,22 @@ public class Card_Player : Card
             yield return SetAnim(player.anim, AnimID.Atk);
             StartCoroutine(Talk("죽어라!!", 1f));
 
-            yield return monster.Damaged(defaultDmg + bonusDmg);
+            yield return monster.Damaged(totalDmg);
         }
+    }
+
+    public ref WeaponData GetEquipWeapon()
+    {
+        // 현재 손에 무기 O && 다른 손에 무기 X
+        if (equipWeapon[curHand].plus.dmg != 0 && equipWeapon[(curHand + 1) % 2].plus.dmg == 0)
+            return ref equipWeapon[(curHand + 1) % 2]; // 다른 손 return
+
+        return ref equipWeapon[curHand]; // 현재 손 return
     }
 
     public void EquipWeapon(Card_Weapon weaponCard)
     {
-        // 현재 손에 무기 X || 모든 손에 무기
-        if (equipWeapon[curHand].plus.dmg == 0 || (equipWeapon[0].plus.dmg != 0 && equipWeapon[1].plus.dmg != 0))
-            equipWeapon[curHand] = weaponCard.weapon.data; // 현재 손에 무기 장착
-
-        // 다른 손에 무기 X
-        else if (equipWeapon[(curHand + 1) % 2].plus.dmg == 0)
-            equipWeapon[(curHand + 1) % 2] = weaponCard.weapon.data; // 다른 손에 무기 장착
+        GetEquipWeapon() = weaponCard.weapon.data;
     }
 
     public void EquipWeapon(int ID)
@@ -246,13 +253,7 @@ public class Card_Player : Card
         WeaponData newWeapon = csvManager.csvList.FindWeapon(ID);
         newWeapon.plus.dmg = csvManager.luck.TierToDmg(newWeapon.tier);
 
-        // 현재 손에 무기 X || 모든 손에 무기 O
-        if (equipWeapon[curHand].plus.dmg == 0 || (equipWeapon[0].plus.dmg != 0 && equipWeapon[1].plus.dmg != 0))
-            equipWeapon[curHand] = newWeapon; // 현재 손에 무기 장착
-
-        // 다른 손에 무기 X
-        else if(equipWeapon[(curHand + 1) % 2].plus.dmg == 0)
-            equipWeapon[(curHand + 1) % 2] = newWeapon; // 다른 손에 무기 장착
+        GetEquipWeapon() = newWeapon;
     }
 
     public void ChangeHand(int _number)
@@ -273,6 +274,11 @@ public class Card_Player : Card
         else if (equipWeapon[(curHand + 1) % 2].plus.dmg != 0)
             equipWeapon[(curHand + 1) % 2].plus.dmg += dmg;
         else return;
+    }
+
+    public void GetPoison(int i)
+    {
+        poisonCount = i;
     }
 
     public void Poisoned()

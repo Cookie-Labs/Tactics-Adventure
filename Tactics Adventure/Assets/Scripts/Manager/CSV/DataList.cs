@@ -58,6 +58,7 @@ public struct WeaponData
 public struct WeaponPlus
 {
     public int dmg;
+    public bool[] enforce; // 0: Drain
 }
 
 [Serializable]
@@ -145,6 +146,11 @@ public class CSVList
     public WeaponData FindWeapon(int ID)
     {
         return Array.Find(weaponDatas, data => data.index == ID);
+    }
+
+    public bool EnforceCheck(WeaponData _data, EnforceID id)
+    {
+        return _data.plus.enforce[(int)id];
     }
     #endregion
 
