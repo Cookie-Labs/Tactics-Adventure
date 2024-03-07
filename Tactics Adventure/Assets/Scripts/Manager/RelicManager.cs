@@ -163,18 +163,18 @@ public class RelicManager : Singleton<RelicManager>
                 player.defend = 0;
                 player.UpDmg(dmg);
                 break;
-            // 휴대용방패: 방어도 5얻고 다음 턴에 효과 반복
+            // 휴대용방패: 방어도를 5 얻고, 체력을 3 회복 (완)
             case 29:
                 player.UpDefend(5);
-                // TurnRelic 제작 후 제작
+                player.HealHP(3);
                 break;
-            // 웅크리기: 방어도 +15
+            // 웅크리기: 방어도 +15 (완)
             case 30:
                 player.UpDefend(15);
                 break;
-            // 가시갑옷: 반사피해 +1
+            // 가시갑옷: 모든 데미지를 1만큼 덜 받습니다. (완)
             case 31:
-                // 반사 제작 후 제작
+                player.reduceDmg++;
                 break;
             // 셔플: 모든 카드 무작위 재배열
             case 32:

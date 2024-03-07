@@ -23,6 +23,7 @@ public class Card_Player : Card
     [Title("특성", "유물 관련")]
     public int bonusDmg;
     public int invincible;
+    public int reduceDmg;
     public bool isLotto;
 
     // 자식 컴포넌트
@@ -204,6 +205,10 @@ public class Card_Player : Card
                 _amount = Mathf.Max(0, -defend);
                 defend = Mathf.Max(0, defend);
             }
+
+            // 데미지 감소 특성 계산
+            if (reduceDmg > 0)
+                _amount -= reduceDmg;
 
             hp = Mathf.Max(0, hp - _amount);
 
