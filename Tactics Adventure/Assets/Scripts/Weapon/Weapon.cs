@@ -14,6 +14,7 @@ public class Weapon : MonoBehaviour, IPoolObject
     // 매니저
     private CSVManager csvManager;
     private SpriteData spriteData;
+    private SpawnManager spawnManager;
 
     public virtual void OnCreatedInPool()
     {
@@ -23,6 +24,7 @@ public class Weapon : MonoBehaviour, IPoolObject
 
         csvManager = CSVManager.Instance;
         spriteData = SpriteData.Instance;
+        spawnManager = SpawnManager.Instance;
     }
 
     public virtual void OnGettingFromPool()
@@ -37,6 +39,9 @@ public class Weapon : MonoBehaviour, IPoolObject
         // 추가 스탯
         data.plus.dmg = csvManager.luck.TierToDmg(data.tier);
         data.plus.enforce = new bool[1]; // 0: Drain
+        // 유물(편식)
+        if (spawnManager.playerCard.isPicky)
+            data.plus.enforce[0] = true;
 
         // 스프라이트 설정
         SetSprite();

@@ -2341,6 +2341,7 @@ MonoBehaviour:
   - {fileID: 708118676}
   - {fileID: 416752125}
   cardList: []
+  relicIconParent: {fileID: 1976773214}
   playerCard: {fileID: 0}
   turnCardList: []
 --- !u!1 &1115399867

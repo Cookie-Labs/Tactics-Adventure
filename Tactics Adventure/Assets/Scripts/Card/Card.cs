@@ -76,7 +76,9 @@ public abstract class Card : MonoBehaviour, IPoolObject
         pos = _pos;
 
         transform.DOMove(target.position, 0.5f).SetEase(Ease.OutBounce).SetUpdate(true).OnComplete(() =>
-            transform.localPosition = Vector3.zero);
+            {
+                transform.localPosition = Vector3.zero;
+            });
 
         yield return new WaitForSeconds(0.5f);
     }

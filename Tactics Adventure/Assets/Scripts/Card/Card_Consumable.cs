@@ -43,7 +43,8 @@ public class Card_Consumable : Card
             switch(portion.portionType)
             {
                 case PortionType.HP: // 체력포션
-                    playerCard.HealHP(amount); // 체력회복
+                    if(!playerCard.isPicky)
+                        playerCard.HealHP(amount); // 체력회복
                     break;
                 case PortionType.MP: // 마나포션
                     playerCard.HealMP(amount); // 마나회복

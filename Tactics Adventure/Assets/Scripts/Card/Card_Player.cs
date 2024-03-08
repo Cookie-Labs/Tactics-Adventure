@@ -22,9 +22,11 @@ public class Card_Player : Card
 
     [Title("특성", "유물 관련")]
     public int bonusDmg;
+    public int bonusHeal;
+    public int bonusDefend;
     public int invincible;
     public int reduceDmg;
-    public bool isLotto;
+    public bool isLotto, isPicky;
 
     // 자식 컴포넌트
     [Title("플레이어 컴포넌트")]
@@ -164,7 +166,7 @@ public class Card_Player : Card
 
     public void HealHP(int amount)
     {
-        hp += amount; // 체력회복
+        hp += amount + bonusHeal; // 체력회복
         hp = Mathf.Min(hp, player.data.hp); // 최대체력 확인
     }
 
@@ -176,7 +178,7 @@ public class Card_Player : Card
 
     public void UpDefend(int amount)
     {
-        defend += amount;
+        defend += amount + bonusDefend;
     }
 
     private IEnumerator Die()

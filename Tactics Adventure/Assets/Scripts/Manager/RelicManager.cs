@@ -22,6 +22,14 @@ public class RelicManager : Singleton<RelicManager>
         yield return DoRelic(relicID);
     }
 
+    public void RemoveRelicList(int relicID)
+    {
+        if (!CheckRelicCollection(relicID) || collectList.Count <= 0)
+            return;
+        collectList.Remove(relicID);
+        SpawnManager.Instance.DeSpawnRelicIcon(relicID);
+    }
+
     public bool CheckRelicCollection(int relicID)
     {
         return collectList.Contains(relicID);
@@ -99,7 +107,8 @@ public class RelicManager : Singleton<RelicManager>
                 switch (ranType)
                 {
                     case PortionType.HP:
-                        player.HealHP(amount);
+                        if(!player.isPicky)
+                            player.HealHP(amount);
                         break;
                     case PortionType.MP:
                         player.HealMP(amount);
@@ -176,43 +185,44 @@ public class RelicManager : Singleton<RelicManager>
             case 31:
                 player.reduceDmg++;
                 break;
-            // 셔플: 모든 카드 무작위 재배열
+            // 셔플: 모든 카드 무작위 재배열 (완)
             case 32:
-                // 셔플 제작 후 제작
+                SpawnManager.Instance.ShuffleAll();
                 break;
-            // 아드레날린: 체력 회복량 +1
+            // 아드레날린: 체력 회복량 +1 (완)
             case 33:
-                // 보너스 체력 제작 후 제작
+                player.bonusHeal++;
                 break;
-            // 두꺼운피부: 방어도 회복량 +1
+            // 두꺼운피부: 방어도 회복량 +1 (완)
             case 34:
-                // 방어도 회복 제작 후 제작
+                player.bonusDefend++;
                 break;
-            // 광전사: 최대 체력 -1, 공격력 +1
+            // 광전사: 최대 체력 -1, 공격력 +1 (완)
             case 35:
                 player.SetMaxHP(player.player.data.hp - 1);
-                // 보너스(기본) 공격력 제작 후 제작
+                player.bonusDmg++;
                 break;
-            // 방패부수기: 방패 전부 잃고 모든 몬스터에게 피해
+            // 방패부수기: 방패 전부 잃고 모든 몬스터에게 피해 (완)
             case 36:
                 delay += AtkAll(player.defend);
+                player.defend = 0;
                 break;
-            // 편식: 포션으로 체력회복 불가, 생명력 흡수 영구
+            // 편식: 포션으로 체력회복 불가, 생명력 흡수 영구 (완)
             case 37:
-                // 관련 제작 후 제작
+                player.isPicky = true;
                 break;
-            // 죽음의계약: 최대 체력 1, 무적 15
+            // 죽음의계약: 최대 체력 1, 무적 15 (완)
             case 38:
                 player.SetMaxHP(1);
-                // 무적 제작 후 제작
+                player.UpInvincible(15);
                 break;
-            // 랜덤 교환: 무작위 카드와 위치 바꿈
+            // 랜덤 교환: 무작위 카드와 위치 바꿈 (완)
             case 39:
-                // 카드 교환 제작 후 제작
+                SpawnManager.Instance.ShuffleRanCard(player);
                 break;
-            // 투기: 무작위 유물 버림
+            // 투기: 무작위 유물 버림 (완)
             case 40:
-                // 유물 매니저 완성 후 제작
+                RemoveRelicList(Random.Range(0, collectList.Count));
                 break;
             // 지진: 모든 카드 무작위 카드로 통일
             case 41:

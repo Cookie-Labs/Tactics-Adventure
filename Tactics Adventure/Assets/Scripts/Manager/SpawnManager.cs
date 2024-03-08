@@ -4,6 +4,7 @@ using UnityEngine;
 using Redcode.Pools;
 using System.Linq;
 using Sirenix.OdinInspector;
+using DG.Tweening;
 
 public class SpawnManager : Singleton<SpawnManager>
 {
@@ -11,6 +12,7 @@ public class SpawnManager : Singleton<SpawnManager>
     public int[] maxCard;
     public Transform[] cardPos;
     public List<Card> cardList;
+    public Transform relicIconParent;
     [HideInInspector] public Card_Player playerCard;
     [HideInInspector] public List<Card> turnCardList; // 매턴 작동하는 카드 리스트
 
@@ -167,6 +169,49 @@ public class SpawnManager : Singleton<SpawnManager>
         Card_Coin coinCard = ChangeCard(oriCard, CardType.Coin).GetComponent<Card_Coin>();
 
         coinCard.ChangeAmount(amount);
+    }
+
+    public void ShuffleCard(Card selCard, Card tarCard)
+    {
+        int selPos = selCard.pos;
+        int tarPos = tarCard.pos;
+
+        selCard.transform.SetParent(cardPos[selPos]);
+        selCard.pos = selPos;
+        selCard.transform.localPosition = Vector3.zero;
+
+        tarCard.transform.SetParent(cardPos[tarPos]);
+        tarCard.pos = tarPos;
+        tarCard.transform.localPosition = Vector3.zero;
+    }
+
+    public void ShuffleRanCard(Card selCard)
+    {
+        Card ranCard = cardList[Random.Range(0, cardList.Count)];
+
+        if(selCard == ranCard)
+        {
+            ShuffleRanCard(selCard);
+            return;
+        }
+
+        ShuffleCard(selCard, ranCard);
+    }
+
+    public void ShuffleAll()
+    {
+        List<int> posList = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+
+        foreach (Card card in cardList)
+        {
+            int ranPos = posList[Random.Range(0, posList.Count)];
+
+            card.transform.SetParent(cardPos[ranPos]);
+            card.pos = ranPos;
+            card.transform.localPosition = Vector3.zero;
+
+            posList.Remove(ranPos);
+        }
     }
     #endregion
 
@@ -403,13 +448,20 @@ public class SpawnManager : Singleton<SpawnManager>
     #endregion
 
     #region UI
-    public RelicIcon SpawnRelicIcon(int index)
+    public RelicIcon SpawnRelicIcon(int ID)
     {
         RelicIcon icon = PoolManager.Instance.GetFromPool<RelicIcon>("RelicIcon");
 
-        icon.SetIcon(index);
+        icon.SetIcon(ID);
 
         return icon;
+    }
+
+    public void DeSpawnRelicIcon(int ID)
+    {
+        RelicIcon[] icons = relicIconParent.GetComponentsInChildren<RelicIcon>();
+
+        PoolManager.Instance.TakeToPool<RelicIcon>("RelicIcon", System.Array.Find(icons, icon => icon.ID == ID));
     }
     #endregion
 
