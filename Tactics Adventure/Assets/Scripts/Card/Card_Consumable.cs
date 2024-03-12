@@ -39,20 +39,7 @@ public class Card_Consumable : Card
         {
             Portion portion = consumable.GetComponent<Portion>(); // 포션 컴포넌트 가져오기
 
-            // 포션 타입 별 분류
-            switch(portion.portionType)
-            {
-                case PortionType.HP: // 체력포션
-                    if(!playerCard.isPicky)
-                        playerCard.HealHP(amount); // 체력회복
-                    break;
-                case PortionType.MP: // 마나포션
-                    playerCard.HealMP(amount); // 마나회복
-                    break;
-                case PortionType.Poison: // 독포션
-                    playerCard.GetPoison(amount);
-                    break;
-            }
+            relicManager.Portion(portion.portionType, amount);
         }
         yield return playerCard.Move(pos);
     }

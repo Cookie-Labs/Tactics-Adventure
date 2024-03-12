@@ -21,12 +21,15 @@ public class Card_Player : Card
     public bool isTalking;
 
     [Title("특성", "유물 관련")]
-    public int bonusDmg;
+    public int bonusDmg; // 공격력 up
+    public int minusDmg; // 공격력 down
     public int bonusHeal;
     public int bonusDefend;
+    public int freeMP;
     public int invincible;
     public int reduceDmg;
-    public bool isLotto, isPicky;
+    public int soulCount;
+    public int rebornCount;
 
     // 자식 컴포넌트
     [Title("플레이어 컴포넌트")]
@@ -98,7 +101,10 @@ public class Card_Player : Card
         if (mp < activeMP)
             return;
 
-        mp -= activeMP;
+        if (freeMP > 0)
+            freeMP--;
+        else
+            mp -= activeMP;
         player.ActiveSkill();
 
         SetIconTxt();
@@ -133,6 +139,7 @@ public class Card_Player : Card
     {
         Passive();
         Poisoned();
+        relicManager.DoTurnRelic();
 
         uiManager.handUI.HandImgUI();
         uiManager.handUI.WeaponIconUI();
@@ -181,12 +188,37 @@ public class Card_Player : Card
         defend += amount + bonusDefend;
     }
 
+    public void DownDefend(int amount)
+    {
+        defend = Mathf.Max(0, defend - amount);
+    }
+
+    public void DrainSoul(int amount)
+    {
+        soulCount += amount;
+
+        if (soulCount >= 10)
+        {
+            soulCount -= 10;
+            bonusDmg++;
+        }
+    }
+
     private IEnumerator Die()
     {
         hp = 0;
 
         yield return SetAnim(player.anim, AnimID.Die);
         yield return new WaitForSeconds(animTime);
+
+        // 부활
+        if (rebornCount > 0)
+        {
+            rebornCount--;
+            HealHP(player.data.hp);
+
+            yield break;
+        }
 
         Debug.Log("게임 종료");
     }
@@ -213,6 +245,9 @@ public class Card_Player : Card
                 _amount -= reduceDmg;
 
             hp = Mathf.Max(0, hp - _amount);
+
+            if (relicManager.CheckRelicCollection(52) && _amount >= 3)
+                UpDmg(1);
 
             DODamaged();
             SetIconTxt();
@@ -249,14 +284,17 @@ public class Card_Player : Card
 
             equipWeapon[curHand].plus.dmg -= defaultDmg;
 
-            int totalDmg = defaultDmg + bonusDmg;
+            int totalDmg = Mathf.Max(0, defaultDmg + bonusDmg - minusDmg);
+
+            if (relicManager.CheckRelicCollection(51) && monster.hp > hp)
+                totalDmg++;
 
             // 생명력 흡수
             if (csvManager.csvList.EnforceCheck(equipWeapon[curHand], EnforceID.Drain))
                 HealHP(totalDmg);
 
-            if (equipWeapon[curHand].plus.dmg <= 0) // 무기 깨짐
-                equipWeapon[curHand] = new WeaponData();
+            if (equipWeapon[curHand].plus.dmg - minusDmg <= 0) // 무기 깨짐
+                BreakWeapon(ref equipWeapon[curHand]);
 
             SetIconTxt();
 
@@ -266,6 +304,11 @@ public class Card_Player : Card
 
             yield return monster.Damaged(totalDmg);
         }
+    }
+
+    public void BreakWeapon(ref WeaponData weaponData)
+    {
+        weaponData = new WeaponData();
     }
 
     public ref WeaponData GetEquipWeapon()
@@ -293,6 +336,10 @@ public class Card_Player : Card
     {
         WeaponData newWeapon = csvManager.csvList.FindWeapon(ID);
         newWeapon.plus.dmg = csvManager.luck.TierToDmg(newWeapon.tier);
+        newWeapon.plus.enforce = new bool[1]; // 0: Drain
+        // 유물(편식)
+        if (relicManager.CheckRelicCollection(37))
+            newWeapon.plus.enforce[0] = true;
 
         GetEquipWeapon() = newWeapon;
     }
@@ -327,7 +374,8 @@ public class Card_Player : Card
         if (poisonCount <= 0)
             return;
 
-        Damaged(1);
+        hp--;
+        StartCoroutine(Damaged(0));
         poisonCount--;
     }
 
@@ -355,8 +403,17 @@ public class Card_Player : Card
 
     private void SetIconTxt()
     {
-        if(equipWeapon[curHand].plus.dmg != 0 && bonusDmg > 0)
-            uiText.text = $"<sprite=0>{equipWeapon[curHand].plus.dmg}<color=orange>+{bonusDmg}</color> <sprite=1>{hp}";
+        int totalDmg = bonusDmg - minusDmg;
+
+        if (equipWeapon[curHand].plus.dmg > 0)
+        {
+            if (totalDmg > 0)
+                uiText.text = $"<sprite=0>{equipWeapon[curHand].plus.dmg}<color=orange>+{totalDmg}</color> <sprite=1>{hp}";
+            else if (totalDmg < 0)
+                uiText.text = $"<sprite=0>{equipWeapon[curHand].plus.dmg}<color=blue>{totalDmg}</color> <sprite=1>{hp}";
+            else
+                uiText.text = $"<sprite=0>{equipWeapon[curHand].plus.dmg} <sprite=1>{hp}";
+        }
         else
             uiText.text = $"<sprite=0>{equipWeapon[curHand].plus.dmg} <sprite=1>{hp}";
 

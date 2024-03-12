@@ -36,6 +36,9 @@ public class Card_Trap : Card
     {
         yield return Atk();
 
+        if (relicManager.CheckRelicCollection(68))
+            csvManager.money.EarnMoney(10);
+
         yield return spawnManager.playerCard.Move(pos);
     }
 
@@ -90,6 +93,8 @@ public class Card_Trap : Card
 
         foreach (Card card in neighborCard)
         {
+            if (card.type == CardType.Player && relicManager.CheckRelicCollection(75))
+                continue;
             card.StartCoroutine(card.Damaged(dmg));
             maxAnim = Mathf.Max(maxAnim, card.animTime);
         }

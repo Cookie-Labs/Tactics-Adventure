@@ -5,14 +5,7 @@ using Sirenix.OdinInspector;
 
 public class Card_Relics : Card
 {
-    private RelicManager relicManager;
     private Relic relic;
-
-    public override void OnCreatedInPool()
-    {
-        base.OnCreatedInPool();
-        relicManager = RelicManager.Instance;
-    }
 
     public override void SetCard()
     {

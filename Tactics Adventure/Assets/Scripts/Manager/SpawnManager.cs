@@ -4,7 +4,6 @@ using UnityEngine;
 using Redcode.Pools;
 using System.Linq;
 using Sirenix.OdinInspector;
-using DG.Tweening;
 
 public class SpawnManager : Singleton<SpawnManager>
 {
@@ -169,6 +168,39 @@ public class SpawnManager : Singleton<SpawnManager>
         Card_Coin coinCard = ChangeCard(oriCard, CardType.Coin).GetComponent<Card_Coin>();
 
         coinCard.ChangeAmount(amount);
+    }
+
+    public void ChangeAllCard_Ran()
+    {
+        int typeCount = Random.Range(0, System.Enum.GetValues(typeof(CardType)).Length);
+
+        foreach (Card card in cardList)
+        {
+            if (card.type == CardType.Player)
+                continue;
+
+            CardType ranType = (CardType)Random.Range(0, typeCount);
+
+            ChangeCard(card, ranType);
+        }
+    }
+
+    public void DuplicateAllCard_Ran()
+    {
+        Card ranCard = cardList[Random.Range(0, cardList.Count)];
+
+        if(ranCard.type == CardType.Player)
+        {
+            DuplicateAllCard_Ran();
+            return;
+        }
+
+        foreach (Card card in cardList)
+        {
+            if (card.type == CardType.Player)
+                continue;
+            ChangeCard(card, ranCard.type);
+        }
     }
 
     public void ShuffleCard(Card selCard, Card tarCard)

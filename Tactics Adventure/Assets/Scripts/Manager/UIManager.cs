@@ -30,7 +30,7 @@ public class UIManager : Singleton<UIManager>
         Card_Player playerCard = SpawnManager.Instance.playerCard;
 
         // 액티브 스킬
-        skillUI.EnableActive(playerCard.mp >= playerCard.activeMP);
+        skillUI.EnableActive(playerCard.mp >= playerCard.activeMP || playerCard.freeMP > 0);
 
         // 패시브 스킬
         skillUI.PassiveUI();

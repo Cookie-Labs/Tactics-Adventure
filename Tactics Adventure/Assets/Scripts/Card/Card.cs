@@ -31,6 +31,7 @@ public abstract class Card : MonoBehaviour, IPoolObject
     protected SpawnManager spawnManager;
     protected TouchManager touchManager;
     protected CSVManager csvManager;
+    protected RelicManager relicManager;
 
     public virtual void OnCreatedInPool()
     {
@@ -46,6 +47,7 @@ public abstract class Card : MonoBehaviour, IPoolObject
         spawnManager = SpawnManager.Instance;
         touchManager = TouchManager.Instance;
         csvManager = CSVManager.Instance;
+        relicManager = RelicManager.Instance;
     }
 
     public virtual void OnGettingFromPool()
