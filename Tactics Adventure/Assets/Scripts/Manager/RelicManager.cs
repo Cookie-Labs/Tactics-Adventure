@@ -29,7 +29,7 @@ public class RelicManager : Singleton<RelicManager>
         if (!CheckRelicCollection(relicID) || collectList.Count <= 0)
             return;
         collectList.Remove(relicID);
-        SpawnManager.Instance.DeSpawnRelicIcon(relicID);
+        SpawnManager.Instance.DeSpawnRelicIcon(relicID); // 버그 발생 부분
     }
 
     public bool CheckRelicCollection(int relicID)
@@ -48,44 +48,48 @@ public class RelicManager : Singleton<RelicManager>
 
         switch (relicID)
         {
-            // 고당도수박: 12턴마다 체력 3 회복 (완)
+            // 고당도수박: 12턴마다 체력 3 회복 (완) (테스트 완)
             case 0:
                 turnRelicList.Add(new TurnRelic(0, 12));
                 break;
-            // 벌크업: 최대체력 1 증가 (완)
+            // 벌크업: 최대체력 1 증가 (완) (테스트 완)
             case 1:
                 player.SetMaxHP(player.player.data.hp + 1);
                 break;
-            // *일밴드: 체력 MAX (완)
+            // *일밴드: 체력 MAX (완) (테스트 완)
             case 2:
                 player.HealHP(player.player.data.hp);
                 break;
-            // 글래스톤베리: 체력&마나 MAX (완)
+            // 글래스톤베리: 체력&마나 MAX (완) (테스트 완)
             case 3:
                 player.HealHP(player.player.data.hp);
                 player.HealMP(player.player.data.mp);
                 break;
-            // 슈킹: 50코인 획득 (완)
+            // 슈킹: 50코인 획득 (완) (테스트 완)
             case 4:
                 csvManager.money.EarnMoney(50);
                 break;
-            // 은행을 털어: 200코인 획득 (완)
+            // 은행을 털어: 200코인 획득 (완) (테스트 완)
             case 5:
                 csvManager.money.EarnMoney(200);
                 break;
-            // 구름과자: 마나 MAX (완)
+            // 구름과자: 마나 MAX (완) (테스트 완)
             case 6:
                 player.HealMP(player.player.data.mp);
                 break;
-            // 보급: 무작위 무기 획득 (완)
+            // 심판: 15턴마다 모든 몬스터 3 데미지 (완) (테스트 완)
+            case 7:
+                turnRelicList.Add(new TurnRelic(7, 15));
+                break;
+            // 보급: 무작위 무기 획득 (완) (테스트 완)
             case 8:
                 EarnWeapon(csvList.weaponDatas);
                 break;
-            // 견습생: 무작위 물리 무기 획득 (완)
+            // 견습생: 무작위 물리 무기 획득 (완) (테스트 완)
             case 9:
                 EarnWeapon(csvList.FindWeapon(WeaponAttribute.Physics));
                 break;
-            // 사서: 무작위 마법 무기 획득 (완)
+            // 사서: 무작위 마법 무기 획득 (완) (테스트 완)
             case 10:
                 EarnWeapon(csvList.FindWeapon(WeaponAttribute.Magic));
                 break;
@@ -97,118 +101,118 @@ public class RelicManager : Singleton<RelicManager>
             case 12:
                 // 상점 제작 후 제작
                 break;
-            // 쇠약: 모든 몬스터 피해 3 (완)
+            // 쇠약: 모든 몬스터 피해 3 (완) (테스트 완)
             case 13:
                 delay += AtkAll(3);
                 break;
-            // 임상실험: 무작위 포션 섭취 (완)
+            // 임상실험: 모든 포션 효과가 1 증가합니다. (완) (테스트 완)
             case 15:
-                PortionType ranType = (PortionType)Random.Range(0, System.Enum.GetValues(typeof(PortionType)).Length);
-                int amount = Random.Range(0, 5);
-
-                Portion(ranType, amount);
+                player.bonusPortion++;
                 break;
-            // 목장갑: 공격력 +1 (완)
+            // 목장갑: 공격력 +1 (완) (테스트 완)
             case 16:
                 player.bonusDmg++;
                 break;
-            // 웨폰 마스터: 공격력 +2 (완)
+            // 웨폰 마스터: 공격력 +2 (완) (테스트 완)
             case 17:
                 player.bonusDmg += 2;
                 break;
-            // 슈프림: 공격력 +3 (완)
+            // 슈프림: 공격력 +3 (완) (테스트 완)
             case 18:
                 player.bonusDmg += 3;
                 break;
-            // 맹독: 내 무기에 공격력 +3 (완)
+            // 맹독: 내 무기에 공격력 +3 (완) (테스트 완)
             case 19:
                 player.UpDmg(3);
                 break;
-            // 착취: 내 무기에 생명력흡수 부여 (완)
+            // 착취: 내 무기에 생명력흡수 부여 (완) (테스트 완)
             case 20:
                 player.EnforceWeapon(EnforceID.Drain);
                 break;
-            // 하급 주문서: 60% 내 무기 공격력 +5 (완)
+            // 하급 주문서: 60% 내 무기 공격력 +5 (완) (테스트 완)
             case 21:
                 player.UpDmg(OrderSheet(0.6f, 5));
                 break;
-            // 중급 주문서: 40% 내 무기 공격력 +10 (완)
+            // 중급 주문서: 40% 내 무기 공격력 +10 (완) (테스트 완)
             case 22:
                 player.UpDmg(OrderSheet(0.4f, 10));
                 break;
-            // 상급 주문서: 10% 내 무기 공격력 +25 (완)
+            // 상급 주문서: 10% 내 무기 공격력 +25 (완) (테스트 완)
             case 23:
                 player.UpDmg(OrderSheet(0.1f, 25));
                 break;
-            // 스타: 딱 한번 모든 공격 무시 (완)
+            // 스타: 딱 한번 모든 공격 무시 (완) (테스트 완)
             case 24:
                 player.UpInvincible(1);
                 break;
-            // 버섯스프: 최대 체력 +3 (완)
+            // 버섯스프: 최대 체력 +3 (완) (테스트 완)
             case 25:
                 player.SetMaxHP(player.player.data.hp + 3);
                 break;
-            // 방어도 +7 (완)
+            // 방어도 +7 (완) (테스트 완)
             case 26:
                 player.UpDefend(7);
                 break;
-            // 럭키: 운 10% 증가 (완)
+            // 럭키: 운 10% 증가 (완) (테스트 완)
             case 27:
                 luck.GainLuck(1.1f);
                 break;
-            // 방패밀치기: 방어도 전부 잃고 그만큼 무기 공격력++ (완)
+            // 방패밀치기: 방어도 전부 잃고 그만큼 무기 공격력++ (완) (테스트 완)
             case 28:
                 int dmg = player.defend;
                 player.defend = 0;
                 player.UpDmg(dmg);
                 break;
-            // 휴대용방패: 방어도를 5 얻고, 체력을 3 회복 (완)
+            // 휴대용방패: 방어도를 5 얻고, 체력을 3 회복 (완) (테스트 완)
             case 29:
                 player.UpDefend(5);
                 player.HealHP(3);
                 break;
-            // 웅크리기: 방어도 +15 (완)
+            // 웅크리기: 방어도 +15 (완) (테스트 완)
             case 30:
                 player.UpDefend(15);
                 break;
-            // 가시갑옷: 모든 데미지를 1만큼 덜 받습니다. (완)
+            // 가시갑옷: 모든 데미지를 1만큼 덜 받습니다. (완) (테스트 완)
             case 31:
                 player.reduceDmg++;
                 break;
-            // 셔플: 모든 카드 무작위 재배열 (완)
+            // 셔플: 모든 카드 무작위 재배열 (완) (테스트 완)
             case 32:
                 SpawnManager.Instance.ShuffleAll();
                 break;
-            // 아드레날린: 체력 회복량 +1 (완)
+            // 아드레날린: 체력 회복량 +1 (완) (테스트 완)
             case 33:
                 player.bonusHeal++;
                 break;
-            // 두꺼운피부: 방어도 회복량 +1 (완)
+            // 두꺼운피부: 방어도 회복량 +1 (완) (테스트 완)
             case 34:
                 player.bonusDefend++;
                 break;
-            // 광전사: 최대 체력 -1, 공격력 +1 (완)
+            // 광전사: 최대 체력 -1, 공격력 +1 (완) (테스트 완)
             case 35:
                 player.SetMaxHP(player.player.data.hp - 1);
                 player.bonusDmg++;
                 break;
-            // 방패부수기: 방패 전부 잃고 모든 몬스터에게 피해 (완)
+            // 방패부수기: 방패 전부 잃고 모든 몬스터에게 피해 (완) (테스트 완)
             case 36:
                 delay += AtkAll(player.defend);
                 player.defend = 0;
                 break;
-            // 죽음의계약: 최대 체력 1, 무적 15 (완)
+            // 죽음의계약: 최대 체력 1, 무적 25 (완) (테스트 완)
             case 38:
                 player.SetMaxHP(1);
-                player.UpInvincible(15);
+                player.UpInvincible(25);
                 break;
-            // 랜덤 교환: 모든 카드 다른 무작위 타입의 카드로 바꿈 (완)
+            // 랜덤 교환: 무작위 포션 섭취 (완) (테스트 완)
             case 39:
-                SpawnManager.Instance.ChangeAllCard_Ran();
+                PortionType ranType = (PortionType)Random.Range(0, System.Enum.GetValues(typeof(PortionType)).Length);
+                int amount = Random.Range(1, 5);
+
+                Portion(ranType, amount);
                 break;
             // 투기: 무작위 유물 버림 (완)
             case 40:
-                RemoveRelicList(Random.Range(0, collectList.Count));
+                RemoveRelicList(collectList[Random.Range(0, collectList.Count)]);
                 break;
             // 지진: 모든 카드를 필드에 존재하는 무작위 카드타입으로 통일 (완)
             case 41:
@@ -271,12 +275,12 @@ public class RelicManager : Singleton<RelicManager>
                 break;
             // 무기파괴술: 무기를 파괴 후 모든 몬스터에게 그만큼 피해 (무기가 없다면 1 피해) (완)
             case 61:
-                dmg = player.GetEquipWeapon().plus.dmg;
+                dmg = player.GetEquipHand().plus.dmg;
                 if (dmg == 0)
                     delay += AtkAll(1);
                 else
                     delay += AtkAll(dmg);
-                player.BreakWeapon(ref player.GetEquipWeapon());
+                player.BreakWeapon(ref player.GetEquipHand());
                 break;
             // 요상한버섯: 전설 등급 무기를 얻습니다. (완)
             case 62:
@@ -369,7 +373,7 @@ public class RelicManager : Singleton<RelicManager>
                 break;
             // 압수: 보유한 무기를 한 단계 낮은 등급의 무작위 무기로 바꿈 (완)
             case 78:
-                int weaponTierID = (int)player.GetEquipWeapon().tier;
+                int weaponTierID = (int)player.GetEquipHand().tier;
 
                 weaponTierID = weaponTierID == 0 ? weaponTierID : weaponTierID - 1;
 
@@ -420,22 +424,24 @@ public class RelicManager : Singleton<RelicManager>
                 type = PortionType.HP;
         }
 
+        int totalAmount = amount + player.bonusPortion;
+
         switch (type)
         {
             case PortionType.HP:
                 if (!CheckRelicCollection(37))
-                    player.HealHP(amount);
+                    player.HealHP(totalAmount);
                 break;
             case PortionType.MP:
-                player.HealMP(amount);
+                player.HealMP(totalAmount);
                 break;
             case PortionType.Poison:
-                player.GetPoison(amount);
+                player.GetPoison(totalAmount);
                 break;
         }
     }
 
-    private float AtkAll(int dmg)
+    public float AtkAll(int dmg)
     {
         List<Card> monList = SpawnManager.Instance.cardList.FindAll(card => card.type == CardType.Monster);
         float maxDelay = 0f;
@@ -481,6 +487,10 @@ public class TurnRelic
                 case 0:
                     player.HealHP(3);
                     turnCount = 12;
+                    break;
+                case 7:
+                    RelicManager.Instance.AtkAll(3);
+                    turnCount = 15;
                     break;
                 case 42:
                     player.DownDefend(20);

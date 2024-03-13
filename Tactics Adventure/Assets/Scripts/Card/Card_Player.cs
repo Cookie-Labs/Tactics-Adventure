@@ -25,6 +25,7 @@ public class Card_Player : Card
     public int minusDmg; // 공격력 down
     public int bonusHeal;
     public int bonusDefend;
+    public int bonusPortion;
     public int freeMP;
     public int invincible;
     public int reduceDmg;
@@ -166,7 +167,6 @@ public class Card_Player : Card
 
         StartCoroutine(Talk("무적이지롱!", 0.5f));
 
-        Debug.Log(FindEffect(EffectType.Invincible));
         if (invincible <= 0)
             spawnManager.DeSpawnEffect(FindEffect(EffectType.Invincible));
     }
@@ -311,7 +311,7 @@ public class Card_Player : Card
         weaponData = new WeaponData();
     }
 
-    public ref WeaponData GetEquipWeapon()
+    public ref WeaponData GetEmptyHand()
     {
         // 현재 손에 무기 O && 다른 손에 무기 X
         if (equipWeapon[curHand].plus.dmg != 0 && equipWeapon[(curHand + 1) % 2].plus.dmg == 0)
@@ -320,16 +320,26 @@ public class Card_Player : Card
         return ref equipWeapon[curHand]; // 현재 손 return
     }
 
+    public ref WeaponData GetEquipHand()
+    {
+        if (equipWeapon[curHand].plus.dmg != 0)
+            return ref equipWeapon[curHand];
+        else if (equipWeapon[(curHand + 1) % 2].plus.dmg != 0)
+            return ref equipWeapon[(curHand + 1) % 2];
+        else
+            return ref equipWeapon[curHand];
+    }
+
     public void EnforceWeapon(EnforceID id)
     {
-        if (GetEquipWeapon().plus.dmg == 0)
+        if (GetEquipHand().plus.dmg == 0)
             return;
-        GetEquipWeapon().plus.enforce[(int)id] = true;
+        GetEquipHand().plus.enforce[(int)id] = true;
     }
 
     public void EquipWeapon(Card_Weapon weaponCard)
     {
-        GetEquipWeapon() = weaponCard.weapon.data;
+        GetEmptyHand() = weaponCard.weapon.data;
     }
 
     public void EquipWeapon(int ID)
@@ -341,7 +351,7 @@ public class Card_Player : Card
         if (relicManager.CheckRelicCollection(37))
             newWeapon.plus.enforce[0] = true;
 
-        GetEquipWeapon() = newWeapon;
+        GetEmptyHand() = newWeapon;
     }
 
     public void ChangeHand(int _number)
@@ -357,11 +367,10 @@ public class Card_Player : Card
 
     public void UpDmg(int dmg)
     {
-        if (equipWeapon[curHand].plus.dmg != 0)
-            equipWeapon[curHand].plus.dmg += dmg;
-        else if (equipWeapon[(curHand + 1) % 2].plus.dmg != 0)
-            equipWeapon[(curHand + 1) % 2].plus.dmg += dmg;
-        else return;
+        if (GetEquipHand().plus.dmg == 0)
+            return;
+
+        GetEquipHand().plus.dmg += dmg;
     }
 
     public void GetPoison(int i)

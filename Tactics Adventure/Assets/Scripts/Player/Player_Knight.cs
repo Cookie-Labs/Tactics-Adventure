@@ -14,6 +14,6 @@ public class Player_Knight : Player
 
     public override void PassiveSkill()
     {
-        spawnManager.playerCard.defend++;
+        spawnManager.playerCard.UpDefend(1);
     }
 }

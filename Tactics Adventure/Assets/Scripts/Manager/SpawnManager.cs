@@ -34,9 +34,22 @@ public class SpawnManager : Singleton<SpawnManager>
             // 플레이어 소환
             if (i == 0)
             {
-                SpawnCard((CardType)i, 4);
+                SpawnCard(CardType.Player, 4);
                 continue;
             }
+            // 유물 테스트용
+            else if (i == 1)
+            {
+                SpawnCard(CardType.Relics, 1);
+                drawnNumbers.Add(1);
+                continue;
+            }
+            else if (i == 2)
+            {
+                SpawnCard(CardType.Relics, 7);
+                drawnNumbers.Add(7);
+                continue;
+            }    
 
             // 플레이어 이외 카드 소환
             for(int j = 0; j < spawnCount[i]; j++) // -> j -> spawnCount[i] 순환 (타입 수)
@@ -168,21 +181,6 @@ public class SpawnManager : Singleton<SpawnManager>
         Card_Coin coinCard = ChangeCard(oriCard, CardType.Coin).GetComponent<Card_Coin>();
 
         coinCard.ChangeAmount(amount);
-    }
-
-    public void ChangeAllCard_Ran()
-    {
-        int typeCount = Random.Range(0, System.Enum.GetValues(typeof(CardType)).Length);
-
-        foreach (Card card in cardList)
-        {
-            if (card.type == CardType.Player)
-                continue;
-
-            CardType ranType = (CardType)Random.Range(0, typeCount);
-
-            ChangeCard(card, ranType);
-        }
     }
 
     public void DuplicateAllCard_Ran()
@@ -459,11 +457,19 @@ public class SpawnManager : Singleton<SpawnManager>
         return relic;
     }
 
+    bool isStart; // 테스트 용
     public Relic SpawnRelic_Ran(Transform parent)
     {
         CSVList csvList = CSVManager.Instance.csvList;
 
         int ranRelic = RandomID(csvList.relicDatas.Length);
+        // 테스트용
+        if (!isStart)
+        {
+            isStart = true;
+            ranRelic = 40;
+        }
+
 
         if (RelicManager.Instance.CheckRelicCollection(ranRelic))
             return SpawnRelic_Ran(parent);
