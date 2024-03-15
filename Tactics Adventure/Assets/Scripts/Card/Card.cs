@@ -73,6 +73,7 @@ public abstract class Card : MonoBehaviour, IPoolObject
 
     public virtual IEnumerator Move(int _pos)
     {
+        bool isMoving = false;
         Transform target = spawnManager.cardPos[_pos];
         transform.SetParent(target);
         pos = _pos;
@@ -80,9 +81,10 @@ public abstract class Card : MonoBehaviour, IPoolObject
         transform.DOMove(target.position, 0.5f).SetEase(Ease.OutBounce).SetUpdate(true).OnComplete(() =>
             {
                 transform.localPosition = Vector3.zero;
+                isMoving = true;
             });
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitWhile(() => !isMoving);
     }
 
     public abstract IEnumerator Damaged(int _amount);

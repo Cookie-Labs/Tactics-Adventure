@@ -71,6 +71,7 @@ public class Card_Player : Card
 
     public override IEnumerator Move(int _pos)
     {
+        bool isMoving = false;
         Transform targetTrans = spawnManager.cardPos[_pos]; // 타겟 위치 가져오기 (부모)
         Card targetCard = spawnManager.FindCard(targetTrans.position); // 타겟 카드 가져오기
 
@@ -92,9 +93,9 @@ public class Card_Player : Card
             transform.localPosition = Vector3.zero;
             // 비어있는 카드에 새 카드 생성
             spawnManager.SpawnRanCard();
+            isMoving = true;
         });
-
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitWhile(() => !isMoving);
     }
 
     public void Active()
@@ -216,6 +217,7 @@ public class Card_Player : Card
         {
             rebornCount--;
             HealHP(player.data.hp);
+            SetIconTxt();
 
             yield break;
         }
@@ -247,7 +249,7 @@ public class Card_Player : Card
             hp = Mathf.Max(0, hp - _amount);
 
             if (relicManager.CheckRelicCollection(52) && _amount >= 3)
-                UpDmg(1);
+                bonusDmg++;
 
             DODamaged();
             SetIconTxt();

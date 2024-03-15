@@ -35,6 +35,5 @@ public class Card_Relics : Card
     private IEnumerator CollectRelic()
     {
         yield return relicManager.AddRelicList(relic);
-        spawnManager.SpawnRelicIcon(relic.data.index);
     }
 }

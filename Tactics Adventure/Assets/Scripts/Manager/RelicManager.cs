@@ -10,17 +10,22 @@ public class RelicManager : Singleton<RelicManager>
 
     public IEnumerator AddRelicList(Relic relic)
     {
-        if (CheckRelicCollection(relic.data.index))
+        int ID = relic.data.index;
+        if (CheckRelicCollection(ID))
             yield break;
-        collectList.Add(relic.data.index);
-        yield return DoRelic(relic.data.index);
+
+        collectList.Add(ID);
+        SpawnManager.Instance.SpawnRelicIcon(ID);
+        yield return DoRelic(ID);
     }
 
     public IEnumerator AddRelicList(int relicID)
     {
         if (CheckRelicCollection(relicID))
             yield break;
+
         collectList.Add(relicID);
+        SpawnManager.Instance.SpawnRelicIcon(relicID);
         yield return DoRelic(relicID);
     }
 
@@ -29,7 +34,9 @@ public class RelicManager : Singleton<RelicManager>
         if (!CheckRelicCollection(relicID) || collectList.Count <= 0)
             return;
         collectList.Remove(relicID);
-        SpawnManager.Instance.DeSpawnRelicIcon(relicID); // 버그 발생 부분
+        turnRelicList.Remove(turnRelicList.Find(item => item.relicID == relicID));
+
+        SpawnManager.Instance.DeSpawnRelicIcon(relicID);
     }
 
     public bool CheckRelicCollection(int relicID)
@@ -105,9 +112,12 @@ public class RelicManager : Singleton<RelicManager>
             case 13:
                 delay += AtkAll(3);
                 break;
-            // 임상실험: 모든 포션 효과가 1 증가합니다. (완) (테스트 완)
+            // 임상실험: 무작위 포션 섭취 (완) (테스트 완)
             case 15:
-                player.bonusPortion++;
+                PortionType ranType = (PortionType)Random.Range(0, System.Enum.GetValues(typeof(PortionType)).Length);
+                int amount = Random.Range(0, 5);
+
+                Portion(ranType, amount);
                 break;
             // 목장갑: 공격력 +1 (완) (테스트 완)
             case 16:
@@ -203,31 +213,28 @@ public class RelicManager : Singleton<RelicManager>
                 player.SetMaxHP(1);
                 player.UpInvincible(25);
                 break;
-            // 랜덤 교환: 무작위 포션 섭취 (완) (테스트 완)
+            // 랜덤 교환: 모든 카드 무작위 카드로 변경 (완) (테스트 완)
             case 39:
-                PortionType ranType = (PortionType)Random.Range(0, System.Enum.GetValues(typeof(PortionType)).Length);
-                int amount = Random.Range(1, 5);
-
-                Portion(ranType, amount);
+                SpawnManager.Instance.ChangeAllCard();
                 break;
-            // 투기: 무작위 유물 버림 (완)
+            // 투기: 무작위 유물 버림 (완) (테스트 완)
             case 40:
-                RemoveRelicList(collectList[Random.Range(0, collectList.Count)]);
+                RemoveRelicList(collectList[Random.Range(0, collectList.Count - 1)]);
                 break;
-            // 지진: 모든 카드를 필드에 존재하는 무작위 카드타입으로 통일 (완)
+            // 지진: 모든 카드를 필드에 존재하는 무작위 카드타입으로 통일 (완) (테스트 완)
             case 41:
-                SpawnManager.Instance.DuplicateAllCard_Ran();
+                SpawnManager.Instance.DuplicateAllCard();
                 break;
-            // 무적: 방어도 20 증가, 3턴 후 소멸 (완)
+            // 무적: 방어도 20 증가, 3턴 후 소멸 (완) (테스트 완)
             case 42:
                 player.UpDefend(20);
                 turnRelicList.Add(new TurnRelic(42, 3));
                 break;
-            // 교환: 무작위 카드와 플레이어의 위치를 바꿈 (완)
+            // 교환: 무작위 카드와 플레이어의 위치를 바꿈 (완) (테스트 완)
             case 43:
-                SpawnManager.Instance.ShuffleRanCard(player);
+                yield return SpawnManager.Instance.ShuffleRanCard(player);
                 break;
-            // 네잎클로버: 운 5% 증가 (완)
+            // 네잎클로버: 운 5% 증가 (완) (테스트 완)
             case 45:
                 luck.GainLuck(1.05f);
                 break;
@@ -237,15 +244,15 @@ public class RelicManager : Singleton<RelicManager>
             // 레벨업: 현재 처치한 중간보스 수만큼 공격력 증가
             case 48:
                 break;
-            // 잭팟: 운 20% 증가 (완)
+            // 잭팟: 운 20% 증가 (완) (테스트 완)
             case 49:
                 luck.GainLuck(1.2f);
                 break;
-            // 클러치능력: 3턴 후 공격력이 5 증가합니다. (완)
+            // 클러치능력: 3턴 후 공격력이 5 증가합니다. (완) (테스트 완)
             case 50:
                 turnRelicList.Add(new TurnRelic(50, 3));
                 break;
-            // 에어*: 부활 추가 (완)
+            // 에어*: 부활 추가 (완) (테스트 완)
             case 53:
                 player.rebornCount++;
                 break;
@@ -253,27 +260,27 @@ public class RelicManager : Singleton<RelicManager>
             case 54:
                 // 게임오버, 클리어 제작 후 제작
                 break;
-            // 도박: 50% 100코인+, 50% 50코인- (완)
+            // 도박: 50% 100코인+, 50% 50코인- (완) (테스트 완)
             case 55:
-                bool prob = luck.Probability(50);
+                bool prob = luck.Probability(0.5f);
                 if (prob)
                     csvManager.money.EarnMoney(100);
                 else
                     csvManager.money.LoseMoney(50);
                 break;
-            // 시련: 매 턴 체력 1--, 공격력 1++
+            // 시련: 매 턴 체력 1--, 공격력 1++ (테스트 완)
             case 56:
                 turnRelicList.Add(new TurnRelic(56, -1));
                 break;
-            // 공짜: 스킬을 마나소모 없이 한 번 사용가능 (완)
+            // 공짜: 스킬을 마나소모 없이 한 번 사용가능 (완) (테스트 완)
             case 58:
                 player.freeMP++;
                 break;
-            // 공짜쿠폰: 스킬을 마나소모 없이 5번 사용가능 (완)
+            // 공짜쿠폰: 스킬을 마나소모 없이 5번 사용가능 (완) (테스트 완)
             case 59:
                 player.freeMP += 5;
                 break;
-            // 무기파괴술: 무기를 파괴 후 모든 몬스터에게 그만큼 피해 (무기가 없다면 1 피해) (완)
+            // 무기파괴술: 무기를 파괴 후 모든 몬스터에게 그만큼 피해 (무기가 없다면 1 피해) (완) (테스트 완)
             case 61:
                 dmg = player.GetEquipHand().plus.dmg;
                 if (dmg == 0)
@@ -282,50 +289,50 @@ public class RelicManager : Singleton<RelicManager>
                     delay += AtkAll(dmg);
                 player.BreakWeapon(ref player.GetEquipHand());
                 break;
-            // 요상한버섯: 전설 등급 무기를 얻습니다. (완)
+            // 요상한버섯: 전설 등급 무기를 얻습니다. (완) (테스트 완)
             case 62:
                 player.EquipWeapon(csvList.FindWeapon(Tier.Legend).index);
                 break;
-            // 스컬: 뼈다귀 얻습니다 (완)
+            // 스컬: 뼈다귀 얻습니다 (완) (테스트 완)
             case 63:
                 player.EquipWeapon(28);
                 break;
-            // 작은고추: 공격력이 5턴동안 1 증가함 (완)
+            // 작은고추: 공격력이 5턴동안 1 증가함 (완) (테스트 완)
             case 64:
                 player.bonusDmg++;
                 turnRelicList.Add(new TurnRelic(64, 5));
                 break;
-            // 이자: 보유 코인의 10%만큼 코인 얻음 (완)
+            // 이자: 보유 코인의 10%만큼 코인 얻음 (완) (테스트 완)
             case 65:
-                csvManager.money.EarnMoney(Mathf.RoundToInt(csvManager.money.money * 1.1f));
+                csvManager.money.EarnMoney(Mathf.RoundToInt(csvManager.money.money * 0.1f));
                 break;
-            // 약물의 힘: 공격력 20 증가, 매턴 공격력 1 잃음 (완)
+            // 약물의 힘: 공격력 20 증가, 매턴 공격력 1 잃음 (완) (테스트 완)
             case 66:
-                player.bonusDmg += 20;
+                player.bonusDmg += 21;
                 turnRelicList.Add(new TurnRelic(66, -1));
                 break;
             // 개구리왕자: 봉인을 풀어주세요
             case 67:
                 break;
-            // 거인: 최대체력 6+ (완)
+            // 거인: 최대체력 6+ (완) (테스트 완)
             case 69:
                 player.SetMaxHP(player.player.data.hp + 6);
                 break;
-            // 살크업: 공격력 2 감소, 최대체력 10 증가 (완)
+            // 살크업: 공격력 2 감소, 최대체력 10 증가 (완) (테스트 완)
             case 70:
                 player.minusDmg += 2;
                 player.SetMaxHP(player.player.data.hp + 10);
                 break;
-            // 요술램프: 7턴 동안 문질러야 합니다.
+            // 요술램프: 7턴 동안 문질러야 합니다. (완) (테스트 완)
             case 71:
                 turnRelicList.Add(new TurnRelic(71, 7));
                 break;
-            // 작은지니: 레어 등급 무기 줌 (완)
+            // 작은지니: 레어 등급 무기 줌 (완) (테스트 완)
             case 72:
                 player.EquipWeapon(csvList.FindWeapon(Tier.Rare).index);
                 turnRelicList.Add(new TurnRelic(72, 10));
                 break;
-            // 큰지니: 에픽 등급 무기를 줌 (완)
+            // 큰지니: 에픽 등급 무기를 줌 (완) (테스트 완)
             case 73:
                 player.EquipWeapon(csvList.FindWeapon(Tier.Epic).index);
                 break;
@@ -395,12 +402,14 @@ public class RelicManager : Singleton<RelicManager>
     public void DoTurnRelic()
     {
         List<TurnRelic> removeList = new List<TurnRelic>();
-        turnRelicList.ForEach(turnRelic => {
+        for (int i = 0; i < turnRelicList.Count; i++)
+        {
+            TurnRelic turnRelic = turnRelicList[i];
             turnRelic.DoTurnRelic();
 
             if (turnRelic.turnCount == 0)
                 removeList.Add(turnRelic);
-        });
+        }
 
         turnRelicList.RemoveAll(turnRelic => removeList.Contains(turnRelic));
     }
@@ -470,7 +479,7 @@ public class TurnRelic
     public TurnRelic(int id, int count)
     {
         relicID = id;
-        turnCount = count + 1;
+        turnCount = count > 0 ? count + 1 : count;
     }
 
     public void DoTurnRelic()
@@ -496,22 +505,27 @@ public class TurnRelic
                     player.DownDefend(20);
                     break;
                 case 50:
-                    player.UpDmg(5);
+                    player.bonusDmg += 3;
                     break;
                 case 56:
+                    if (player.hp == 1)
+                        break;
                     player.StartCoroutine(player.Damaged(1));
-                    player.UpDmg(1);
+                    player.bonusDmg++;
                     break;
                 case 63:
                     player.bonusDmg++;
                     break;
+                case 64:
                 case 66:
-                    player.reduceDmg++;
+                    player.minusDmg++;
                     break;
                 case 71:
+                    RelicManager.Instance.RemoveRelicList(71);
                     RelicManager.Instance.StartCoroutine(RelicManager.Instance.AddRelicList(72));
                     break;
                 case 72:
+                    RelicManager.Instance.RemoveRelicList(72);
                     RelicManager.Instance.StartCoroutine(RelicManager.Instance.AddRelicList(73));
                     break;
             }

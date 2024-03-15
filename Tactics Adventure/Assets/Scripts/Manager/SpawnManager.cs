@@ -44,15 +44,9 @@ public class SpawnManager : Singleton<SpawnManager>
                 drawnNumbers.Add(1);
                 continue;
             }
-            else if (i == 2)
-            {
-                SpawnCard(CardType.Relics, 7);
-                drawnNumbers.Add(7);
-                continue;
-            }    
 
             // 플레이어 이외 카드 소환
-            for(int j = 0; j < spawnCount[i]; j++) // -> j -> spawnCount[i] 순환 (타입 수)
+            for (int j = 0; j < spawnCount[i]; j++) // -> j -> spawnCount[i] 순환 (타입 수)
             {
                 // 랜덤 위치 설정
                 int ranNum;
@@ -183,49 +177,67 @@ public class SpawnManager : Singleton<SpawnManager>
         coinCard.ChangeAmount(amount);
     }
 
-    public void DuplicateAllCard_Ran()
+    public void ChangeAllCard()
     {
-        Card ranCard = cardList[Random.Range(0, cardList.Count)];
+        int typeCount = Random.Range(0, System.Enum.GetValues(typeof(CardType)).Length);
 
-        if(ranCard.type == CardType.Player)
+        for (int i = 0; i < cardPos.Length; i++)
         {
-            DuplicateAllCard_Ran();
-            return;
-        }
+            Card card = cardPos[i].GetComponentInChildren<Card>();
 
-        foreach (Card card in cardList)
-        {
             if (card.type == CardType.Player)
                 continue;
-            ChangeCard(card, ranCard.type);
+
+            CardType ranType = (CardType)Random.Range(1, typeCount);
+
+            ChangeCard(card, ranType);
         }
     }
 
-    public void ShuffleCard(Card selCard, Card tarCard)
+    public void DuplicateAllCard()
+    {
+        CardType ranType = cardList[Random.Range(0, cardList.Count)].type;
+
+        if(ranType == CardType.Player)
+        {
+            DuplicateAllCard();
+            return;
+        }
+
+        for (int i = 0; i < cardPos.Length; i++)
+        {
+            Card card = cardPos[i].GetComponentInChildren<Card>();
+
+            if (card.type == CardType.Player)
+                continue;
+
+            ChangeCard(card, ranType);
+        }
+    }
+
+    public IEnumerator ShuffleCard(Card selCard, Card tarCard)
     {
         int selPos = selCard.pos;
         int tarPos = tarCard.pos;
 
-        selCard.transform.SetParent(cardPos[selPos]);
-        selCard.pos = selPos;
+        selCard.transform.SetParent(cardPos[tarPos]);
+        selCard.pos = tarPos;
         selCard.transform.localPosition = Vector3.zero;
 
-        tarCard.transform.SetParent(cardPos[tarPos]);
-        tarCard.pos = tarPos;
-        tarCard.transform.localPosition = Vector3.zero;
+        yield return tarCard.Move(selPos);
     }
 
-    public void ShuffleRanCard(Card selCard)
+    public IEnumerator ShuffleRanCard(Card selCard)
     {
         Card ranCard = cardList[Random.Range(0, cardList.Count)];
 
         if(selCard == ranCard)
         {
             ShuffleRanCard(selCard);
-            return;
+            yield break;
         }
 
-        ShuffleCard(selCard, ranCard);
+        yield return ShuffleCard(selCard, ranCard);
     }
 
     public void ShuffleAll()
@@ -457,7 +469,7 @@ public class SpawnManager : Singleton<SpawnManager>
         return relic;
     }
 
-    bool isStart; // 테스트 용
+    bool isStart;
     public Relic SpawnRelic_Ran(Transform parent)
     {
         CSVList csvList = CSVManager.Instance.csvList;
@@ -466,10 +478,9 @@ public class SpawnManager : Singleton<SpawnManager>
         // 테스트용
         if (!isStart)
         {
+            ranRelic = 71;
             isStart = true;
-            ranRelic = 40;
         }
-
 
         if (RelicManager.Instance.CheckRelicCollection(ranRelic))
             return SpawnRelic_Ran(parent);

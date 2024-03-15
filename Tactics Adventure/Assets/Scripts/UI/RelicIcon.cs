@@ -14,6 +14,8 @@ public class RelicIcon : MonoBehaviour, IPoolObject
 
     public void OnCreatedInPool()
     {
+        name = name.Replace("(Clone)", "");
+
         img = GetComponent<Image>();
         spriteData = SpriteData.Instance;
         uiManager = UIManager.Instance;
