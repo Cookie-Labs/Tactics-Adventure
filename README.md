@@ -2,6 +2,7 @@
 
 <details>
 <summary>Alpha 1.2</summary>
+
 **[Alpha 1.2]**<br/>
 - 스테이지별 몬스터 해금 활성화<br/>
 &nbsp; &nbsp; &nbsp; &nbsp;Grass -> Goblin, Slime, Mushroom<br/>
@@ -90,6 +91,7 @@
 
 <details>
 <summary>Alpha 1.3</summary>
+
 **[Alpha 1.3]**<br/>
 <b>[추가 사항]</b>
 - 무기 타입 (물리, 마법)<br/>
