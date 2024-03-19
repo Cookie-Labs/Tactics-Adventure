@@ -356,6 +356,18 @@ public class Card_Player : Card
         GetEmptyHand() = newWeapon;
     }
 
+    public void ChangeWeapon(int ID)
+    {
+        WeaponData newWeapon = csvManager.csvList.FindWeapon(ID);
+        newWeapon.plus.dmg = csvManager.luck.TierToDmg(newWeapon.tier);
+        newWeapon.plus.enforce = new bool[1]; // 0: Drain
+        // 유물(편식)
+        if (relicManager.CheckRelicCollection(37))
+            newWeapon.plus.enforce[0] = true;
+
+        GetEquipHand() = newWeapon;
+    }
+
     public void ChangeHand(int _number)
     {
         if (touchManager.isTouching)

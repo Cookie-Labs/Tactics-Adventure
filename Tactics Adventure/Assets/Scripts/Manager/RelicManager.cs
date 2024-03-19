@@ -336,7 +336,7 @@ public class RelicManager : Singleton<RelicManager>
             case 73:
                 player.EquipWeapon(csvList.FindWeapon(Tier.Epic).index);
                 break;
-            // 펑펑펑: 모든 캐릭터 2 피해(자신도) (완)
+            // 펑펑펑: 모든 카드 2 피해(자신도) (완) (테스트 완)
             case 74:
                 List<Card> wholeList = SpawnManager.Instance.cardList;
                 float maxDelay = 0f;
@@ -349,7 +349,9 @@ public class RelicManager : Singleton<RelicManager>
 
                 delay += maxDelay;
                 break;
-            // 황금돼지: 코인을 지불해 무기를 얻음 (최대 300) (완)
+            // 76 완성해야함
+
+            // 황금돼지: 코인을 지불해 무기를 얻음 (최대 300) (완) (테스트 완)
             case 77:
                 int curMoney = CSVManager.Instance.money.money;
                 int expendMoney = 0;
@@ -378,15 +380,15 @@ public class RelicManager : Singleton<RelicManager>
                 csvManager.money.LoseMoney(expendMoney);
                 player.EquipWeapon(csvList.FindWeapon(weaponTier).index);
                 break;
-            // 압수: 보유한 무기를 한 단계 낮은 등급의 무작위 무기로 바꿈 (완)
+            // 압수: 보유한 무기를 한 단계 낮은 등급의 무작위 무기로 바꿈 (완) (테스트 완)
             case 78:
                 int weaponTierID = (int)player.GetEquipHand().tier;
 
                 weaponTierID = weaponTierID == 0 ? weaponTierID : weaponTierID - 1;
 
-                player.EquipWeapon(csvList.FindWeapon((Tier)weaponTierID).index);
+                player.ChangeWeapon(csvList.FindWeapon((Tier)weaponTierID).index);
                 break;
-            // 무지개냥: 주문서 3개를 전부 얻습니다. (완)
+            // 무지개냥: 주문서 3개를 전부 얻습니다. (완) (테스트 완)
             case 79:
                 StartCoroutine(AddRelicList(21));
                 StartCoroutine(AddRelicList(22));

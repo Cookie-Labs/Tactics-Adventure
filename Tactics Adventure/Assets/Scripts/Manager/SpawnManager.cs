@@ -37,13 +37,6 @@ public class SpawnManager : Singleton<SpawnManager>
                 SpawnCard(CardType.Player, 4);
                 continue;
             }
-            // 유물 테스트용
-            else if (i == 1)
-            {
-                SpawnCard(CardType.Relics, 1);
-                drawnNumbers.Add(1);
-                continue;
-            }
 
             // 플레이어 이외 카드 소환
             for (int j = 0; j < spawnCount[i]; j++) // -> j -> spawnCount[i] 순환 (타입 수)
@@ -469,18 +462,11 @@ public class SpawnManager : Singleton<SpawnManager>
         return relic;
     }
 
-    bool isStart;
     public Relic SpawnRelic_Ran(Transform parent)
     {
         CSVList csvList = CSVManager.Instance.csvList;
 
         int ranRelic = RandomID(csvList.relicDatas.Length);
-        // 테스트용
-        if (!isStart)
-        {
-            ranRelic = 71;
-            isStart = true;
-        }
 
         if (RelicManager.Instance.CheckRelicCollection(ranRelic))
             return SpawnRelic_Ran(parent);
