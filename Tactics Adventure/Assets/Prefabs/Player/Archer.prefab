@@ -123,6 +123,9 @@ MonoBehaviour:
     type: 1
     hp: 7
     mp: 10
+    exp: 10
     defend: 0
+    lv: 1
     skillMP: 3
     passiveCount: 3
+  anim: {fileID: 0}

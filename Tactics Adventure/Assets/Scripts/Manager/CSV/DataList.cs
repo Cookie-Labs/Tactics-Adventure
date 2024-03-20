@@ -9,7 +9,8 @@ public struct PlayerData
 {
     public string name;
     public PlayerType type;
-    public int hp, mp, defend;
+    public int hp, mp, exp, defend;
+    public int lv;
     public int skillMP, passiveCount;
 }
 

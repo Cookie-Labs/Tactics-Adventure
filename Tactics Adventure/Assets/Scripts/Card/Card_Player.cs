@@ -11,7 +11,9 @@ public class Card_Player : Card
     [Title("플레이어 변수")]
     public int hp;
     public int mp;
+    public int exp, maxExp;
     public int defend;
+    public int lv;
     public int curHand;
     public WeaponData[] equipWeapon = new WeaponData[2];
     public Card[] neighborCards;
@@ -54,14 +56,33 @@ public class Card_Player : Card
         hp = player.data.hp;
         mp = player.data.mp;
         defend = player.data.defend;
+        exp = 0;
         curHand = 0;
         activeMP = player.data.skillMP;
         passiveCount = player.data.passiveCount;
+        SetLv();
 
         // 카드 UI 설정
         SetCardName(player.data.name);
         SetIconTxt();
     }
+
+    public void SetLv()
+    {
+        lv = player.data.lv;
+
+        int plus = player.data.lv - 1;
+
+        if (plus <= 0)
+            return;
+
+        for(int i = 0; i < plus; i++)
+            LevelUp();
+
+        uiManager.expBar.UpdateUI(this);
+    }
+
+    // 스탯 증가 스크립트 (enum 추가 스탯 Type 기반으로)
 
     public override void DestroyCard()
     {
@@ -85,7 +106,7 @@ public class Card_Player : Card
         transform.SetParent(targetTrans); // 부모 설정
         // 변수 설정
         pos = _pos;
-        yield return SetAnim(player.anim, AnimID.Walk);
+        StartCoroutine(SetAnim(player.anim, AnimID.Walk));
 
         // 이동 중
         transform.DOMove(targetTrans.position, 0.5f).SetEase(Ease.OutBounce).SetUpdate(true).OnComplete(() => {
@@ -172,6 +193,27 @@ public class Card_Player : Card
             spawnManager.DeSpawnEffect(FindEffect(EffectType.Invincible));
     }
 
+    public void LevelUp()
+    {
+        lv++;
+        maxExp += 10;
+        HealHP(player.data.hp);
+        // 스탯 증가 포인트 1 획득
+    }
+
+    public void UpExp(int amount)
+    {
+        exp += amount;
+
+        while(exp > player.data.exp)
+        {
+            exp -= player.data.exp;
+            LevelUp();
+        }
+
+        uiManager.expBar.UpdateUI(this);
+    }
+
     public void HealHP(int amount)
     {
         hp += amount + bonusHeal; // 체력회복
@@ -210,7 +252,6 @@ public class Card_Player : Card
         hp = 0;
 
         yield return SetAnim(player.anim, AnimID.Die);
-        yield return new WaitForSeconds(animTime);
 
         // 부활
         if (rebornCount > 0)
@@ -258,7 +299,6 @@ public class Card_Player : Card
 
         // 피격 애니메이션 (딜레이 포함)
         yield return SetAnim(player.anim, AnimID.Damaged);
-        yield return new WaitForSeconds(animTime);
 
         if (hp <= 0)
         {
@@ -301,7 +341,7 @@ public class Card_Player : Card
             SetIconTxt();
 
             // 공격 애니메이션
-            yield return SetAnim(player.anim, AnimID.Atk);
+            StartCoroutine(SetAnim(player.anim, AnimID.Atk));
             StartCoroutine(Talk("죽어라!!", 1f));
 
             yield return monster.Damaged(totalDmg);
@@ -431,9 +471,9 @@ public class Card_Player : Card
         if (equipWeapon[curHand].plus.dmg > 0)
         {
             if (totalDmg > 0)
-                uiText.text = $"<sprite=0>{equipWeapon[curHand].plus.dmg}<color=orange>+{totalDmg}</color> <sprite=1>{hp}";
+                uiText.text = $"<sprite=0>({equipWeapon[curHand].plus.dmg})<color=orange>+{totalDmg}</color> <sprite=1>{hp}";
             else if (totalDmg < 0)
-                uiText.text = $"<sprite=0>{equipWeapon[curHand].plus.dmg}<color=blue>{totalDmg}</color> <sprite=1>{hp}";
+                uiText.text = $"<sprite=0>({equipWeapon[curHand].plus.dmg})<color=blue>{totalDmg}</color> <sprite=1>{hp}";
             else
                 uiText.text = $"<sprite=0>{equipWeapon[curHand].plus.dmg} <sprite=1>{hp}";
         }

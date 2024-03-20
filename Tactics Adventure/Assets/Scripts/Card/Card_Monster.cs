@@ -43,7 +43,6 @@ public class Card_Monster : Card
 
         // 피격 애니메이션 (딜레이 포함)
         yield return SetAnim(monster.anim, AnimID.Damaged);
-        yield return new WaitForSeconds(animTime);
 
         if (hp <= 0)
             yield return Die();
@@ -57,7 +56,6 @@ public class Card_Monster : Card
         SetUI($"<sprite=1>{hp}");
 
         yield return SetAnim(monster.anim, AnimID.Atk);
-        yield return new WaitForSeconds(animTime);
 
         if (hp <= 0)
             yield return Die();
@@ -69,8 +67,8 @@ public class Card_Monster : Card
         hp = 0;
 
         yield return SetAnim(monster.anim, AnimID.Die);
-        yield return new WaitForSeconds(animTime);
 
+        spawnManager.playerCard.UpExp(monster.data.hp);
         if (relicManager.CheckRelicCollection(14) && csvManager.luck.Probability(0.01f))
             csvManager.money.EarnMoney(500);
         if (relicManager.CheckRelicCollection(47))

@@ -25,6 +25,9 @@ public class UIManager : Singleton<UIManager>
     [Title("가방 UI")]
     public BagUI bagUI;
 
+    [Title("경험치바 UI")]
+    public ExpBar expBar;
+
     public void CheckSkillUI()
     {
         Card_Player playerCard = SpawnManager.Instance.playerCard;
@@ -193,5 +196,23 @@ public class BagUI
         textSequence.Append(nameTxt.DOText(data.name, 0.2f))
                     .Join(tierTxt.DOText(data.tier.ToString(), 0.2f))
                     .Append(explainTxt.DOText(data.explanation, 0.5f));
+    }
+}
+
+[Serializable]
+public class ExpBar
+{
+    public TextMeshProUGUI lvTxt;
+    public Slider bar;
+
+    public void UpdateUI(Card_Player player)
+    {
+        lvTxt.text = $"Lv {player.lv}";
+        UpdateBar(player.exp, player.player.data.exp);
+    }
+
+    public void UpdateBar(float curExp, float maxExp)
+    {
+        bar.DOValue(curExp / maxExp, 0.3f).SetUpdate(true).SetEase(Ease.OutBounce);
     }
 }

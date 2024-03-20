@@ -123,6 +123,8 @@ public abstract class Card : MonoBehaviour, IPoolObject
         yield return new WaitForEndOfFrame();
 
         animTime = _anim.GetCurrentAnimatorStateInfo(0).length;
+
+        yield return new WaitForSeconds(animTime);
     }
     #endregion
 

@@ -32,7 +32,6 @@ public class Card_Consumable : Card
         Card_Player playerCard = spawnManager.playerCard;
 
         yield return SetAnim(playerCard.player.anim, AnimID.Interaction);
-        yield return new WaitForSeconds(playerCard.animTime);
 
         // 현재 포션 밖에 없음(확장성 고려)
         if (consumable.type == ConsumableType.Portion)

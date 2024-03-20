@@ -86,9 +86,10 @@ public class Card_Trap : Card
     {
         Card[] neighborCard = FindNeighbors(targetDir);
 
-        yield return SetAnim(trap.anim, AnimID.Atk);
+        StartCoroutine(SetAnim(trap.anim, AnimID.Atk));
 
-        animTime = trap.anim.GetCurrentAnimatorStateInfo(0).length;
+        yield return new WaitForEndOfFrame();
+
         float maxAnim = animTime;
 
         foreach (Card card in neighborCard)
