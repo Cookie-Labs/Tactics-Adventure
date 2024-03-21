@@ -33,6 +33,6 @@ public class RelicIcon : MonoBehaviour, IPoolObject
 
     public void Click()
     {
-        uiManager.bagUI.ShowExplain(ID);
+        uiManager.bagPannel.ShowExplain(ID);
     }
 }

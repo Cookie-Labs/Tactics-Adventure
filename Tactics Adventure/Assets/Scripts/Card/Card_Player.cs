@@ -22,9 +22,9 @@ public class Card_Player : Card
     public int passiveCount;
     public bool isTalking;
 
-    [Title("특성", "유물 관련")]
+    [Title("부가 스탯", "유물 관련")]
+    public int statPoint;
     public int bonusDmg; // 공격력 up
-    public int minusDmg; // 공격력 down
     public int bonusHeal;
     public int bonusDefend;
     public int bonusPortion;
@@ -53,6 +53,7 @@ public class Card_Player : Card
         player = spawnManager.SpawnPlayer(gameManager.playerType, objTrans);
 
         // 변수 설정
+        statPoint = 0;
         hp = player.data.hp;
         mp = player.data.mp;
         defend = player.data.defend;
@@ -198,7 +199,7 @@ public class Card_Player : Card
         lv++;
         maxExp += 10;
         HealHP(player.data.hp);
-        // 스탯 증가 포인트 1 획득
+        statPoint++;
     }
 
     public void UpExp(int amount)
@@ -322,20 +323,19 @@ public class Card_Player : Card
         // 무기가 있다면
         else
         {
-            defaultDmg = Mathf.Min(equipWeapon[curHand].plus.dmg, monster.hp);
+            int weaponReduce = Mathf.Min(equipWeapon[curHand].plus.dmg, monster.hp);
+            equipWeapon[curHand].plus.dmg -= weaponReduce;
 
-            equipWeapon[curHand].plus.dmg -= defaultDmg;
-
-            int totalDmg = Mathf.Max(0, defaultDmg + bonusDmg - minusDmg);
+            defaultDmg = Mathf.Max(0, weaponReduce + bonusDmg);
 
             if (relicManager.CheckRelicCollection(51) && monster.hp > hp)
-                totalDmg++;
+                defaultDmg++;
 
             // 생명력 흡수
             if (csvManager.csvList.EnforceCheck(equipWeapon[curHand], EnforceID.Drain))
-                HealHP(totalDmg);
+                HealHP(defaultDmg);
 
-            if (equipWeapon[curHand].plus.dmg - minusDmg <= 0) // 무기 깨짐
+            if (equipWeapon[curHand].plus.dmg <= 0) // 무기 깨짐
                 BreakWeapon(ref equipWeapon[curHand]);
 
             SetIconTxt();
@@ -344,7 +344,7 @@ public class Card_Player : Card
             StartCoroutine(SetAnim(player.anim, AnimID.Atk));
             StartCoroutine(Talk("죽어라!!", 1f));
 
-            yield return monster.Damaged(totalDmg);
+            yield return monster.Damaged(defaultDmg);
         }
     }
 
@@ -464,16 +464,14 @@ public class Card_Player : Card
         yield return new WaitForSeconds(time + 0.5f);
     }
 
-    private void SetIconTxt()
+    public void SetIconTxt()
     {
-        int totalDmg = bonusDmg - minusDmg;
-
         if (equipWeapon[curHand].plus.dmg > 0)
         {
-            if (totalDmg > 0)
-                uiText.text = $"<sprite=0>({equipWeapon[curHand].plus.dmg})<color=orange>+{totalDmg}</color> <sprite=1>{hp}";
-            else if (totalDmg < 0)
-                uiText.text = $"<sprite=0>({equipWeapon[curHand].plus.dmg})<color=blue>{totalDmg}</color> <sprite=1>{hp}";
+            if (bonusDmg > 0)
+                uiText.text = $"<sprite=0>{equipWeapon[curHand].plus.dmg}<color=orange>(+{bonusDmg})</color> <sprite=1>{hp}";
+            else if (bonusDmg < 0)
+                uiText.text = $"<sprite=0>{equipWeapon[curHand].plus.dmg}<color=blue>({bonusDmg})</color> <sprite=1>{hp}";
             else
                 uiText.text = $"<sprite=0>{equipWeapon[curHand].plus.dmg} <sprite=1>{hp}";
         }

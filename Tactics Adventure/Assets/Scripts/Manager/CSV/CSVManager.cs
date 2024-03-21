@@ -91,10 +91,9 @@ public class Luck
     public int[] tierLuck = new int[4];
     public int weaponPerDmg;
 
-    public void GainLuck(float _gain) // ex) 10% -> 1.1f
+    public void GainLuck(float _gain) // ex) 10% -> 0.1f
     {
-        luck *= _gain;
-        luck = MathF.Floor(luck * 10f) / 10f;
+        luck += _gain;
     }
 
     public bool Probability(float percent)

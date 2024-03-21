@@ -9,6 +9,9 @@ public class SpriteData : Singleton<SpriteData>
     [Title("맵 타일")]
     public StageSprite[] stageSprites;
 
+    [Title("플레이어 스프라이트", subtitle: "Enum 순서")]
+    public Sprite[] playerSprites;
+
     [Title("포션 스프라이트")]
     public PortionSprite[] portionSprites;
 

@@ -117,4 +117,13 @@
 - 전사 액티브 스킬 버그 수정<br/>
 - 손 UI 버그 수정<br/>
 - 무기 데이터 불러올 때 버그 수정<br/>
+
+<h3>[Alpha 1.3.1]</h3>
+<img src="https://github.com/HongDaHyun/Tactics-Adventure/assets/101586627/69ca6e73-b0e7-446c-9d39-1f39447269bf" width="540" alt="Alpha 1.3.1">
+<br/>
+- 플레이어 경험치 & 레벨 추가<br/>
+- 플레이어 스탯 UI 추가<br/>
+- 운 증가식  변경<br/>
+- 스탯 포인트 추가<br/>
+- 플레이어 공격 데미지 계산식 변경<br/>
 </details>

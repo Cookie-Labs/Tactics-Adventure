@@ -1,12 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
+using DG.Tweening;
 
 public class BtnManager : Singleton<BtnManager>
 {
     bool isClicking;
+
+    public void Tab(RectTransform rectTransform)
+    {
+        UIManager uiManager = UIManager.Instance;
+        if (!rectTransform.gameObject.activeSelf)
+        {
+            uiManager.isUI = true;
+            rectTransform.gameObject.SetActive(true);
+            uiManager.raycastPannel.SetActive(true);
+            rectTransform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+            rectTransform.DOScale(new Vector3(1f, 1f, 1f), 0.5f).SetEase(Ease.InExpo).SetEase(Ease.OutBounce).SetUpdate(true);
+        }
+        else
+        {
+            uiManager.isUI = false;
+            uiManager.raycastPannel.SetActive(false);
+            rectTransform.DOScale(new Vector3(0.05f, 0.05f, 0.05f), 0.25f).SetEase(Ease.InOutExpo).SetUpdate(true).OnComplete(() => rectTransform.gameObject.SetActive(false));
+        }
+    }
+
+    public void Tab_StatPannel()
+    {
+        UIManager uiManager = UIManager.Instance;
+
+        uiManager.statPannel.UpdateUI(SpawnManager.Instance.playerCard);
+        Tab(uiManager.statPannel.rect);
+    }
+
+    public void UpStatBtn(int id)
+    {
+        Card_Player player = SpawnManager.Instance.playerCard;
+
+        if (player.statPoint <= 0)
+            return;
+
+        UIManager.Instance.statPannel.UpStat(id, player);
+    }
 
     public void ActiveSkillBtn()
     {
@@ -38,7 +74,7 @@ public class BtnManager : Singleton<BtnManager>
 
     public void BagBtn(bool isOpen)
     {
-        BagUI bagUI = UIManager.Instance.bagUI;
+        BagPannel bagUI = UIManager.Instance.bagPannel;
 
         if (isOpen)
             bagUI.OpenUI();

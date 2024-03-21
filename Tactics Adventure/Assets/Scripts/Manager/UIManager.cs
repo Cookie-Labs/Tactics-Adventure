@@ -22,11 +22,12 @@ public class UIManager : Singleton<UIManager>
     [Title("손 UI")]
     public HandUI handUI;
 
-    [Title("가방 UI")]
-    public BagUI bagUI;
-
     [Title("경험치바 UI")]
     public ExpBar expBar;
+
+    [Title("패널")]
+    public BagPannel bagPannel;
+    public StatPannel statPannel;
 
     public void CheckSkillUI()
     {
@@ -134,7 +135,7 @@ public class HandUI
 }
 
 [Serializable]
-public class BagUI
+public class BagPannel
 {
     public RectTransform btnPos;
     public RectTransform bagUI;
@@ -214,5 +215,77 @@ public class ExpBar
     public void UpdateBar(float curExp, float maxExp)
     {
         bar.DOValue(curExp / maxExp, 0.3f).SetUpdate(true).SetEase(Ease.OutBounce);
+    }
+}
+
+[Serializable]
+public class StatPannel
+{
+    public RectTransform rect;
+    public Image img;
+    public TextMeshProUGUI name;
+    public TextMeshProUGUI statPointTxt; // 제작 해야함
+    public TextMeshProUGUI[] baseStatsTxt; // 왼 -> 오
+    public TextMeshProUGUI[] extraStatsTxt; // 위 -> 아래
+
+    public void UpdateUI(Card_Player player)
+    {
+        // 캐릭터(주인공)
+        img.sprite = SpriteData.Instance.playerSprites[(int)player.player.data.type];
+        name.text = player.player.data.name;
+
+        // 스탯 포인트
+        statPointTxt.text = $"STAT POINT: {player.statPoint}";
+
+        // 기본 스탯
+        string totalTxt = player.bonusDmg >= 0 ? $"+{player.bonusDmg}" : $"{player.bonusDmg}";
+        baseStatsTxt[0].text = $"<sprite=1>{player.hp}/{player.player.data.hp}"; // 체력 / MAX체력
+        baseStatsTxt[1].text = $"<sprite=0>{player.equipWeapon[player.curHand].plus.dmg}({totalTxt})"; // 현재 무기 공격력 (+총 보너스 공격력)
+        baseStatsTxt[2].text = $"<sprite=2>{player.defend}"; // 방어력
+        baseStatsTxt[3].text = $"<sprite=3>{player.mp}/{player.player.data.mp}"; // 마나 / MAX마나
+
+        // 부가 스탯
+        extraStatsTxt[0].text = $"DMG: {player.bonusDmg}"; // 총 공격력
+        extraStatsTxt[1].text = $"LUK: {CSVManager.Instance.luck.luck * 100}%"; // 운
+        extraStatsTxt[2].text = $"HEAL: {player.bonusHeal}"; // 힐
+        extraStatsTxt[3].text = $"DEF: {player.bonusDefend}"; // 방어도회복
+        extraStatsTxt[4].text = $"+HP: {player.player.data.hp}"; // 추가 체력
+        extraStatsTxt[5].text = $"+MP: {player.player.data.mp}"; // 추가 마나
+    }
+
+    public void UpStat(int id, Card_Player player)
+    {
+        player.statPoint--;
+
+        switch(id)
+        {
+            // 공격력 증가
+            case 0:
+                player.bonusDmg++;
+                break;
+            // 운 증가 (5%)
+            case 1:
+                CSVManager.Instance.luck.GainLuck(0.05f);
+                break;
+            // 힐 증가
+            case 2:
+                player.bonusHeal++;
+                break;
+            // 방어도 회복 증가
+            case 3:
+                player.bonusDefend++;
+                break;
+            // 체력 증가
+            case 4:
+                player.SetMaxHP(player.player.data.hp + 1);
+                break;
+            // 마나 증가
+            case 5:
+                player.player.data.mp++;
+                break;
+        }
+
+        UpdateUI(player);
+        player.SetIconTxt();
     }
 }

@@ -165,7 +165,7 @@ public class RelicManager : Singleton<RelicManager>
                 break;
             // 럭키: 운 10% 증가 (완) (테스트 완)
             case 27:
-                luck.GainLuck(1.1f);
+                luck.GainLuck(0.1f);
                 break;
             // 방패밀치기: 방어도 전부 잃고 그만큼 무기 공격력++ (완) (테스트 완)
             case 28:
@@ -236,7 +236,7 @@ public class RelicManager : Singleton<RelicManager>
                 break;
             // 네잎클로버: 운 5% 증가 (완) (테스트 완)
             case 45:
-                luck.GainLuck(1.05f);
+                luck.GainLuck(0.05f);
                 break;
             // 대지가르기: 방사 피해
             case 46:
@@ -246,7 +246,7 @@ public class RelicManager : Singleton<RelicManager>
                 break;
             // 잭팟: 운 20% 증가 (완) (테스트 완)
             case 49:
-                luck.GainLuck(1.2f);
+                luck.GainLuck(0.2f);
                 break;
             // 클러치능력: 3턴 후 공격력이 5 증가합니다. (완) (테스트 완)
             case 50:
@@ -320,7 +320,7 @@ public class RelicManager : Singleton<RelicManager>
                 break;
             // 살크업: 공격력 2 감소, 최대체력 10 증가 (완) (테스트 완)
             case 70:
-                player.minusDmg += 2;
+                player.bonusDmg -= 2;
                 player.SetMaxHP(player.player.data.hp + 10);
                 break;
             // 요술램프: 7턴 동안 문질러야 합니다. (완) (테스트 완)
@@ -520,7 +520,7 @@ public class TurnRelic
                     break;
                 case 64:
                 case 66:
-                    player.minusDmg++;
+                    player.bonusDmg--;
                     break;
                 case 71:
                     RelicManager.Instance.RemoveRelicList(71);
