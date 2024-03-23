@@ -11,7 +11,7 @@ public class SpawnManager : Singleton<SpawnManager>
     public int[] maxCard;
     public Transform[] cardPos;
     public List<Card> cardList;
-    public Transform relicIconParent;
+    public Transform relicIconParent, buffIconParent;
     [HideInInspector] public Card_Player playerCard;
     [HideInInspector] public List<Card> turnCardList; // 매턴 작동하는 카드 리스트
 
@@ -497,6 +497,22 @@ public class SpawnManager : Singleton<SpawnManager>
         RelicIcon[] icons = relicIconParent.GetComponentsInChildren<RelicIcon>();
 
         PoolManager.Instance.TakeToPool<RelicIcon>("RelicIcon", System.Array.Find(icons, icon => icon.ID == ID));
+    }
+
+    public BuffIcon SpawnBuffIcon(string name, int count)
+    {
+        BuffIcon icon = PoolManager.Instance.GetFromPool<BuffIcon>("BuffIcon");
+
+        icon.SetBuff(CSVManager.Instance.csvList.FindBuffIconData(name), count);
+
+        return icon;
+    }
+
+    public void DeSpawnBuffIcon(string name)
+    {
+        BuffIcon[] icons = buffIconParent.GetComponentsInChildren<BuffIcon>();
+
+        PoolManager.Instance.TakeToPool<BuffIcon>("BuffIcon", System.Array.Find(icons, icon => icon.buffName == name));
     }
     #endregion
 

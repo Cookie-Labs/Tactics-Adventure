@@ -84,6 +84,13 @@ public struct TierColor
 }
 
 [Serializable]
+public struct BuffIconData
+{
+    public string name;
+    public Sprite sprite;
+}
+
+[Serializable]
 public class CSVList
 {
     public RelicData[] relicDatas;
@@ -93,6 +100,7 @@ public class CSVList
     public MonsterType[] availMonList;
     public ExplainData[] explainDatas;
     public TierColor[] tierColors;
+    public BuffIconData[] buffIconDatas;
 
     #region Relic
     public RelicData FindRelic(int index)
@@ -175,6 +183,13 @@ public class CSVList
     public Color ExportColor(Tier tier)
     {
         return Array.Find(tierColors, color => color.tier == tier).color;
+    }
+    #endregion
+
+    #region BuffIcon
+    public BuffIconData FindBuffIconData(string name)
+    {
+        return Array.Find(buffIconDatas, icon => icon.name == name);
     }
     #endregion
 }

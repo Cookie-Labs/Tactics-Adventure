@@ -429,7 +429,7 @@ public class Card_Player : Card
 
     public void GetPoison(int i)
     {
-        poisonCount = i;
+        poisonCount = Mathf.Max(poisonCount, i);
     }
 
     public void Poisoned()

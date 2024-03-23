@@ -448,6 +448,7 @@ public class RelicManager : Singleton<RelicManager>
                 break;
             case PortionType.Poison:
                 player.GetPoison(totalAmount);
+                SpawnManager.Instance.SpawnBuffIcon("Poison", totalAmount);
                 break;
         }
     }
