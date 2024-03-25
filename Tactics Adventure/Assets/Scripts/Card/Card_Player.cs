@@ -182,6 +182,7 @@ public class Card_Player : Card
         if(FindEffect(EffectType.Invincible) == null)
             effectList.Add(spawnManager.SpawnInvincible(backGround.transform));
         invincible += count;
+        spawnManager.SpawnBuffIcon(BuffIconType.Invicible, invincible);
     }
 
     private void DoInvincible()

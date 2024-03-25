@@ -126,4 +126,11 @@
 - 운 증가식  변경<br/>
 - 스탯 포인트 추가<br/>
 - 플레이어 공격 데미지 계산식 변경<br/>
+
+<h3>[Alpha 1.3.2]</h3>
+<img src="https://github.com/HongDaHyun/Tactics-Adventure/assets/101586627/9b6edc0d-7d9a-418d-a06b-010ac3931a37" width="540" alt="Alpha 1.3.2">
+<br/>
+- 파란색 코인 추가<br/>
+- 코인 빙고 기능 추가 (가로, 세로)<br/>
+- 버프 UI 추가 (무적, 독)<br/>
 </details>

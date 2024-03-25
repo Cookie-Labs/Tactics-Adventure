@@ -13,6 +13,7 @@ public class SpawnManager : Singleton<SpawnManager>
     public List<Card> cardList;
     public Transform relicIconParent, buffIconParent;
     [HideInInspector] public Card_Player playerCard;
+    [HideInInspector] public List<Card_Coin> coinCardList; // 코인 카드 리스트
     [HideInInspector] public List<Card> turnCardList; // 매턴 작동하는 카드 리스트
     [HideInInspector] public List<BuffIcon> buffIconList;
 
@@ -70,43 +71,32 @@ public class SpawnManager : Singleton<SpawnManager>
         for (int i = buffIconList.Count - 1; i >= 0; i--)
             buffIconList[i].DoTurnBuff();
 
-        SortCard();
         CoinBingo();
+        SortCard();
     }
 
     public void CoinBingo()
     {
-        SortCard();
+        if (coinCardList.Count < 3)
+            return;
 
-        List<Card> changeCards = new List<Card>(); // 변경할 코인 카드 리스트
+        List<Card_Coin> changeCards = new List<Card_Coin>(); // 변경할 코인 카드 리스트
 
-        // 가로 빙고 및 세로 빙고 동시에 체크
+        // 가로 및 세로 빙고 확인
         for (int i = 0; i < 3; i++)
         {
             // 가로 빙고 확인
-            if (cardList[i].type == CardType.Coin && cardList[i + 1].type == CardType.Coin && cardList[i + 2].type == CardType.Coin)
+            Card_Coin[] rowCoins = coinCardList.Where(coinCard => coinCard.pos / 3 == i && !coinCard.isChange).ToArray();
+            if (rowCoins.Length == 3)
             {
-                // 가로 빙고가 있을 경우 해당 카드들을 변경할 리스트에 추가
-                for (int j = i; j < i + 3; j++)
-                {
-                    if (!cardList[j].GetComponent<Card_Coin>().isChange)
-                    {
-                        changeCards.Add(cardList[j]);
-                    }
-                }
+                changeCards.AddRange(rowCoins);
             }
 
             // 세로 빙고 확인
-            if (cardList[i].type == CardType.Coin && cardList[i + 3].type == CardType.Coin && cardList[i + 6].type == CardType.Coin)
+            Card_Coin[] colCoins = coinCardList.Where(coinCard => coinCard.pos % 3 == i && !coinCard.isChange).ToArray();
+            if (colCoins.Length == 3)
             {
-                // 세로 빙고가 있을 경우 해당 카드들을 변경할 리스트에 추가
-                for (int j = i; j <= i + 6; j += 3)
-                {
-                    if (!cardList[j].GetComponent<Card_Coin>().isChange)
-                    {
-                        changeCards.Add(cardList[j]);
-                    }
-                }
+                changeCards.AddRange(colCoins);
             }
         }
 
@@ -114,9 +104,9 @@ public class SpawnManager : Singleton<SpawnManager>
         changeCards = changeCards.Distinct().ToList();
 
         // 변경할 코인 카드들 변경
-        foreach (Card card in changeCards)
+        foreach (Card_Coin card in changeCards)
         {
-            ChangeCoinCard(card, card.GetComponent<Card_Coin>().amount * 2, true);
+            ChangeCoinCard(card, card.amount * 2, true);
         }
     }
 
@@ -138,6 +128,8 @@ public class SpawnManager : Singleton<SpawnManager>
         cardList.Add(card);
         if (card.isTurn)
             turnCardList.Add(card);
+        if(card.type == CardType.Coin)
+            coinCardList.Add(card.GetComponent<Card_Coin>());
 
         return card;
     }
@@ -179,6 +171,8 @@ public class SpawnManager : Singleton<SpawnManager>
         cardList.Remove(card);
         if (card.isTurn)
             turnCardList.Remove(card);
+        if (card.type == CardType.Coin)
+            coinCardList.Remove(card.GetComponent<Card_Coin>());
     }
 
     public Card FindCard(int posID)
