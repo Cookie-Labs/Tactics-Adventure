@@ -5022,6 +5022,8 @@ MonoBehaviour:
     buffIconDatas:
     - type: 0
       sprite: {fileID: -2034439814, guid: 1a7b521bb968e7543946a9350b7c0388, type: 3}
+    - type: 1
+      sprite: {fileID: 1231205197, guid: 73ab60cae3f4f4a4dadc86270d1f4219, type: 3}
 --- !u!4 &1199708848
 Transform:
   m_ObjectHideFlags: 0
