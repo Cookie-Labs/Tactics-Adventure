@@ -74,6 +74,6 @@ public class Card_Monster : Card
         if (relicManager.CheckRelicCollection(47))
             spawnManager.playerCard.DrainSoul(1);
 
-        spawnManager.ChangeCoinCard(this, monster.data.hp);
+        spawnManager.ChangeCoinCard(this, monster.data.hp, false);
     }
 }

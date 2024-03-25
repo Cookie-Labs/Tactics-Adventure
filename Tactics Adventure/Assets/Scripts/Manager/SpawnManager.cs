@@ -14,6 +14,7 @@ public class SpawnManager : Singleton<SpawnManager>
     public Transform relicIconParent, buffIconParent;
     [HideInInspector] public Card_Player playerCard;
     [HideInInspector] public List<Card> turnCardList; // 매턴 작동하는 카드 리스트
+    [HideInInspector] public List<BuffIcon> buffIconList;
 
     private void Start()
     {
@@ -60,6 +61,63 @@ public class SpawnManager : Singleton<SpawnManager>
         uiManager.handUI.HandImgUI();
         uiManager.handUI.HandAlphaUI();
         uiManager.handUI.WeaponIconUI();
+    }
+
+    public void DoTurn()
+    {
+        for (int i = turnCardList.Count - 1; i >= 0; i--)
+            turnCardList[i].DoTurnCard();
+        for (int i = buffIconList.Count - 1; i >= 0; i--)
+            buffIconList[i].DoTurnBuff();
+
+        SortCard();
+        CoinBingo();
+    }
+
+    public void CoinBingo()
+    {
+        SortCard();
+
+        List<Card> changeCards = new List<Card>(); // 변경할 코인 카드 리스트
+
+        // 가로 빙고 및 세로 빙고 동시에 체크
+        for (int i = 0; i < 3; i++)
+        {
+            // 가로 빙고 확인
+            if (cardList[i].type == CardType.Coin && cardList[i + 1].type == CardType.Coin && cardList[i + 2].type == CardType.Coin)
+            {
+                // 가로 빙고가 있을 경우 해당 카드들을 변경할 리스트에 추가
+                for (int j = i; j < i + 3; j++)
+                {
+                    if (!cardList[j].GetComponent<Card_Coin>().isChange)
+                    {
+                        changeCards.Add(cardList[j]);
+                    }
+                }
+            }
+
+            // 세로 빙고 확인
+            if (cardList[i].type == CardType.Coin && cardList[i + 3].type == CardType.Coin && cardList[i + 6].type == CardType.Coin)
+            {
+                // 세로 빙고가 있을 경우 해당 카드들을 변경할 리스트에 추가
+                for (int j = i; j <= i + 6; j += 3)
+                {
+                    if (!cardList[j].GetComponent<Card_Coin>().isChange)
+                    {
+                        changeCards.Add(cardList[j]);
+                    }
+                }
+            }
+        }
+
+        // 중복 제거
+        changeCards = changeCards.Distinct().ToList();
+
+        // 변경할 코인 카드들 변경
+        foreach (Card card in changeCards)
+        {
+            ChangeCoinCard(card, card.GetComponent<Card_Coin>().amount * 2, true);
+        }
     }
 
     #region 카드
@@ -120,9 +178,12 @@ public class SpawnManager : Singleton<SpawnManager>
 
         cardList.Remove(card);
         if (card.isTurn)
-        {
             turnCardList.Remove(card);
-        }
+    }
+
+    public Card FindCard(int posID)
+    {
+        return cardPos[posID].GetComponentInChildren<Card>();
     }
 
     public Card FindCard(Vector3 pos)
@@ -149,12 +210,6 @@ public class SpawnManager : Singleton<SpawnManager>
         return cards.ToArray();
     }
 
-    public void DoTurnCards()
-    {
-        foreach (Card card in turnCardList)
-            card.DoTurnCard();
-    }
-
     public Card ChangeCard(Card oriCard, CardType type)
     {
         Card newCard = SpawnCard(type, oriCard.pos);
@@ -163,11 +218,11 @@ public class SpawnManager : Singleton<SpawnManager>
         return newCard;
     }
 
-    public void ChangeCoinCard(Card oriCard, int amount)
+    public void ChangeCoinCard(Card oriCard, int amount, bool isChanged)
     {
         Card_Coin coinCard = ChangeCard(oriCard, CardType.Coin).GetComponent<Card_Coin>();
 
-        coinCard.ChangeAmount(amount);
+        coinCard.ChangeAmount(amount, isChanged);
     }
 
     public void ChangeAllCard()
@@ -176,7 +231,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
         for (int i = 0; i < cardPos.Length; i++)
         {
-            Card card = cardPos[i].GetComponentInChildren<Card>();
+            Card card = FindCard(i);
 
             if (card.type == CardType.Player)
                 continue;
@@ -199,7 +254,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
         for (int i = 0; i < cardPos.Length; i++)
         {
-            Card card = cardPos[i].GetComponentInChildren<Card>();
+            Card card = FindCard(i);
 
             if (card.type == CardType.Player)
                 continue;
@@ -247,6 +302,11 @@ public class SpawnManager : Singleton<SpawnManager>
 
             posList.Remove(ranPos);
         }
+    }
+
+    private void SortCard()
+    {
+        cardList.Sort((card1, card2) => card1.pos.CompareTo(card2.pos)); 
     }
     #endregion
 
@@ -499,20 +559,29 @@ public class SpawnManager : Singleton<SpawnManager>
         PoolManager.Instance.TakeToPool<RelicIcon>("RelicIcon", System.Array.Find(icons, icon => icon.ID == ID));
     }
 
-    public BuffIcon SpawnBuffIcon(string name, int count)
+    public BuffIcon SpawnBuffIcon(BuffIconType type, int count)
     {
-        BuffIcon icon = PoolManager.Instance.GetFromPool<BuffIcon>("BuffIcon");
+        BuffIcon icon = buffIconList.Find(data => data.buffType == type);
 
-        icon.SetBuff(CSVManager.Instance.csvList.FindBuffIconData(name), count);
+        // 새로 생성되는 버프라면,
+        if (icon == null)
+        {
+            icon = PoolManager.Instance.GetFromPool<BuffIcon>("BuffIcon");
+
+            buffIconList.Add(icon);
+        }
+
+        icon.SetBuff(CSVManager.Instance.csvList.FindBuffIconData(type), count);
 
         return icon;
     }
 
-    public void DeSpawnBuffIcon(string name)
+    public void DeSpawnBuffIcon(BuffIconType type)
     {
-        BuffIcon[] icons = buffIconParent.GetComponentsInChildren<BuffIcon>();
+        BuffIcon icon = System.Array.Find(buffIconParent.GetComponentsInChildren<BuffIcon>(), data => data.buffType == type);
 
-        PoolManager.Instance.TakeToPool<BuffIcon>("BuffIcon", System.Array.Find(icons, icon => icon.buffName == name));
+        buffIconList.Remove(icon);
+        PoolManager.Instance.TakeToPool<BuffIcon>("BuffIcon", icon);
     }
     #endregion
 

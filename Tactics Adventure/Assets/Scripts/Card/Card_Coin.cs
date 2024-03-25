@@ -6,6 +6,7 @@ using Sirenix.OdinInspector;
 public class Card_Coin : Card
 {
     [Title("자식 변수")]
+    public bool isChange; // 빙고로 바뀐 코인 확인
     public int amount;
 
     // 자식 컴포넌트
@@ -14,6 +15,7 @@ public class Card_Coin : Card
     public override void SetCard()
     {
         // 코인 생성
+        isChange = false;
         amount = Random.Range(1, 10); // 돈 랜덤 설정
         coin = spawnManager.SpawnCoin(amount, objTrans);
 
@@ -36,7 +38,7 @@ public class Card_Coin : Card
 
     public override IEnumerator Damaged(int _amount)
     {
-        ChangeAmount(Mathf.Max(0, amount - _amount));
+        ChangeAmount(Mathf.Max(0, amount - _amount), false);
 
         DODamaged();
 
@@ -46,11 +48,15 @@ public class Card_Coin : Card
             Die();
     }
 
-    public void ChangeAmount(int _amount)
+    public void ChangeAmount(int _amount, bool _isChanged)
     {
+        isChange = _isChanged;
         amount = _amount;
 
-        coin.UpdateAnim(amount);
+        if (!isChange)
+            coin.UpdateAnim(amount);
+        else
+            coin.anim.SetInteger("Change", (int)CoinType.Change);
 
         SetUI($"<sprite=4>{amount}");
     }

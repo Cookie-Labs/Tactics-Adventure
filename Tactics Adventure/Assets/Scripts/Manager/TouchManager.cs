@@ -77,7 +77,7 @@ public class TouchManager : Singleton<TouchManager>
 
         if (card != spawnManager.playerCard)
         {
-            spawnManager.DoTurnCards();
+            spawnManager.DoTurn();
             yield return new WaitForSeconds(0.1f);
         }
 
@@ -92,7 +92,7 @@ public class TouchManager : Singleton<TouchManager>
     {
         SpawnManager sm = SpawnManager.Instance;
 
-        sm.DoTurnCards();
+        sm.DoTurn();
         yield return new WaitForSeconds(0.1f);
 
         UIManager.Instance.CheckSkillUI();

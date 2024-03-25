@@ -86,7 +86,7 @@ public struct TierColor
 [Serializable]
 public struct BuffIconData
 {
-    public string name;
+    public BuffIconType type;
     public Sprite sprite;
 }
 
@@ -187,9 +187,9 @@ public class CSVList
     #endregion
 
     #region BuffIcon
-    public BuffIconData FindBuffIconData(string name)
+    public BuffIconData FindBuffIconData(BuffIconType type)
     {
-        return Array.Find(buffIconDatas, icon => icon.name == name);
+        return Array.Find(buffIconDatas, icon => icon.type == type);
     }
     #endregion
 }

@@ -430,6 +430,8 @@ public class Card_Player : Card
     public void GetPoison(int i)
     {
         poisonCount = Mathf.Max(poisonCount, i);
+
+        spawnManager.SpawnBuffIcon(BuffIconType.Poison, poisonCount);
     }
 
     public void Poisoned()

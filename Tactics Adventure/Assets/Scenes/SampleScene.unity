@@ -4478,9 +4478,11 @@ MonoBehaviour:
   - {fileID: 416752125}
   cardList: []
   relicIconParent: {fileID: 1976773214}
-  buffIconParent: {fileID: 0}
+  buffIconParent: {fileID: 1926590997}
   playerCard: {fileID: 0}
+  coinCardList: []
   turnCardList: []
+  buffIconList: []
 --- !u!1 &1096915010
 GameObject:
   m_ObjectHideFlags: 0
@@ -5018,7 +5020,7 @@ MonoBehaviour:
     - tier: 3
       color: {r: 1, g: 0.94509804, b: 0.57254905, a: 1}
     buffIconDatas:
-    - name: Poison
+    - type: 0
       sprite: {fileID: -2034439814, guid: 1a7b521bb968e7543946a9350b7c0388, type: 3}
 --- !u!4 &1199708848
 Transform:

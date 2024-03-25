@@ -7,7 +7,7 @@ public class Coin : MonoBehaviour, IPoolObject
 {
     public CoinType type;
 
-    private Animator anim;
+    [HideInInspector] public Animator anim;
 
     private GameManager gameManager;
 
@@ -39,4 +39,4 @@ public class Coin : MonoBehaviour, IPoolObject
     }
 }
 
-public enum CoinType { Bronze = 0, Silver, Gold }
+public enum CoinType { Bronze = 0, Silver, Gold, Change = -1 }
