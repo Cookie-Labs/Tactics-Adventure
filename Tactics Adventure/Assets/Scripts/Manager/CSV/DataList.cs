@@ -26,7 +26,7 @@ public struct MonsterData
 {
     public string name;
     public MonsterType type;
-    public int hp;
+    public Stage stage;
 }
 
 [Serializable]
@@ -63,13 +63,6 @@ public struct WeaponPlus
 }
 
 [Serializable]
-public struct StageMonsterData
-{
-    public Stage stage;
-    public MonsterType[] type;
-}
-
-[Serializable]
 public struct ExplainData
 {
     public CardType type;
@@ -95,9 +88,8 @@ public class CSVList
 {
     public RelicData[] relicDatas;
     public WeaponData[] weaponDatas;
+    public MonsterData[] monsterDatas;
     public TrapData[] trapDatas;
-    public StageMonsterData[] stageMonsterDatas;
-    public MonsterType[] availMonList;
     public ExplainData[] explainDatas;
     public TierColor[] tierColors;
     public BuffIconData[] buffIconDatas;
@@ -160,6 +152,13 @@ public class CSVList
     public bool EnforceCheck(WeaponData _data, EnforceID id)
     {
         return _data.plus.enforce[(int)id];
+    }
+    #endregion
+
+    #region Monster
+    public MonsterData FindMonster(string name)
+    {
+        return Array.Find(monsterDatas, data => data.name == name);
     }
     #endregion
 

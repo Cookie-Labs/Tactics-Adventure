@@ -5,7 +5,7 @@ using Redcode.Pools;
 
 public abstract class Monster : MonoBehaviour, IPoolObject
 {
-    public MonsterData data;
+    [HideInInspector] public MonsterData data;
 
     [HideInInspector] public Animator anim;
 
@@ -22,4 +22,4 @@ public abstract class Monster : MonoBehaviour, IPoolObject
     }
 }
 
-public enum MonsterType { Goblin = 0, Slime, Mushroom, Skeleton, Ghost, FireSoul, IceSoul, PoisonSoul, Monkey}
+public enum MonsterType { Common = 3, CommonElite = 5, SubBoss = 10, Boss = 15 }

@@ -8,8 +8,8 @@ public class CSVManager : Singleton<CSVManager>
 {
     public Luck luck;
     public Money money;
+    public List<string> availMosters;
     public TextAsset[] textAssets;
-    public MonsterType[] availMonStage; // 스테이지별 허용 몬스터
     public CSVList csvList = new CSVList();
 
     protected override void Awake()
@@ -18,7 +18,7 @@ public class CSVManager : Singleton<CSVManager>
 
         RelicCSVReading();
         WeaponCSVReading();
-        SetAvailMon();
+        MonsterCSVReading();
     }
 
     public void RelicCSVReading()
@@ -62,24 +62,32 @@ public class CSVManager : Singleton<CSVManager>
         }
     }
 
-    public void SetAvailMon()
+    public void MonsterCSVReading()
     {
-        List<MonsterType> availMonList = new List<MonsterType>();
-        int curStage = (int)GameManager.Instance.stage;
+        int order = 2; int size = 3;
+        string[] data = textAssets[order].text.Split(new string[] { ",", "\n" }, StringSplitOptions.None);
+        int tableSize = data.Length / size - 1;
+        csvList.monsterDatas = new MonsterData[tableSize];
 
-        if (curStage == Enum.GetValues(typeof(Stage)).Length - 1) // 마지막 스테이지라면
-            curStage--;
-
-        // 해당 스테이지 이하 몬스터 전부 해금
-        for (int i = 0; i <= curStage; i++)
+        for (int i = 0; i < tableSize; i++)
         {
-            foreach (MonsterType type in csvList.stageMonsterDatas[i].type)
+            int k = i + 1;
+            csvList.monsterDatas[i] = new MonsterData
             {
-                availMonList.Add(type);
-            }
+                name = data[size * k],
+                type = (MonsterType)Enum.Parse(typeof(MonsterType), data[size * k + 1]),
+                stage = (Stage)Enum.Parse(typeof(Stage), data[size * k + 2])
+            };
         }
 
-        availMonStage = availMonList.ToArray();
+        // 스테이지 몬스터 설정
+        int stage = (int)GameManager.Instance.stage;
+        foreach (var monsterData in csvList.monsterDatas)
+        {
+            if ((int)monsterData.stage <= stage &&
+                (monsterData.type == MonsterType.Common || monsterData.type == MonsterType.CommonElite))
+                availMosters.Add(monsterData.name);
+        }
     }
 }
 

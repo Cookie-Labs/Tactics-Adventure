@@ -3441,47 +3441,47 @@ MonoBehaviour:
     _count: 1
     _container: {fileID: 0}
     _nonLazy: 0
-  - _name: Monster_Goblin
+  - _name: "Monster_\uACE0\uBE14\uB9B0"
     _component: {fileID: 1761240830265900708, guid: 6b12449774de84f4b883dc3f9f5be985, type: 3}
     _count: 6
     _container: {fileID: 0}
     _nonLazy: 0
-  - _name: Monster_Slime
+  - _name: "Monster_\uC2AC\uB77C\uC784"
     _component: {fileID: 2813538764711983985, guid: db15ba7f03d5e4544b542517ba0bfa6c, type: 3}
     _count: 6
     _container: {fileID: 0}
     _nonLazy: 0
-  - _name: Monster_Mushroom
+  - _name: "Monster_\uBC84\uC12F\uB9E8"
     _component: {fileID: -8398612731746908250, guid: 0b47ebf531b571e499d37ebd76e1626f, type: 3}
     _count: 6
     _container: {fileID: 0}
     _nonLazy: 0
-  - _name: Monster_Skeleton
+  - _name: "Monster_\uC2A4\uCEEC"
     _component: {fileID: 1395055869615747510, guid: 817ddceec6e0b7d4db0935428f503b4b, type: 3}
     _count: 6
     _container: {fileID: 0}
     _nonLazy: 0
-  - _name: Monster_Ghost
+  - _name: "Monster_\uACE0\uC2A4\uD2B8"
     _component: {fileID: 6587651172601229438, guid: de0f2a7bb4f673f4fadc3e6906a54216, type: 3}
     _count: 6
     _container: {fileID: 0}
     _nonLazy: 0
-  - _name: Monster_FireSoul
+  - _name: "Monster_\uBD88 \uC815\uB839"
     _component: {fileID: -7250405800211688337, guid: 4ae7727da95c3c348b5b9c563069684c, type: 3}
     _count: 6
     _container: {fileID: 0}
     _nonLazy: 0
-  - _name: Monster_IceSoul
+  - _name: "Monster_\uBB3C \uC815\uB839"
     _component: {fileID: 1737643082917006109, guid: 29ad0d859f468ae459ca5cb014992fdf, type: 3}
     _count: 6
     _container: {fileID: 0}
     _nonLazy: 0
-  - _name: Monster_PoisonSoul
+  - _name: "Monster_\uB3C5 \uC815\uB839"
     _component: {fileID: 6276084776534043717, guid: 121c9863dab4fff499344a7214e59d44, type: 3}
     _count: 6
     _container: {fileID: 0}
     _nonLazy: 0
-  - _name: Monster_Monkey
+  - _name: "Monster_\uBABD\uD0A4"
     _component: {fileID: -771078099193126543, guid: 2b27e4ffdf88e8b43b291b81e5190b8d, type: 3}
     _count: 6
     _container: {fileID: 0}
@@ -4945,13 +4945,15 @@ MonoBehaviour:
     weaponPerDmg: 3
   money:
     money: 0
+  availMosters: []
   textAssets:
   - {fileID: 4900000, guid: 133909a323918df408bfc5c6f6a49f41, type: 3}
   - {fileID: 4900000, guid: 470e990f6eed3d349823e46671551ca0, type: 3}
-  availMonStage: 
+  - {fileID: 4900000, guid: eebaded5cdf8b5b488c29a231896c472, type: 3}
   csvList:
     relicDatas: []
     weaponDatas: []
+    monsterDatas: []
     trapDatas:
     - name: "\uD654\uC5FC\uD568\uC815"
       type: 4
@@ -4971,14 +4973,6 @@ MonoBehaviour:
     - name: "\uC6D0\uD615 \uAC00\uC2DC\uD568\uC815"
       type: 5
       targetDir: 00000000010000000200000003000000
-    stageMonsterDatas:
-    - stage: 0
-      type: 000000000100000002000000
-    - stage: 1
-      type: 030000000400000007000000
-    - stage: 2
-      type: 050000000600000008000000
-    availMonList: 
     explainDatas:
     - type: 1
       explains:
@@ -8563,6 +8557,37 @@ MonoBehaviour:
   - {fileID: -208416134, guid: 5cffa9db3759c6c4993244af32a88c5e, type: 3}
   - {fileID: -1379437929, guid: 5cffa9db3759c6c4993244af32a88c5e, type: 3}
   - {fileID: -954335447, guid: 5cffa9db3759c6c4993244af32a88c5e, type: 3}
+  monsterAnimators:
+  - name: "\uBC15\uC950"
+    controllers:
+    - {fileID: 22100000, guid: f9b9b0dce18018a4a8886d68ddc017aa, type: 2}
+    - {fileID: 22100000, guid: c08c7a18d4bb29c418786c09a77676f9, type: 2}
+    - {fileID: 22100000, guid: 0dffd800dd0c7bf4db51a48e245e5b86, type: 2}
+    - {fileID: 22100000, guid: f43a5182dce9f774fa34623162f584ed, type: 2}
+    - {fileID: 22100000, guid: cda28d8b2073f064ca35dffd62e933ba, type: 2}
+    - {fileID: 22100000, guid: 17518798a38a7834fa93969f40b5a4f4, type: 2}
+    - {fileID: 22100000, guid: 57084cf9758c907498ecda4462810b21, type: 2}
+    - {fileID: 22100000, guid: fe2ae7fff1d52104a9b87977b339e520, type: 2}
+  - name: "\uC591"
+    controllers:
+    - {fileID: 22100000, guid: 682f6b59807da504ab4c30d37acdadae, type: 2}
+    - {fileID: 22100000, guid: 293f2534238d41144aea6a0ac6603197, type: 2}
+    - {fileID: 22100000, guid: 63b374a27c38de04fb62375b6a34a853, type: 2}
+    - {fileID: 22100000, guid: 984fc9f0706945e4198644139b6704a3, type: 2}
+    - {fileID: 22100000, guid: 8423e2ba68f3c304e9efad851e2eeb2d, type: 2}
+    - {fileID: 22100000, guid: 5167f0448a710e848984900a2ffb2c92, type: 2}
+    - {fileID: 22100000, guid: 3cca71aacb400974088e82a2c2118c11, type: 2}
+    - {fileID: 22100000, guid: 7236e092d2cbd864fb713536a9f2eb0c, type: 2}
+  - name: "\uBC40"
+    controllers:
+    - {fileID: 22100000, guid: 68741fd94c0fd574c9145b6c982bfe1a, type: 2}
+    - {fileID: 22100000, guid: fd0bd53e7c01d3646983589201a950a1, type: 2}
+    - {fileID: 22100000, guid: c1e0da8eda43c6e43adf535a3fd78a87, type: 2}
+    - {fileID: 22100000, guid: 318d8e9fd0ca3a840885f9494bb97bbc, type: 2}
+    - {fileID: 22100000, guid: db568e0b9d8e00948ac463a7cfc63050, type: 2}
+    - {fileID: 22100000, guid: c23ea1eec09614b449f7273477c43932, type: 2}
+    - {fileID: 22100000, guid: fe6595b76d6291d4681505f9a4952817, type: 2}
+    - {fileID: 22100000, guid: 33cdbd90318b04b46aa7d06dd9ecb86a, type: 2}
 --- !u!4 &2109916564
 Transform:
   m_ObjectHideFlags: 0

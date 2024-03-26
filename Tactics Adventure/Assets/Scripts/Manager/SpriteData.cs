@@ -24,19 +24,22 @@ public class SpriteData : Singleton<SpriteData>
     [Title("손 스프라이트")]
     public Sprite[] handSprites;
 
+    [Title("몬스터 컬러 애니메이션")]
+    public MonsterAnimator[] monsterAnimators;
+
     // 랜덤 스테이지 이미지 스프라이트 추출
     public Sprite ExportRanStage()
     {
         StageSprite selStageSprite = Array.Find(stageSprites, sprite => sprite.stage == GameManager.Instance.stage); // 현 stage 불러옴
 
-        int ran = UnityEngine.Random.Range(0, selStageSprite.sprites.Length); // stage 이미지 랜덤 선택
-
-        return selStageSprite.Export(ran); // 추출
+        return selStageSprite.sprites[UnityEngine.Random.Range(0, selStageSprite.sprites.Length)];
     }
 
     public Sprite ExportPortionSprite(PortionType portionType, Capacity cap)
     {
-        return Array.Find(portionSprites, sprite => sprite.portionType == portionType).Export(cap);
+        PortionSprite target = Array.Find(portionSprites, sprite => sprite.portionType == portionType);
+
+        return Array.Find(portionSprites, sprite => sprite.portionType == portionType).sprites[(int)cap];
     }
 
     public Sprite ExportRelicSprite(int index)
@@ -48,44 +51,31 @@ public class SpriteData : Singleton<SpriteData>
     {
         return weaponSprites[index];
     }
+
+    public RuntimeAnimatorController ExportRanController(string name)
+    {
+        MonsterAnimator target = Array.Find(monsterAnimators, anim => anim.name == name);
+        return target.controllers[UnityEngine.Random.Range(0, target.controllers.Length)];
+    }
 }
 
 [Serializable]
-public class StageSprite
+public struct StageSprite
 {
     public Stage stage;
     public Sprite[] sprites;
-
-    public Sprite Export(int a)
-    {
-        if (a > sprites.Length || a < 0)
-        {
-            a = 0;
-            Debug.LogError("스테이지 이미지 추출 오류");
-        }
-
-        return sprites[a];
-    }
 }
 
 [Serializable]
-public class PortionSprite
+public struct PortionSprite
 {
     public PortionType portionType;
     public Sprite[] sprites;
+}
 
-    public Sprite Export(Capacity cap)
-    {
-        int capID = (int)cap;
-
-        if(capID > Enum.GetValues(typeof(Capacity)).Length || cap < 0)
-        {
-            cap = Capacity.Small;
-            capID = (int)cap;
-
-            Debug.LogError("포션 양 이미지 추출 오류");
-        }
-
-        return sprites[capID];
-    }
+[Serializable]
+public struct MonsterAnimator
+{
+    public string name;
+    public RuntimeAnimatorController[] controllers;
 }

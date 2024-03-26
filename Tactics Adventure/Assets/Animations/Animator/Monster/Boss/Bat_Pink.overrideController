@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Bat_Pink
+  m_Controller: {fileID: 9100000, guid: 4b55519101bb3c34caf9539e1c7bda94, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: c857dd30199e41343b436b34793b27be, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 82a19e92ddacb214aa176e85a9782091, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 8884e9d4c74de0640a1eb598501f500a, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 4b484ff2e3c6f3f46a0396b87b755468, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: dc9f743d24f995e46a62779907ee6840, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a37cf50fa46f9c148aba80312cf51485, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 3198dbc22f118334992688006a28f5cb, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 355a721f32fa9574fa9888f6cfed87e0, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 76d3edcb79540ab4191d722737276c02, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 533626d93ba37e746b4e19beec74b56b, type: 2}

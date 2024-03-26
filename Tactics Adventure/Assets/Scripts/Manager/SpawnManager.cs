@@ -36,7 +36,7 @@ public class SpawnManager : Singleton<SpawnManager>
             // 플레이어 소환
             if (i == 0)
             {
-                SpawnCard(CardType.Player, 4);
+                playerCard = SpawnCard(CardType.Player, 4).GetComponent<Card_Player>();
                 continue;
             }
 
@@ -54,7 +54,6 @@ public class SpawnManager : Singleton<SpawnManager>
             }
         }
 
-        playerCard = cardList[0].GetComponent<Card_Player>(); // 플레이어 카드 대입
         playerCard.SetNeighbor(); // 플레이어 카드의 주변 카드 터치 활성화
 
         UIManager uiManager = UIManager.Instance;
@@ -326,9 +325,10 @@ public class SpawnManager : Singleton<SpawnManager>
     #endregion
 
     #region 몬스터
-    public Monster SpawnMonster(MonsterType type, Transform parent)
+    public Monster SpawnMonster(string name, Transform parent)
     {
-        Monster monster = PoolManager.Instance.GetFromPool<Monster>("Monster_" + type); // 플레이어 소환
+        Monster monster = PoolManager.Instance.GetFromPool<Monster>("Monster_" + name); // 플레이어 소환
+        monster.data = CSVManager.Instance.csvList.FindMonster(name);
 
         // 위치 설정
         monster.transform.SetParent(parent);
@@ -340,20 +340,15 @@ public class SpawnManager : Singleton<SpawnManager>
 
     public Monster SpawnMonster_Ran(Transform parent)
     {
-        while(true)
-        {
-            MonsterType monsterType = (MonsterType)RandomID(System.Enum.GetValues(typeof(MonsterType)).Length);
-
-            if (CSVManager.Instance.availMonStage.Contains(monsterType)) // 알맞은 몬스터를 무작위로 뽑아낸 경우
-                return SpawnMonster(monsterType, parent);
-        }
+        List<string> stageMons = CSVManager.Instance.availMosters;
+        return SpawnMonster(stageMons[Random.Range(0, stageMons.Count)], parent);
     }
 
     public void DeSpawnMonster(Monster monster)
     {
         monster.transform.SetParent(null);
 
-        PoolManager.Instance.TakeToPool<Monster>("Monster_" + monster.name, monster);
+        PoolManager.Instance.TakeToPool<Monster>("Monster_" + monster.data.name, monster);
     }
     #endregion
 
