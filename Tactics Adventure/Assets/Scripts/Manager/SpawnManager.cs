@@ -9,6 +9,7 @@ public class SpawnManager : Singleton<SpawnManager>
 {
     [Title("변수", subtitle: "다른 스크립트 이용위해 저장")]
     public int[] maxCard;
+    public int curBossTurn, maxBossTurn;
     public Transform[] cardPos;
     public List<Card> cardList;
     public Transform relicIconParent, buffIconParent;
@@ -70,8 +71,11 @@ public class SpawnManager : Singleton<SpawnManager>
         for (int i = buffIconList.Count - 1; i >= 0; i--)
             buffIconList[i].DoTurnBuff();
 
+        SpawnCard_Turn();
         CoinBingo();
         SortCard();
+
+        curBossTurn--;
     }
 
     public void CoinBingo()
@@ -133,7 +137,7 @@ public class SpawnManager : Singleton<SpawnManager>
         return card;
     }
 
-    public Card SpawnRanCard()
+    public Card SpawnRanCard(int pos)
     {
         List<int> typeIDList = new List<int>(); // 타입ID를 담을 리스트 (정수형)
 
@@ -144,17 +148,29 @@ public class SpawnManager : Singleton<SpawnManager>
             typeIDList.AddRange(Enumerable.Repeat(i, maxCard[i])); // maxCard[i]만큼 i를 리스트에 추가한다
         }
 
-        // 빈 pos 찾기
-        int pos = System.Array.FindIndex(cardPos, cp => cp.childCount == 0); // 자식의 수가 0인 pos
-
-        // 만약 빈 pos 가 없다면 (버그)
-        if (pos == -1)
-        {
-            Debug.LogError("빈 pos가 없어서 카드가 소환되지 않았습니다.");
+        // 이미 카드가 존재한다면 return
+        if (cardPos[pos].childCount > 0)
             return null;
-        }
 
         return SpawnCard((CardType)typeIDList[Random.Range(0, typeIDList.Count)], pos); // 카드 소환!
+    }
+
+    public void SpawnCard_Turn()
+    {
+        List<int> emptyPos = new List<int>();
+
+        for (int i = 0; i < cardPos.Length; i++)
+        {
+            if (cardPos[i].childCount == 0)
+            {
+                emptyPos.Add(i);
+            }
+        }
+
+        foreach(int i in emptyPos)
+        {
+            SpawnRanCard(i);
+        }
     }
 
     public void DeSpawnCard(Card card)

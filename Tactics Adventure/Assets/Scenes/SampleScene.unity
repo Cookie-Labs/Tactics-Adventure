@@ -3393,7 +3393,7 @@ MonoBehaviour:
     _nonLazy: 0
   - _name: Card_Consumable
     _component: {fileID: 3948426381286729323, guid: 7bea0f12870ad9540b2f1afd1ff6f3fa, type: 3}
-    _count: 0
+    _count: 8
     _container: {fileID: 0}
     _nonLazy: 0
   - _name: Card_Monster
@@ -3443,47 +3443,77 @@ MonoBehaviour:
     _nonLazy: 0
   - _name: "Monster_\uACE0\uBE14\uB9B0"
     _component: {fileID: 1761240830265900708, guid: 6b12449774de84f4b883dc3f9f5be985, type: 3}
-    _count: 6
+    _count: 8
     _container: {fileID: 0}
     _nonLazy: 0
   - _name: "Monster_\uC2AC\uB77C\uC784"
     _component: {fileID: 2813538764711983985, guid: db15ba7f03d5e4544b542517ba0bfa6c, type: 3}
-    _count: 6
+    _count: 8
     _container: {fileID: 0}
     _nonLazy: 0
   - _name: "Monster_\uBC84\uC12F\uB9E8"
     _component: {fileID: -8398612731746908250, guid: 0b47ebf531b571e499d37ebd76e1626f, type: 3}
-    _count: 6
+    _count: 8
     _container: {fileID: 0}
     _nonLazy: 0
   - _name: "Monster_\uC2A4\uCEEC"
     _component: {fileID: 1395055869615747510, guid: 817ddceec6e0b7d4db0935428f503b4b, type: 3}
-    _count: 6
+    _count: 8
     _container: {fileID: 0}
     _nonLazy: 0
   - _name: "Monster_\uACE0\uC2A4\uD2B8"
     _component: {fileID: 6587651172601229438, guid: de0f2a7bb4f673f4fadc3e6906a54216, type: 3}
-    _count: 6
+    _count: 8
     _container: {fileID: 0}
     _nonLazy: 0
   - _name: "Monster_\uBD88 \uC815\uB839"
     _component: {fileID: -7250405800211688337, guid: 4ae7727da95c3c348b5b9c563069684c, type: 3}
-    _count: 6
+    _count: 8
     _container: {fileID: 0}
     _nonLazy: 0
   - _name: "Monster_\uBB3C \uC815\uB839"
     _component: {fileID: 1737643082917006109, guid: 29ad0d859f468ae459ca5cb014992fdf, type: 3}
-    _count: 6
+    _count: 8
     _container: {fileID: 0}
     _nonLazy: 0
   - _name: "Monster_\uB3C5 \uC815\uB839"
     _component: {fileID: 6276084776534043717, guid: 121c9863dab4fff499344a7214e59d44, type: 3}
-    _count: 6
+    _count: 8
     _container: {fileID: 0}
     _nonLazy: 0
   - _name: "Monster_\uBABD\uD0A4"
     _component: {fileID: -771078099193126543, guid: 2b27e4ffdf88e8b43b291b81e5190b8d, type: 3}
-    _count: 6
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: "Monster_\uBC15\uC950"
+    _component: {fileID: 6897301797309568917, guid: 5fe6939cc4da51c47924748032993229, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: "Monster_\uB545\uAD74\uC950"
+    _component: {fileID: -8003250576061371760, guid: 8273e59a759db3945b662abd334dc527, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: "Monster_\uC591"
+    _component: {fileID: 7256990389602895509, guid: e14de672a33316b468777392579147ef, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: "Monster_\uBC40"
+    _component: {fileID: -7497263882218257679, guid: e0e630a25f61c394b983ee891e63c7a8, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: "Monster_\uBC40\uD30C\uC774\uC5B4"
+    _component: {fileID: 8681509489810572905, guid: e97e274d91b0262429a11a35ed415932, type: 3}
+    _count: 8
+    _container: {fileID: 0}
+    _nonLazy: 0
+  - _name: "Monster_\uB291\uB300"
+    _component: {fileID: -3355774868544223431, guid: 1f70a2ca4ebe64f48accfbc574c242a4, type: 3}
+    _count: 8
     _container: {fileID: 0}
     _nonLazy: 0
   - _name: Coin
@@ -4466,6 +4496,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxCard: 010000000600000008000000050000000700000003000000060000000500000003000000
+  curBossTurn: 0
+  maxBossTurn: 0
   cardPos:
   - {fileID: 816977067}
   - {fileID: 2059613365}
@@ -8588,6 +8620,9 @@ MonoBehaviour:
     - {fileID: 22100000, guid: c23ea1eec09614b449f7273477c43932, type: 2}
     - {fileID: 22100000, guid: fe6595b76d6291d4681505f9a4952817, type: 2}
     - {fileID: 22100000, guid: 33cdbd90318b04b46aa7d06dd9ecb86a, type: 2}
+  monsterCards:
+  - {fileID: -1490911053, guid: c6ad8b7ffe741df4d806a6df2324f450, type: 3}
+  - {fileID: -740711914, guid: c6ad8b7ffe741df4d806a6df2324f450, type: 3}
 --- !u!4 &2109916564
 Transform:
   m_ObjectHideFlags: 0

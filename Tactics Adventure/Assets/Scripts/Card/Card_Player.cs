@@ -113,8 +113,6 @@ public class Card_Player : Card
         transform.DOMove(targetTrans.position, 0.5f).SetEase(Ease.OutBounce).SetUpdate(true).OnComplete(() => {
             // 이동 완료
             transform.localPosition = Vector3.zero;
-            // 비어있는 카드에 새 카드 생성
-            spawnManager.SpawnRanCard();
             isMoving = true;
         });
         yield return new WaitWhile(() => !isMoving);

@@ -22,6 +22,7 @@ public class Card_Monster : Card
         maxHP = typeID * ((int)gameManager.stage + 1) + Random.Range(0, typeID + spawnManager.playerCard.lv);
         hp = maxHP;
 
+        spriteRenderer.sprite = spriteData.ExportMonCard(monster.data.type);
         SetCardName(monster.data.name);
         SetUI($"<sprite=1>{hp}");
     }

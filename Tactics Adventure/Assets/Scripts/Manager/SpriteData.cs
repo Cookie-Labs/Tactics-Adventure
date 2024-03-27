@@ -27,6 +27,9 @@ public class SpriteData : Singleton<SpriteData>
     [Title("몬스터 컬러 애니메이션")]
     public MonsterAnimator[] monsterAnimators;
 
+    [Title("몬스터 카드 스프라이트", subtitle: "0: 일반, 1: 보스")]
+    public Sprite[] monsterCards;
+
     // 랜덤 스테이지 이미지 스프라이트 추출
     public Sprite ExportRanStage()
     {
@@ -56,6 +59,20 @@ public class SpriteData : Singleton<SpriteData>
     {
         MonsterAnimator target = Array.Find(monsterAnimators, anim => anim.name == name);
         return target.controllers[UnityEngine.Random.Range(0, target.controllers.Length)];
+    }
+
+    public Sprite ExportMonCard(MonsterType type)
+    {
+        switch(type)
+        {
+            case MonsterType.Common:
+            case MonsterType.CommonElite:
+                return monsterCards[0];
+            case MonsterType.SubBoss:
+            case MonsterType.Boss:
+                return monsterCards[1];
+        }
+        return null;
     }
 }
 
