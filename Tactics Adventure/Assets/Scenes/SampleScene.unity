@@ -4496,8 +4496,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxCard: 010000000600000008000000050000000700000003000000060000000500000003000000
-  curBossTurn: 0
-  maxBossTurn: 0
   cardPos:
   - {fileID: 816977067}
   - {fileID: 2059613365}
@@ -4511,6 +4509,11 @@ MonoBehaviour:
   cardList: []
   relicIconParent: {fileID: 1976773214}
   buffIconParent: {fileID: 1926590997}
+  bossSpawn:
+    maxBossCount: 3
+    curBossCount: 0
+    maxBossClear: 3
+    curBossClear: 0
   playerCard: {fileID: 0}
   coinCardList: []
   turnCardList: []

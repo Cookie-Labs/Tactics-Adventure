@@ -73,6 +73,13 @@ public class Card_Monster : Card
         yield return SetAnim(monster.anim, AnimID.Die);
 
         spawnManager.playerCard.UpExp(maxHP);
+
+        if (monster.data.type == MonsterType.SubBoss || monster.data.type == MonsterType.Boss)
+            spawnManager.bossSpawn.curBossClear++;
+        else if (!spawnManager.bossSpawn.isSpawn)
+            spawnManager.bossSpawn.curBossCount++;
+
+        // 유물 관련
         if (relicManager.CheckRelicCollection(14) && csvManager.luck.Probability(0.01f))
             csvManager.money.EarnMoney(500);
         if (relicManager.CheckRelicCollection(47))

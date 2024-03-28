@@ -9,6 +9,7 @@ public class CSVManager : Singleton<CSVManager>
     public Luck luck;
     public Money money;
     public List<string> availMosters;
+    public List<MonsterData> availBosses;
     public TextAsset[] textAssets;
     public CSVList csvList = new CSVList();
 
@@ -82,11 +83,22 @@ public class CSVManager : Singleton<CSVManager>
 
         // 스테이지 몬스터 설정
         int stage = (int)GameManager.Instance.stage;
-        foreach (var monsterData in csvList.monsterDatas)
+        foreach (MonsterData monsterData in csvList.monsterDatas)
         {
+            // 일반 몬스터 설정
             if ((int)monsterData.stage <= stage &&
                 (monsterData.type == MonsterType.Common || monsterData.type == MonsterType.CommonElite))
                 availMosters.Add(monsterData.name);
+            // 보스 몬스터 설정
+            else if(monsterData.type == MonsterType.SubBoss || monsterData.type == MonsterType.Boss)
+            {
+                // 무한 모드라면
+                if (stage == (int)Stage.Forest)
+                    availBosses.Add(monsterData);
+                // 무한 모드가 아니라면
+                else if((int)monsterData.stage == stage)
+                    availBosses.Add(monsterData);
+            }
         }
     }
 }

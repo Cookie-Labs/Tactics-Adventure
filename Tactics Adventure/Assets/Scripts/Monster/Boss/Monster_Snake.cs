@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Monster_Snake : Monster
 {
-    public override void OnGettingFromPool()
+    public override void SetMonster(string name)
     {
-        base.OnGettingFromPool();
+        base.SetMonster(name);
         anim.runtimeAnimatorController = SpriteData.Instance.ExportRanController(data.name);
     }
 }

@@ -9,10 +9,10 @@ public class SpawnManager : Singleton<SpawnManager>
 {
     [Title("변수", subtitle: "다른 스크립트 이용위해 저장")]
     public int[] maxCard;
-    public int curBossTurn, maxBossTurn;
     public Transform[] cardPos;
     public List<Card> cardList;
     public Transform relicIconParent, buffIconParent;
+    public BossSpawn bossSpawn;
     [HideInInspector] public Card_Player playerCard;
     [HideInInspector] public List<Card_Coin> coinCardList; // 코인 카드 리스트
     [HideInInspector] public List<Card> turnCardList; // 매턴 작동하는 카드 리스트
@@ -57,6 +57,8 @@ public class SpawnManager : Singleton<SpawnManager>
 
         playerCard.SetNeighbor(); // 플레이어 카드의 주변 카드 터치 활성화
 
+        bossSpawn.SetMaxValue();
+
         UIManager uiManager = UIManager.Instance;
         uiManager.CheckSkillUI();
         uiManager.handUI.HandImgUI();
@@ -74,8 +76,6 @@ public class SpawnManager : Singleton<SpawnManager>
         SpawnCard_Turn();
         CoinBingo();
         SortCard();
-
-        curBossTurn--;
     }
 
     public void CoinBingo()
@@ -144,9 +144,7 @@ public class SpawnManager : Singleton<SpawnManager>
         // 랜덤 타입 정하기
         // 확률 설정
         for (int i = 0; i < maxCard.Length; i++)
-        {
             typeIDList.AddRange(Enumerable.Repeat(i, maxCard[i])); // maxCard[i]만큼 i를 리스트에 추가한다
-        }
 
         // 이미 카드가 존재한다면 return
         if (cardPos[pos].childCount > 0)
@@ -344,7 +342,7 @@ public class SpawnManager : Singleton<SpawnManager>
     public Monster SpawnMonster(string name, Transform parent)
     {
         Monster monster = PoolManager.Instance.GetFromPool<Monster>("Monster_" + name); // 플레이어 소환
-        monster.data = CSVManager.Instance.csvList.FindMonster(name);
+        monster.SetMonster(name);
 
         // 위치 설정
         monster.transform.SetParent(parent);
@@ -356,7 +354,24 @@ public class SpawnManager : Singleton<SpawnManager>
 
     public Monster SpawnMonster_Ran(Transform parent)
     {
-        List<string> stageMons = CSVManager.Instance.availMosters;
+        CSVManager csvManager = CSVManager.Instance;
+
+        // 보스가 나올 차례라면
+        if (bossSpawn.curBossCount >= bossSpawn.maxBossCount)
+        {
+            bossSpawn.isSpawn = true;
+            // 서브 보스 등장
+            if(bossSpawn.curBossClear < bossSpawn.maxBossClear)
+                return SpawnMonster(csvManager.availBosses.Find(item => item.type == MonsterType.SubBoss).name, parent);
+            // 보스 등장
+            else if(bossSpawn.curBossClear >= bossSpawn.maxBossClear)
+                return SpawnMonster(csvManager.availBosses.Find(item => item.type == MonsterType.Boss).name, parent);
+
+            bossSpawn.curBossCount = 0;
+        }
+
+        // 일반 몬스터 등장
+        List<string> stageMons = csvManager.availMosters;
         return SpawnMonster(stageMons[Random.Range(0, stageMons.Count)], parent);
     }
 
@@ -631,3 +646,20 @@ public class SpawnManager : Singleton<SpawnManager>
 }
 
 public enum EffectType { Invincible }
+
+[System.Serializable]
+public class BossSpawn
+{
+    public int maxBossCount;
+    [ReadOnly] public int curBossCount; // 다음 스폰 까지 남은 보스 수
+    public int maxBossClear;
+    [ReadOnly] public int curBossClear; // 현재 클리어한 보스 수
+    public bool isSpawn;
+
+    public void SetMaxValue()
+    {
+        int stage = (int)GameManager.Instance.stage;
+        maxBossCount += stage;
+        maxBossClear += 2 * stage; // 등차수열 1, 3, 5, 7, 9...
+    }
+}

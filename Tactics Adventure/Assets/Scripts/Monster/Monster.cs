@@ -5,20 +5,29 @@ using Redcode.Pools;
 
 public abstract class Monster : MonoBehaviour, IPoolObject
 {
-    [HideInInspector] public MonsterData data;
+    public MonsterData data;
 
     [HideInInspector] public Animator anim;
+
+    private CSVManager csvManager;
 
     public virtual void OnCreatedInPool()
     {
         name = name.Replace("(Clone)", "");
 
         anim = GetComponent<Animator>();
+
+        csvManager = CSVManager.Instance;
     }
 
     public virtual void OnGettingFromPool()
     {
 
+    }
+
+    public virtual void SetMonster(string name)
+    {
+        data = csvManager.csvList.FindMonster(name);
     }
 }
 

@@ -133,4 +133,12 @@
 - 파란색 코인 추가<br/>
 - 코인 빙고 기능 추가 (가로, 세로)<br/>
 - 버프 UI 추가 (무적, 독)<br/>
+
+<h3>[Alpha 1.3.3]</h3>
+<img src="https://github.com/HongDaHyun/Tactics-Adventure/assets/101586627/1a729c1d-ba6f-4ba9-90e0-b91f6301a95a" width="540" alt="Alpha 1.3.3">
+<br/>
+- 보스 제작(서브보스, 진보스) 완료<br/>
+- 몬스터 데이터화 (CSV)<br/>
+- 보스 등장 알고리즘 구축<br/>
+- 카드 생성 알고리즘 최적화<br/>
 </details>
